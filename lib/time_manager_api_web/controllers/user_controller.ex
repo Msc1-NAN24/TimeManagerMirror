@@ -13,7 +13,7 @@ defmodule TimeManagerApiWeb.UserController do
 
   def index(conn, %{"username" => username, "email" => email}) do
     user = Timemanager.get_user_by_att!(username, email)
-    render(conn, "index.json", user: user)
+    render(conn, "show.json", user: user)
   end
 
   def create(conn, %{"user" => user_params}) do

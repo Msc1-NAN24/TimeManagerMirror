@@ -51,7 +51,7 @@ defmodule TimeManagerApi.Timemanager do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user_by_att!(username, email), do: Repo.get_by!(User, [username: username, email: email])
+  def get_user_by_att!(username, email), do: Repo.get_by!(User, username: username, email: email)
 
   @doc """
   Creates a user.
