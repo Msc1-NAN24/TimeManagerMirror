@@ -1,2 +1,2 @@
 #!/bin/bash
-mix local.hex --force ; mix ecto.migrate ; mix phx.server
+mix setup; mix phx.server
