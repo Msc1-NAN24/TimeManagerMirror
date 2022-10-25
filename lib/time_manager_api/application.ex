@@ -7,9 +7,6 @@ defmodule TimeManagerApi.Application do
 
   @impl true
   def start(_type, _args) do
-    Dotenv.load
-    Mix.Task.run("loadconfig")
-
     children = [
       # Start the Ecto repository
       TimeManagerApi.Repo,
