@@ -6,9 +6,14 @@ defmodule TimeManagerApiWeb.UserController do
 
   action_fallback TimeManagerApiWeb.FallbackController
 
-  def index(conn, _params) do
-    users = Timemanager.list_users()
-    render(conn, "index.json", users: users)
+  # def index(conn, _params) do
+  #   users = Timemanager.list_users()
+  #   render(conn, "index.json", users: users)
+  # end
+
+  def index(conn, %{"username" => username, "email" => email}) do
+    user = Timemanager.get_user_by_att(username, email)
+    render(conn, "index.json", user: user)
   end
 
   def create(conn, %{"user" => user_params}) do

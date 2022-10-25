@@ -38,6 +38,22 @@ defmodule TimeManagerApi.Timemanager do
   def get_user!(id), do: Repo.get!(User, id)
 
   @doc """
+  Gets a single user by username and email.
+
+  Raises `Ecto.NoResultsError` if the User does not exist.
+
+  ## Examples
+
+      iex> get_user_by_att!(john, john@cena.com)
+      %User{}
+
+      iex> get_user_by_att!(john, john@cena.com)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_user_by_att!(username, email), do: Repo.get_by!(User, [username: username, email: email])
+
+  @doc """
   Creates a user.
 
   ## Examples

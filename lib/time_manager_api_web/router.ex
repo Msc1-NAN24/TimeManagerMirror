@@ -7,8 +7,13 @@ defmodule TimeManagerApiWeb.Router do
 
   scope "/api", TimeManagerApiWeb do
     pipe_through :api
+<<<<<<< HEAD
     post "/clocks/:id", ClockController, :create_with_user_id
     get "/clocks/:id", ClockController, :get_clock_with_user_id
+=======
+
+    resources "/users", UserController, except: [:new, :edit]
+>>>>>>> 6454483 (WIP: user routes)
   end
 
   # Enables LiveDashboard only for development
