@@ -13,7 +13,9 @@ defmodule TimeManagerApi.Timemanager.Workingtimes do
   @doc false
   def changeset(workingtimes, attrs) do
     workingtimes
-    |> cast(attrs, [:start, :end])
-    |> validate_required([:start, :end])
+    |> cast(attrs, [:start, :end, :user])
+    |> validate_required([:start, :end, :user])
+    |> foreign_key_constraint(:user)
+    |> validate_format([:start, :end], ~r/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)
   end
 end
