@@ -2,10 +2,10 @@ import Config
 
 # Configure your database
 config :time_manager_api, TimeManagerApi.Repo,
-  username: System.fetch_env!("POSTGRES_USER"),
-  password: System.fetch_env!("POSTGRES_PASSWORD"),
-  hostname: System.fetch_env!("POSTGRES_HOST"),
-  database: System.fetch_env!("POSTGRES_DB"),
+  username: Dotenv.get!("POSTGRES_USER", "postgres"),
+  password: Dotenv.get!("POSTGRES_PASSWORD", "postgres"),
+  hostname: Dotenv.get!("POSTGRES_HOST", "postgres"),
+  database: Dotenv.get!("POSTGRES_DB", "postgres"),
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
