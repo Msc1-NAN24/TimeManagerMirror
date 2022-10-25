@@ -133,6 +133,11 @@ defmodule TimeManagerApi.Timemanager do
   """
   def get_clock!(id), do: Repo.get!(Clock, id)
 
+
+  def get_clock_user_id!(id) do
+    Repo.one(from c in Clock, where: c.user == ^id)
+  end
+
   @doc """
   Creates a clock.
 
@@ -145,10 +150,22 @@ defmodule TimeManagerApi.Timemanager do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_clock(attrs \\ %{}) do
+  def create_clock(attrs) do
     %Clock{}
     |> Clock.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def create_clock(attrs, user_id) do
+    if get_clock_user_id!(user_id) == nil do
+      %Clock{}
+      |> Clock.changeset(attrs)
+      |> Repo.insert()
+    else
+      clock = get_clock_user_id!(user_id)
+      attrs = %{time: DateTime.utc_now(), status: !clock.status}
+      update_clock(clock, attrs)
+    end
   end
 
   @doc """

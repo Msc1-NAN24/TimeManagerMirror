@@ -29,6 +29,15 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     networks:
       - TM
+
+  adminer:
+    image: adminer
+    container_name: tm_adminer
+    restart: always
+    ports:
+      - '8080:8080'
+    networks:
+      - TM
 networks:
   TM:
     driver: bridge

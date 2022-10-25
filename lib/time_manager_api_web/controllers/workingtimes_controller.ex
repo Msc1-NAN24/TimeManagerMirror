@@ -15,7 +15,7 @@ defmodule TimeManagerApiWeb.WorkingtimesController do
     with {:ok, %Workingtimes{} = workingtimes} <- Timemanager.create_workingtimes(workingtimes_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.workingtimes_path(conn, :show, workingtimes))
+      # |> put_resp_header("location", Routes.workingtimes_path(conn, :show, workingtimes))
       |> render("show.json", workingtimes: workingtimes)
     end
   end
