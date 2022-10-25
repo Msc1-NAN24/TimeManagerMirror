@@ -1,2 +1,2 @@
 #!/bin/bash
-mix setup; mix phx.server
+mix local.hex --force ; mix setup; mix phx.server
