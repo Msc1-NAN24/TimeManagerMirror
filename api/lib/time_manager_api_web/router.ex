@@ -67,7 +67,7 @@ defmodule TimeManagerApiWeb.Router do
   def required_authentication(conn, _opts) do
     auth = Enum.at(get_req_header(conn, "authorization"), 0)
     if is_nil(auth) do
-      send_auth_error(conn, "Require auth token!")
+      send_auth_error(conn, "Auth token required")
     else
       with {:ok, data} <- TimeManagerApi.Auth.verify(auth) do
         with nil <- TimeManagerApi.Timemanager.get_user(data) do
