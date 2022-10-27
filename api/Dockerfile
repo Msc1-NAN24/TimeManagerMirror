@@ -1,7 +1,7 @@
 FROM elixir:latest
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
-COPY . /app
+COPY .. /app
 
 EXPOSE 4000
 

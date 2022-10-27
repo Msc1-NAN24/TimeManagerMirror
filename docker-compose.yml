@@ -3,7 +3,7 @@ version: '3.1'
 services:
   api:
     build:
-      context: ./
+      context: api
       dockerfile: Dockerfile
     container_name: tm_api
     ports:

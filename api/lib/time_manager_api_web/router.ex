@@ -5,15 +5,46 @@ defmodule TimeManagerApiWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :authorize do
+    plug :required_authentication
+  end
+
   scope "/api", TimeManagerApiWeb do
     pipe_through :api
-<<<<<<< HEAD
     post "/clocks/:id", ClockController, :create_with_user_id
     get "/clocks/:id", ClockController, :get_clock_with_user_id
-=======
-
+    get "/users/me", AuthController, :me
     resources "/users", UserController, except: [:new, :edit]
->>>>>>> 6454483 (WIP: user routes)
+  end
+
+  scope "/api/auth", TimeManagerApiWeb do
+    pipe_through [:api]
+
+    post "/register", AuthController, :register
+    post "/login", AuthController, :login
+  end
+
+  def required_authentication(conn, _opts) do
+    auth = Enum.at(get_req_header(conn, "authorization"), 0)
+    if is_nil(auth) do
+      conn
+      |> put_status(:unauthorized)
+      |> put_view(TimeManagerApiWeb.AuthView)
+      |> render("auth_error.json", %{error: "Require auth token !"})
+      |> halt()
+    else
+      with {:ok, data} <- TimeManagerApi.Auth.verify(auth) do
+        user = TimeManagerApi.Timemanager.get_user!(data)
+        conn = Map.put_new(conn, :user, user);
+        conn
+      else {:error, error} ->
+        conn
+        |> put_status(:unauthorized)
+        |> put_view(TimeManagerApiWeb.AuthView)
+        |> render("auth_error.json", %{error: "Invalid auth token !"})
+        |> halt()
+      end
+    end
   end
 
   # Enables LiveDashboard only for development
