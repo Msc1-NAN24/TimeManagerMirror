@@ -70,7 +70,6 @@ defmodule TimeManagerApi.Timemanager do
   def create_user(attrs \\ %{}) do
     hashedPassword = TimeManagerApi.Auth.hash_password(attrs["password"])
     attrs = Map.put(attrs, "password", hashedPassword)
-    IO.inspect attrs
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
@@ -179,16 +178,23 @@ defmodule TimeManagerApi.Timemanager do
 
   def create_clock(attrs, user_id) do
     attrs = Map.put(attrs, "user", user_id)
-    IO.inspect attrs
     if get_clock_user_id(user_id) == nil do
-      IO.inspect attrs
       %Clock{}
       |> Clock.changeset(attrs)
       |> Repo.insert()
     else
       clock = get_clock_user_id(user_id)
+      create_workingtime_from_clock(user_id)
       attrs = %{time: DateTime.utc_now(), status: !clock.status}
       update_clock(clock, attrs)
+    end
+  end
+
+  def create_workingtime_from_clock(user_id) do
+    clock = get_clock_user_id(user_id)
+    if clock.status do
+      attrs = %{user: user_id, start: clock.time, end: DateTime.utc_now()}
+      create_workingtimes(attrs)
     end
   end
 
@@ -270,6 +276,10 @@ defmodule TimeManagerApi.Timemanager do
   """
   def get_workingtimes!(id), do: Repo.get!(Workingtimes, id)
 
+  def get_workingtimes_user_id(id) do
+    Repo.all(from w in Workingtimes, where: w.user == ^id)
+  end
+
   @doc """
   Creates a workingtimes.
 
@@ -283,7 +293,8 @@ defmodule TimeManagerApi.Timemanager do
 
   """
   def create_workingtimes(attrs \\ %{}) do
-    %Workingtimes{}
+    IO.inspect(attrs)
+    res = %Workingtimes{}
     |> Workingtimes.changeset(attrs)
     |> Repo.insert()
   end
