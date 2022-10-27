@@ -72,7 +72,6 @@ defmodule TimeManagerApi.Timemanager do
   def create_user(attrs \\ %{}) do
     hashedPassword = TimeManagerApi.Auth.hash_password(attrs["password"])
     attrs = Map.put(attrs, "password", hashedPassword)
-    IO.inspect attrs
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
@@ -187,9 +186,7 @@ defmodule TimeManagerApi.Timemanager do
 
   def create_clock(attrs, user_id) do
     attrs = Map.put(attrs, "user", user_id)
-    IO.inspect attrs
     if get_clock_user_id(user_id) == nil do
-      IO.inspect attrs
       %Clock{}
       |> Clock.changeset(attrs)
       |> Repo.insert()

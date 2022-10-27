@@ -47,7 +47,6 @@ defmodule TimeManagerApiWeb.Router do
   end
 
   def is_manager(conn, _opts) do
-    IO.inspect conn.user.rank
     case conn.user.rank do
       :employee ->
         send_perm_error(conn, "You are not permitted to do this")
@@ -57,7 +56,6 @@ defmodule TimeManagerApiWeb.Router do
   end
 
   def is_general_manager(conn, _opts) do
-    IO.inspect conn.user.rank
     case conn.user.rank do
       :general_manager ->
         conn
@@ -69,18 +67,16 @@ defmodule TimeManagerApiWeb.Router do
   def required_authentication(conn, _opts) do
     auth = Enum.at(get_req_header(conn, "authorization"), 0)
     if is_nil(auth) do
-      send_auth_error(conn, "Require auth token !")
+      send_auth_error(conn, "Require auth token!")
     else
       with {:ok, data} <- TimeManagerApi.Auth.verify(auth) do
-        IO.inspect data
         with nil <- TimeManagerApi.Timemanager.get_user(data) do
-          send_auth_error(conn, "Invalid auth token !")
+          send_auth_error(conn, "Invalid auth token!")
         else user ->
-          IO.inspect user
           conn = Map.put_new(conn, :user, user);
           conn
         end
-      else {:error, error} -> send_auth_error(conn, "Invalid auth token !")
+      else {:error, error} -> send_auth_error(conn, "Invalid auth token!")
       end
     end
   end
