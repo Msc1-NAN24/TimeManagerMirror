@@ -21,8 +21,19 @@ defmodule TimeManagerApiWeb.Router do
 
   scope "/api", TimeManagerApiWeb do
     pipe_through [:api, :employee]
+
     post "/clocks/:id", ClockController, :create_with_user_id
     get "/clocks/:id", ClockController, :get_clock_with_user_id
+
+    # Employee routes
+    get "/workingtimes/user/:user_id", WorkingtimesController, :get_workingtimes
+    get "/workingtimes/user/:user_id/:id", WorkingtimesController, :get_workingtimes
+
+    # Manager routes
+    get "/workingtimes/entry/:id", WorkingtimesController, :get_workingtimes_manager
+    post "/workingtimes/user/:user_id", WorkingtimesController, :create
+    put "/workingtimes/entry/:id", WorkingtimesController, :update
+    delete "/workingtimes/entry/:id", WorkingtimesController, :delete
   end
 
   scope "/api/users", TimeManagerApiWeb do
