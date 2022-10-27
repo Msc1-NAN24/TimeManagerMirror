@@ -1,21 +1,19 @@
 <template>
   <v-sheet class="pa-12 rounded">
     <v-card class="mx-auto" max-width="344" title="User Registration">
-      <v-container>
+      <v-form v-model="form" @submit.prevent="onSubmit">
         <v-text-field
-          v-model="first"
+          v-model="firstname"
           :rules="[rules.required]"
           color="primary"
           label="First name"
-          variant="underlined"
         ></v-text-field>
 
         <v-text-field
-          v-model="last"
-          :rules="[rules.emailMatch, rules.required]"
+          v-model="lastname"
+          :rules="[rules.required]"
           color="primary"
           label="Last name"
-          variant="underlined"
         ></v-text-field>
 
         <v-text-field
@@ -23,7 +21,6 @@
           :rules="[rules.emailMatch, rules.required]"
           color="primary"
           label="Email"
-          variant="underlined"
         ></v-text-field>
 
         <v-text-field
@@ -35,53 +32,60 @@
           color="primary"
           label="Password"
           placeholder="Enter your password"
-          variant="underlined"
         ></v-text-field>
 
-        <v-text-field
-          v-model="comfirmPassword"
+        <!-- <v-text-field
+          v-model="confirmPassword"
           :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
           :type="show2 ? 'text' : 'password'"
           :rules="[rules.required, rules.confirmPassword]"
           @click:append="show2 = !show2"
           color="primary"
-          label="Password"
-          placeholder="Enter your password"
-          variant="underlined"
-        ></v-text-field>
-      </v-container>
+          label="Confirm Password"
+          placeholder="Confirm your password"
+          @update:error="checkPassword"
+        ></v-text-field> -->
 
-      <v-divider></v-divider>
-
-      <v-card-actions>
-        <v-spacer></v-spacer>
-
-        <v-btn @click="submit" color="success">
-          Complete Registration
-          <v-icon icon="mdi-chevron-right" end></v-icon>
-        </v-btn>
-        <v-spacer></v-spacer>
-      </v-card-actions>
-      <v-card-text class="text-center">
-        <router-link class="text-blue text-decoration-none" to="login">
-          Sign in now <v-icon icon="mdi-chevron-right"></v-icon>
-        </router-link>
-      </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            :disabled="!form"
+            block
+            color="success"
+            size="large"
+            type="submit"
+            variant="elevated"
+          >
+            Complete Registration
+            <v-icon icon="mdi-chevron-right" end></v-icon>
+          </v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+        <v-card-text class="text-center">
+          <router-link class="text-blue text-decoration-none" to="login">
+            Sign in now <v-icon icon="mdi-chevron-right"></v-icon>
+          </router-link>
+        </v-card-text>
+      </v-form>
     </v-card>
   </v-sheet>
 </template>
 
 <script>
+import authService from "@/services/auth";
 export default {
   data: () => ({
-    first: null,
-    last: null,
+    firstname: null,
+    form: false,
+    lastname: null,
     email: null,
     password: null,
-    comfirmPassword: null,
+    confirmPassword: null,
     terms: false,
     show1: false,
     show2: false,
+    loading: false,
     rules: {
       required: (value) => !!value || "Required.",
       min: (v) => v.length >= 8 || "Min 8 characters",
@@ -90,5 +94,36 @@ export default {
         v === this.password || "Must be identical to the password",
     },
   }),
+  methods: {
+    onSubmit() {
+      if (!this.form) return;
+
+      this.loading = true;
+
+      const user = {
+        firstname: this.firstname,
+        lastname: this.lastname,
+        password: this.password,
+        email: this.email,
+      };
+      this.$router.push({ name: "home" });
+
+      authService.register(user).then((res) => {
+        console.log("res", res);
+        this.$router.push({ name: "login" });
+      });
+    },
+    required(v) {
+      return !!v || "Field is required";
+    },
+    checkPassword(invalid) {
+      // correct: false
+      if (true == invalid) {
+        this.validPassword = false;
+      } else {
+        this.validPassword = true;
+      }
+    },
+  },
 };
 </script>
