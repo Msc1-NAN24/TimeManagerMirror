@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@rushstack/eslint-patch': ^1.1.4
   '@types/jsdom': ^20.0.0
+  '@types/luxon': ^3.0.2
   '@types/node': ^16.11.68
   '@vitejs/plugin-vue': ^3.1.2
   '@vitejs/plugin-vue-jsx': ^2.0.1
@@ -15,6 +16,7 @@ specifiers:
   eslint-plugin-cypress: ^2.12.1
   eslint-plugin-vue: ^9.3.0
   jsdom: ^20.0.1
+  luxon: ^3.0.4
   npm-run-all: ^4.1.5
   pinia: ^2.0.23
   prettier: ^2.7.1
@@ -27,6 +29,7 @@ specifiers:
   vue-tsc: ^1.0.8
 
 dependencies:
+  luxon: 3.0.4
   pinia: 2.0.23_lrjaoqkmph6q2hmgd3qeuy6rom
   vue: 3.2.41
   vue-router: 4.1.6_vue@3.2.41
@@ -34,6 +37,7 @@ dependencies:
 devDependencies:
   '@rushstack/eslint-patch': 1.2.0
   '@types/jsdom': 20.0.0
+  '@types/luxon': 3.0.2
   '@types/node': 16.18.1
   '@vitejs/plugin-vue': 3.2.0_vite@3.2.0+vue@3.2.41
   '@vitejs/plugin-vue-jsx': 2.1.0_vite@3.2.0+vue@3.2.41
@@ -551,6 +555,10 @@ packages:
 
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
+    dev: true
+
+  /@types/luxon/3.0.2:
+    resolution: {integrity: sha512-HM2OVWckUMmXbWYZufmWT2XMURGDZ6XbyNyQ+Lx+gCFGFqbZaIjsz7b+AGeGP/AuVYHBiuGY+wXfweP1RremnA==}
     dev: true
 
   /@types/node/14.18.32:
@@ -2904,6 +2912,11 @@ packages:
     dependencies:
       yallist: 4.0.0
     dev: true
+
+  /luxon/3.0.4:
+    resolution: {integrity: sha512-aV48rGUwP/Vydn8HT+5cdr26YYQiUZ42NM6ToMoaGKwYfWbfLeRkEu1wXWMHBZT6+KyLfcbbtVcoQFCbbPjKlw==}
+    engines: {node: '>=12'}
+    dev: false
 
   /magic-string/0.25.9:
     resolution: {integrity: sha512-RmF0AsMzgt25qzqqLc1+MbHmhdx0ojF2Fvs4XnOqz2ZOBXzzkEwc/dJQZCYHAn7v1jbVOjAZfK8msRn4BxO4VQ==}
