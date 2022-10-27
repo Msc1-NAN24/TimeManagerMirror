@@ -5,16 +5,38 @@ defmodule TimeManagerApiWeb.Router do
     plug :accepts, ["json"]
   end
 
-  pipeline :authorize do
+  pipeline :employee do
     plug :required_authentication
   end
 
+  pipeline :manager do
+    plug :required_authentication
+    plug :is_manager
+  end
+
+  pipeline :general_manager do
+    plug :required_authentication
+    plug :is_general_manager
+  end
+
   scope "/api", TimeManagerApiWeb do
-    pipe_through :api
+    pipe_through [:api, :employee]
     post "/clocks/:id", ClockController, :create_with_user_id
     get "/clocks/:id", ClockController, :get_clock_with_user_id
-    get "/users/me", AuthController, :me
-    resources "/users", UserController, except: [:new, :edit]
+  end
+
+  scope "/api/users", TimeManagerApiWeb do
+    pipe_through [:api, :employee]
+
+    get "/", UserController, :list
+    get "/me", UserController, :get_me
+    get "/:id", UserController, :get
+    delete "/", UserController, :delete_me
+    delete "/:id", UserController, :delete
+    put "/", UserController, :update_me
+    put "/:id", UserController, :update
+    post "/:id/promote", UserController, :promote
+    post "/:id/revoke", UserController, :revoke
   end
 
   scope "/api/auth", TimeManagerApiWeb do
@@ -24,27 +46,55 @@ defmodule TimeManagerApiWeb.Router do
     post "/login", AuthController, :login
   end
 
+  def is_manager(conn, _opts) do
+    case conn.user.rank do
+      :employee ->
+        send_perm_error(conn, "You are not permitted to do this")
+      _ ->
+        conn
+    end
+  end
+
+  def is_general_manager(conn, _opts) do
+    case conn.user.rank do
+      :general_manager ->
+        conn
+      _ ->
+        send_perm_error(conn, "You are not permitted to do this")
+    end
+  end
+
   def required_authentication(conn, _opts) do
     auth = Enum.at(get_req_header(conn, "authorization"), 0)
     if is_nil(auth) do
-      conn
-      |> put_status(:unauthorized)
-      |> put_view(TimeManagerApiWeb.AuthView)
-      |> render("auth_error.json", %{error: "Require auth token !"})
-      |> halt()
+      send_auth_error(conn, "Auth token required")
     else
       with {:ok, data} <- TimeManagerApi.Auth.verify(auth) do
-        user = TimeManagerApi.Timemanager.get_user!(data)
-        conn = Map.put_new(conn, :user, user);
-        conn
-      else {:error, error} ->
-        conn
-        |> put_status(:unauthorized)
-        |> put_view(TimeManagerApiWeb.AuthView)
-        |> render("auth_error.json", %{error: "Invalid auth token !"})
-        |> halt()
+        with nil <- TimeManagerApi.Timemanager.get_user(data) do
+          send_auth_error(conn, "Invalid auth token!")
+        else user ->
+          conn = Map.put_new(conn, :user, user);
+          conn
+        end
+      else {:error, error} -> send_auth_error(conn, "Invalid auth token!")
       end
     end
+  end
+
+  def send_auth_error(conn, message) do
+    conn
+    |> put_status(:unauthorized)
+    |> put_view(TimeManagerApiWeb.AuthView)
+    |> render("auth_error.json", %{error: message})
+    |> halt()
+  end
+
+  def send_perm_error(conn, message) do
+    conn
+    |> put_status(:forbidden)
+    |> put_view(TimeManagerApiWeb.AuthView)
+    |> render("auth_error.json", %{error: message})
+    |> halt()
   end
 
   # Enables LiveDashboard only for development
