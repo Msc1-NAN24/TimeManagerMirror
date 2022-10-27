@@ -13,8 +13,22 @@ defmodule TimeManagerApiWeb.UserView do
   def render("user.json", %{user: user}) do
     %{
       id: user.id,
-      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
       email: user.email
     }
   end
+
+  def render("manager.json", %{user: user}) do
+    %{
+      id: user.id,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+      insert_at: user.inserted_at,
+      updated_at: user.updated_at,
+      rank: user.rank,
+    }
+  end
+
 end
