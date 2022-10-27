@@ -187,8 +187,21 @@ defmodule TimeManagerApi.Timemanager do
       |> Repo.insert()
     else
       clock = get_clock_user_id(user_id)
+      create_workingtime(user_id)
       attrs = %{time: DateTime.utc_now(), status: !clock.status}
       update_clock(clock, attrs)
+    end
+  end
+
+  def create_workingtime(user_id) do
+    clock = get_clock_user_id(user_id)
+    IO.puts "---------------------------------"
+    IO.inspect clock
+    IO.puts "---------------------------------"
+    if clock.status do
+      start_time = clock.time
+      end_time = DateTime.utc_now()
+      create_workingtimes(%{start_time: start_time, end_time: end_time, user: user_id})
     end
   end
 
@@ -269,6 +282,10 @@ defmodule TimeManagerApi.Timemanager do
 
   """
   def get_workingtimes!(id), do: Repo.get!(Workingtimes, id)
+
+  def get_workingtimes_user_id(id) do
+    Repo.all(from w in Workingtimes, where: w.user == ^id)
+  end
 
   @doc """
   Creates a workingtimes.
