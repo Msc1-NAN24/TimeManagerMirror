@@ -1,8 +1,8 @@
 import Config
 
 if config_env() == :dev do
-  if File.exists?(".env") do
-    DotenvParser.load_file(".env")
+  if File.exists?("../.env") do
+    DotenvParser.load_file("../.env")
   end
   # Configure your database
   config :time_manager_api, TimeManagerApi.Repo,
