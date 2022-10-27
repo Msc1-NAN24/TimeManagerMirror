@@ -37,6 +37,8 @@ defmodule TimeManagerApi.Timemanager do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_user(id), do: Repo.get(User, id)
+
   @doc """
   Gets a single user by username and email.
 
@@ -74,6 +76,12 @@ defmodule TimeManagerApi.Timemanager do
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def promote_user(%User{} = user, rank) do
+    user
+    |> User.changeset(Map.put(%{}, "rank", rank))
+    |> Repo.update()
   end
 
   @doc """

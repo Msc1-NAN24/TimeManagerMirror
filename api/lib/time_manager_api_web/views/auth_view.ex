@@ -13,7 +13,8 @@ defmodule TimeManagerApiWeb.AuthView do
   def render("auth.json", %{user: user}) do
     %{
       id: user.id,
-      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
       email: user.email
     }
   end
@@ -29,7 +30,8 @@ defmodule TimeManagerApiWeb.AuthView do
       access_token: token,
       user: %{
         id: user.id,
-        username: user.username,
+        firstname: user.firstname,
+        lastname: user.lastname,
         email: user.email
       }
     }
