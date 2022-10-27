@@ -53,6 +53,8 @@ defmodule TimeManagerApi.Timemanager do
   """
   def get_user_by_att!(username, email), do: Repo.get_by!(User, username: username, email: email)
 
+  def get_user_by_email(email), do: Repo.get_by(User, email: email)
+
   @doc """
   Creates a user.
 
@@ -66,6 +68,9 @@ defmodule TimeManagerApi.Timemanager do
 
   """
   def create_user(attrs \\ %{}) do
+    hashedPassword = TimeManagerApi.Auth.hash_password(attrs["password"])
+    attrs = Map.put(attrs, "password", hashedPassword)
+    IO.inspect attrs
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
@@ -150,7 +155,7 @@ defmodule TimeManagerApi.Timemanager do
   def get_clock!(id), do: Repo.get!(Clock, id)
 
 
-  def get_clock_user_id!(id) do
+  def get_clock_user_id(id) do
     Repo.one(from c in Clock, where: c.user == ^id)
   end
 
@@ -173,12 +178,15 @@ defmodule TimeManagerApi.Timemanager do
   end
 
   def create_clock(attrs, user_id) do
-    if get_clock_user_id!(user_id) == nil do
+    attrs = Map.put(attrs, "user", user_id)
+    IO.inspect attrs
+    if get_clock_user_id(user_id) == nil do
+      IO.inspect attrs
       %Clock{}
       |> Clock.changeset(attrs)
       |> Repo.insert()
     else
-      clock = get_clock_user_id!(user_id)
+      clock = get_clock_user_id(user_id)
       attrs = %{time: DateTime.utc_now(), status: !clock.status}
       update_clock(clock, attrs)
     end
