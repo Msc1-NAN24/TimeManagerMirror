@@ -1,11 +1,11 @@
 import { IUser, IUpdateUser } from "@/dto/user";
 import userRepository from "@/repository/users";
 
-const getUserById = async (id: number): Promise<IUser> => {
+const getUserById = async (id: number) => {
   const user = await userRepository.getUserById(id);
   return user;
 };
-const getAllUsers = async (): Promise<IUser[]> => {
+const getAllUsers = async () => {
   const users = await userRepository.getAllUsers();
   return users;
 };
@@ -13,9 +13,9 @@ const getAllUsers = async (): Promise<IUser[]> => {
 //   const created_user = await userRepository.CreateUser(user);
 //   return created_user;
 // };
-const updateUser = async (id: number, user: IUpdateUser): Promise<IUser> => {
-  const updated_user = await userRepository.updateUser(id, user);
-  return updated_user;
+const updateUser = async (id: number, user: IUpdateUser) => {
+  const updatedUser = await userRepository.updateUser(id, user);
+  return updatedUser;
 };
 const deleteUser = async (id: number): Promise<IUser> => {
   const user = await userRepository.deleteUser(id);
