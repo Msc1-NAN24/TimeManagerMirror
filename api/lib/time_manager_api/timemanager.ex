@@ -78,7 +78,7 @@ defmodule TimeManagerApi.Timemanager do
     |> Repo.insert()
   end
 
-  def promote_user(%User{} = user, rank) do
+  def change_rank(%User{} = user, rank) do
     user
     |> User.changeset(Map.put(%{}, "rank", rank))
     |> Repo.update()

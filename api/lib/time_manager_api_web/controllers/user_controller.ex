@@ -59,7 +59,7 @@ defmodule TimeManagerApiWeb.UserController do
     else
       case user.rank do
         :employee ->
-          Timemanager.promote_user(user, :manager)
+          Timemanager.change_rank(user, :manager)
           send_resp(conn, :ok, "")
         _ -> send_error(conn, "Can't promote user !")
       end
@@ -73,7 +73,7 @@ defmodule TimeManagerApiWeb.UserController do
     else
       case user.rank do
         :manager ->
-          Timemanager.promote_user(user, :employee)
+          Timemanager.change_rank(user, :employee)
           send_resp(conn, :ok, "")
         _ -> send_error(conn, "Can't revoke user !")
       end
