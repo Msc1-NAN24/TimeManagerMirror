@@ -1,7 +1,7 @@
 import { IUpdateUser, IUser } from "@/dto/user";
 import axios from "axios";
 
-const getUserById = async (id: number): Promise<IUser> => {
+const getUserById = async (id: number) => {
   const { data } = await axios.get<IUser>(`${process.env.URL_API}/user/${id}`);
   return data;
 };
