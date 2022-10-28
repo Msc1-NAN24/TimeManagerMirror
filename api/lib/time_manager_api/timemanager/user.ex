@@ -7,6 +7,7 @@ defmodule TimeManagerApi.Timemanager.User do
     field :firstname, :string
     field :lastname, :string
     field :password, :string
+    belongs_to :team, TimeManagerApi.Timemanager.Team;
     field :rank, Ecto.Enum, values: [:employee, :manager, :general_manager], default: :employee
     timestamps()
   end
