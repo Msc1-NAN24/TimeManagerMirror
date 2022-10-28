@@ -1,4 +1,4 @@
-FROM bitwalker/alpine-elixir-phoenix:latest
+FROM elixir:latest
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 COPY . /app
@@ -9,5 +9,7 @@ EXPOSE ${API_PORT}
 
 WORKDIR /app
 
+RUN mix local.hex --force
+RUN mix local.rebar --force
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
