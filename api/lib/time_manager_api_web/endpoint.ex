@@ -9,7 +9,6 @@ defmodule TimeManagerApiWeb.Endpoint do
     key: "_time_manager_api_key",
     signing_salt: "dwYuCS/f"
   ]
-
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
   # Serve at "/" the static files from "priv/static" directory.
@@ -44,5 +43,7 @@ defmodule TimeManagerApiWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+
+  plug CORSPlug
   plug TimeManagerApiWeb.Router
 end
