@@ -3,12 +3,11 @@ FROM elixir:latest
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 COPY .. /app
 
-ARG PORT
+ARG API_PORT
 
-EXPOSE ${PORT}
+EXPOSE ${API_PORT}
 
 WORKDIR /app
-
 
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
