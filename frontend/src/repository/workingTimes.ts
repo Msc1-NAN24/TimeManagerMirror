@@ -4,39 +4,39 @@ import axios from "axios";
 // User Routes
 
 const getAllWorkingTimesByUser = async (userId: number) => {
-    const { data } = await axios.get<IWorkingTime[]>(`${process.env.URL_API}/workingtimes/user/${userId}`);
+    const { data } = await axios.get<IWorkingTime[]>(`${import.meta.env.VITE_URL_API}/workingtimes/user/${userId}`);
     return data;
 }
 
 const getWorkingTimesByUserByPeriod = async (userId: number, start: string, end: string) => {
-    const { data } = await axios.get<IWorkingTime[]>(`${process.env.URL_API}/workingtimes/user/${userId}?start=${start}&end=${end}`);
+    const { data } = await axios.get<IWorkingTime[]>(`${import.meta.env.VITE_URL_API}/workingtimes/user/${userId}?start=${start}&end=${end}`);
     return data;
 }
 
 const getWorkingTimeByUserById = async (userId: number, workingTimeId: number) => {
-    const { data } = await axios.get<IWorkingTime>(`${process.env.URL_API}/workingtimes/user/${userId}/${workingTimeId}`);
+    const { data } = await axios.get<IWorkingTime>(`${import.meta.env.VITE_URL_API}/workingtimes/user/${userId}/${workingTimeId}`);
     return data;
 }
 
 const createWorkingTime = async (userId: number, workingTime: ICreateWorkingTime) => {
-    const { data } = await axios.post<IWorkingTime>(`${process.env.URL_API}/workingtimes/user/${userId}`, workingTime);
+    const { data } = await axios.post<IWorkingTime>(`${import.meta.env.VITE_URL_API}/workingtimes/user/${userId}`, workingTime);
     return data;
 }
 
 // Manager Routes
 
 const getWorkingTimeById = async (workingTimeId: number) => {
-    const { data } = await axios.get<IWorkingTime>(`${process.env.URL_API}/workingtimes/entry/${workingTimeId}`);
+    const { data } = await axios.get<IWorkingTime>(`${import.meta.env.VITE_URL_API}/workingtimes/entry/${workingTimeId}`);
     return data;
 }
 
 const updateWorkingTime = async (workingTimeId: number, workingTime: IUpdateWorkingTime) => {
-    const { data } = await axios.patch<IWorkingTime>(`${process.env.URL_API}/workingtimes/entry/${workingTimeId}`, workingTime);
+    const { data } = await axios.patch<IWorkingTime>(`${import.meta.env.VITE_URL_API}/workingtimes/entry/${workingTimeId}`, workingTime);
     return data;
 }
 
 const deleteWorkingTime = async (workingTimeId: number) => {
-    const { data } = await axios.delete<IWorkingTime>(`${process.env.URL_API}/workingtimes/entry/${workingTimeId}`);
+    const { data } = await axios.delete<IWorkingTime>(`${import.meta.env.VITE_URL_API}/workingtimes/entry/${workingTimeId}`);
     return data;
 }
 
