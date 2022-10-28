@@ -8,19 +8,19 @@ export default {
     email: "",
     password: "",
     emailRules: [
-      (v) => !!v || "E-mail is required",
-      (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+      (v: string) => !!v || "E-mail is required",
+      (v: string) => /.+@.+\..+/.test(v) || "E-mail must be valid",
     ],
     passwordRules: [
-      (value) => !!value || "Password is required",
-      (v) => v.length >= 8 || "Min 8 characters",
+      (v: string) => !!v || "Password is required",
+      (v: string) => v.length >= 8 || "Min 8 characters",
     ],
     loading: false,
   }),
 
   methods: {
     onSubmit() {
-      if (!this.form || this.email || this.password) return;
+      if (!this.form || !this.email || !this.password) return;
 
       this.loading = true;
 
@@ -29,7 +29,7 @@ export default {
         this.$router.push({ name: "home" });
       });
     },
-    required(v) {
+    required(v: string) {
       return !!v || "Field is required";
     },
   },
