@@ -3,12 +3,6 @@ defmodule TimeManagerApiWeb.AuthController do
   alias TimeManagerApi.Timemanager
   alias TimeManagerApi.Timemanager.User
 
-  def me(conn, _params) do
-    IO.inspect conn.user
-    conn
-    |> send_resp(:no_content, "")
-  end
-
   def register(conn, user_params) do
     user = TimeManagerApi.Timemanager.get_user_by_email(user_params["email"])
     if is_nil(user) do
@@ -17,7 +11,6 @@ defmodule TimeManagerApiWeb.AuthController do
         |> put_status(:created)
         |> render("auth.json", user: user)
       else {:error, changeset} ->
-        IO.inspect "ERROR !"
         conn
         |> send_resp(:bad_request, "Not found")
       end
@@ -41,7 +34,6 @@ defmodule TimeManagerApiWeb.AuthController do
       |> render("auth_error.json", %{error: "Bad password !"})
     else
       token = TimeManagerApi.Auth.sign(user.id)
-      IO.inspect token
       render(conn, "token.json", %{token: token, user: user})
     end
   end

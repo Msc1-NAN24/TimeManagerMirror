@@ -37,6 +37,8 @@ defmodule TimeManagerApi.Timemanager do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_user(id), do: Repo.get(User, id)
+
   @doc """
   Gets a single user by username and email.
 
@@ -70,10 +72,15 @@ defmodule TimeManagerApi.Timemanager do
   def create_user(attrs \\ %{}) do
     hashedPassword = TimeManagerApi.Auth.hash_password(attrs["password"])
     attrs = Map.put(attrs, "password", hashedPassword)
-    IO.inspect attrs
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def change_rank(%User{} = user, rank) do
+    user
+    |> User.changeset(Map.put(%{}, "rank", rank))
+    |> Repo.update()
   end
 
   @doc """
@@ -179,16 +186,23 @@ defmodule TimeManagerApi.Timemanager do
 
   def create_clock(attrs, user_id) do
     attrs = Map.put(attrs, "user", user_id)
-    IO.inspect attrs
     if get_clock_user_id(user_id) == nil do
-      IO.inspect attrs
       %Clock{}
       |> Clock.changeset(attrs)
       |> Repo.insert()
     else
       clock = get_clock_user_id(user_id)
+      create_workingtime_from_clock(user_id)
       attrs = %{time: DateTime.utc_now(), status: !clock.status}
       update_clock(clock, attrs)
+    end
+  end
+
+  def create_workingtime_from_clock(user_id) do
+    clock = get_clock_user_id(user_id)
+    if clock.status do
+      attrs = %{user: user_id, start: clock.time, end: DateTime.utc_now()}
+      create_workingtimes(attrs)
     end
   end
 
@@ -241,97 +255,49 @@ defmodule TimeManagerApi.Timemanager do
 
   alias TimeManagerApi.Timemanager.Workingtimes
 
-  @doc """
-  Returns the list of workingtimes.
+  # WORKINGTIMES
 
-  ## Examples
-
-      iex> list_workingtimes()
-      [%Workingtimes{}, ...]
-
-  """
-  def list_workingtimes do
-    Repo.all(Workingtimes)
+  def get_workingtimes(user_id, id) do
+    Repo.one(from w in Workingtimes, where: w.user == ^user_id and w.id == ^id)
   end
 
-  @doc """
-  Gets a single workingtimes.
+  def get_workingtimes(user_id) do
+    Repo.all(from w in Workingtimes, where: w.user == ^user_id)
+  end
 
-  Raises `Ecto.NoResultsError` if the Workingtimes does not exist.
+  def get_workingtimes_by_id(id) do
+    Repo.one(from w in Workingtimes, where: w.id == ^id)
+  end
 
-  ## Examples
+  def filter_workingtimes(user_id, start_time, end_time) do
+    if start_time == nil and end_time == nil do
+      get_workingtimes(user_id)
+    else
+      if start_time == nil do
+        Repo.all(from w in Workingtimes, where: w.user == ^user_id and w.start <= ^end_time)
+      else
+        if end_time == nil do
+          Repo.all(from w in Workingtimes, where: w.user == ^user_id and w.start >= ^start_time)
+        else
+          Repo.all(from w in Workingtimes, where: w.user == ^user_id and w.start >= ^start_time and w.start <= ^end_time)
+        end
+      end
+    end
+  end
 
-      iex> get_workingtimes!(123)
-      %Workingtimes{}
-
-      iex> get_workingtimes!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_workingtimes!(id), do: Repo.get!(Workingtimes, id)
-
-  @doc """
-  Creates a workingtimes.
-
-  ## Examples
-
-      iex> create_workingtimes(%{field: value})
-      {:ok, %Workingtimes{}}
-
-      iex> create_workingtimes(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_workingtimes(attrs \\ %{}) do
+  def create_workingtimes(attrs) do
     %Workingtimes{}
     |> Workingtimes.changeset(attrs)
     |> Repo.insert()
   end
 
-  @doc """
-  Updates a workingtimes.
-
-  ## Examples
-
-      iex> update_workingtimes(workingtimes, %{field: new_value})
-      {:ok, %Workingtimes{}}
-
-      iex> update_workingtimes(workingtimes, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
   def update_workingtimes(%Workingtimes{} = workingtimes, attrs) do
     workingtimes
     |> Workingtimes.changeset(attrs)
     |> Repo.update()
   end
 
-  @doc """
-  Deletes a workingtimes.
-
-  ## Examples
-
-      iex> delete_workingtimes(workingtimes)
-      {:ok, %Workingtimes{}}
-
-      iex> delete_workingtimes(workingtimes)
-      {:error, %Ecto.Changeset{}}
-
-  """
   def delete_workingtimes(%Workingtimes{} = workingtimes) do
     Repo.delete(workingtimes)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking workingtimes changes.
-
-  ## Examples
-
-      iex> change_workingtimes(workingtimes)
-      %Ecto.Changeset{data: %Workingtimes{}}
-
-  """
-  def change_workingtimes(%Workingtimes{} = workingtimes, attrs \\ %{}) do
-    Workingtimes.changeset(workingtimes, attrs)
   end
 end
