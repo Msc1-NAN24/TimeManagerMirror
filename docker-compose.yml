@@ -62,6 +62,8 @@ services:
       - '80:80'
     networks:
       - TM
+    depends_on:
+    - front
 networks:
   TM:
     driver: bridge
