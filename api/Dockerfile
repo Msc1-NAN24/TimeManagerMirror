@@ -1,4 +1,4 @@
-FROM elixir:latest
+FROM bitwalker/alpine-elixir-phoenix:latest
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 COPY . /app
