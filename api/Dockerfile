@@ -1,9 +1,14 @@
 FROM elixir:latest
 
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-COPY .. /app
-
-EXPOSE 4000
+COPY . /app
 
 WORKDIR /app
-ENTRYPOINT ["/docker-entrypoint.sh"]
+
+RUN mix local.hex --force
+RUN mix local.rebar --force
+RUN mix deps.get
+
+ARG API_PORT
+EXPOSE ${API_PORT}
+
+CMD mix setup

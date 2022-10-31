@@ -7,3 +7,12 @@ import { loadFonts } from "./plugins/webfontloader";
 loadFonts();
 
 createApp(App).use(router).use(vuetify).mount("#app");
+
+// Fix Property 'env' does not exist on type 'ImportMeta'.
+declare global {
+  interface ImportMeta {
+    env: {
+      VITE_URL_API: string;
+    };
+  }
+}

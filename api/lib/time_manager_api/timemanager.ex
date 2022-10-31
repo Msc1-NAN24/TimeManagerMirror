@@ -181,14 +181,16 @@ defmodule TimeManagerApi.Timemanager do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_clock(attrs) do
-    %Clock{}
-    |> Clock.changeset(attrs)
-    |> Repo.insert()
-  end
+#  def create_clock(attrs) do
+#    %Clock{}
+#    |> Clock.changeset(attrs)
+#    |> Repo.insert()
+#  end
 
-  def create_clock(attrs, user_id) do
-    attrs = Map.put(attrs, "user", user_id)
+  def create_clock(user_id) do
+    attrs = Map.put(%{}, "user", user_id)
+    attrs = Map.put(attrs, "time", DateTime.utc_now())
+    attrs = Map.put(attrs, "status", true)
     if get_clock_user_id(user_id) == nil do
       %Clock{}
       |> Clock.changeset(attrs)
@@ -196,7 +198,7 @@ defmodule TimeManagerApi.Timemanager do
     else
       clock = get_clock_user_id(user_id)
       create_workingtime_from_clock(user_id)
-      attrs = %{time: DateTime.utc_now(), status: !clock.status}
+      attrs = %{time: DateTime.utc_now, status: !clock.status}
       update_clock(clock, attrs)
     end
   end
@@ -258,88 +260,48 @@ defmodule TimeManagerApi.Timemanager do
 
   alias TimeManagerApi.Timemanager.Workingtimes
 
-  @doc """
-  Returns the list of workingtimes.
+  # WORKINGTIMES
 
-  ## Examples
-
-      iex> list_workingtimes()
-      [%Workingtimes{}, ...]
-
-  """
-  def list_workingtimes do
-    Repo.all(Workingtimes)
+  def get_workingtimes(user_id, id) do
+    Repo.one(from w in Workingtimes, where: w.user == ^user_id and w.id == ^id)
   end
 
-  @doc """
-  Gets a single workingtimes.
-
-  Raises `Ecto.NoResultsError` if the Workingtimes does not exist.
-
-  ## Examples
-
-      iex> get_workingtimes!(123)
-      %Workingtimes{}
-
-      iex> get_workingtimes!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_workingtimes!(id), do: Repo.get!(Workingtimes, id)
-
-  def get_workingtimes_user_id(id) do
-    Repo.all(from w in Workingtimes, where: w.user == ^id)
+  def get_workingtimes(user_id) do
+    Repo.all(from w in Workingtimes, where: w.user == ^user_id)
   end
 
-  @doc """
-  Creates a workingtimes.
+  def get_workingtimes_by_id(id) do
+    Repo.one(from w in Workingtimes, where: w.id == ^id)
+  end
 
-  ## Examples
+  def filter_workingtimes(user_id, start_time, end_time) do
+    if start_time == nil and end_time == nil do
+      get_workingtimes(user_id)
+    else
+      if start_time == nil do
+        Repo.all(from w in Workingtimes, where: w.user == ^user_id and w.start <= ^end_time)
+      else
+        if end_time == nil do
+          Repo.all(from w in Workingtimes, where: w.user == ^user_id and w.start >= ^start_time)
+        else
+          Repo.all(from w in Workingtimes, where: w.user == ^user_id and w.start >= ^start_time and w.start <= ^end_time)
+        end
+      end
+    end
+  end
 
-      iex> create_workingtimes(%{field: value})
-      {:ok, %Workingtimes{}}
-
-      iex> create_workingtimes(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_workingtimes(attrs \\ %{}) do
-    IO.inspect(attrs)
-    res = %Workingtimes{}
+  def create_workingtimes(attrs) do
+    %Workingtimes{}
     |> Workingtimes.changeset(attrs)
     |> Repo.insert()
   end
 
-  @doc """
-  Updates a workingtimes.
-
-  ## Examples
-
-      iex> update_workingtimes(workingtimes, %{field: new_value})
-      {:ok, %Workingtimes{}}
-
-      iex> update_workingtimes(workingtimes, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
   def update_workingtimes(%Workingtimes{} = workingtimes, attrs) do
     workingtimes
     |> Workingtimes.changeset(attrs)
     |> Repo.update()
   end
 
-  @doc """
-  Deletes a workingtimes.
-
-  ## Examples
-
-      iex> delete_workingtimes(workingtimes)
-      {:ok, %Workingtimes{}}
-
-      iex> delete_workingtimes(workingtimes)
-      {:error, %Ecto.Changeset{}}
-
-  """
   def delete_workingtimes(%Workingtimes{} = workingtimes) do
     Repo.delete(workingtimes)
   end

@@ -1,5 +1,5 @@
-ROUTES
-======
+WORKINGTIMES ROUTES
+===================
 
 USER ROUTES
 -----------
@@ -11,7 +11,6 @@ USER ROUTES
 | GET    | /workingtimes/user/:user_id/:id | Get a specific workingtime for a user |
 | POST   | /workingtimes/user/:user_id | Create a new workingtime for a user |
 
-
 MANAGER ROUTES
 --------------
 
@@ -20,4 +19,3 @@ MANAGER ROUTES
 | GET    | /workingtimes/entry/:id | Get a specific workingtime |
 | PUT    | /workingtimes/entry/:id | Update a specific workingtime |
 | DELETE | /workingtimes/entry/:id | Delete a specific workingtime |
-| GET    | /api/teams/:teamId      | Get a specific team |
