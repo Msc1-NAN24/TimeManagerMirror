@@ -11,4 +11,4 @@ RUN mix deps.get
 ARG API_PORT
 EXPOSE ${API_PORT}
 
-CMD mix setup
+CMD mix setup && mix phx.server
