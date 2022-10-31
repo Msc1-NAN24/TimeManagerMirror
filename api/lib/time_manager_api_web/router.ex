@@ -57,6 +57,22 @@ defmodule TimeManagerApiWeb.Router do
     post "/login", AuthController, :login
   end
 
+
+  scope "/api/teams", TimeManagerApiWeb do
+    pipe_through [:api, :manager]
+
+    post "/", TeamController, :create
+    get "/", TeamController, :list
+
+    get "/:id", TeamController, :get
+    delete "/:id", TeamController, :delete
+    patch "/:id", TeamController, :update
+
+    post "/:id/members/add", TeamController, :add_member
+    post "/:id/members/remove", TeamController, :remove_member
+
+  end
+
   def is_manager(conn, _opts) do
     case conn.user.rank do
       :employee ->
