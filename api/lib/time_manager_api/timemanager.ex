@@ -178,14 +178,16 @@ defmodule TimeManagerApi.Timemanager do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_clock(attrs) do
-    %Clock{}
-    |> Clock.changeset(attrs)
-    |> Repo.insert()
-  end
+#  def create_clock(attrs) do
+#    %Clock{}
+#    |> Clock.changeset(attrs)
+#    |> Repo.insert()
+#  end
 
-  def create_clock(attrs, user_id) do
-    attrs = Map.put(attrs, "user", user_id)
+  def create_clock(user_id) do
+    attrs = Map.put(%{}, "user", user_id)
+    attrs = Map.put(attrs, "time", DateTime.utc_now())
+    attrs = Map.put(attrs, "status", true)
     if get_clock_user_id(user_id) == nil do
       %Clock{}
       |> Clock.changeset(attrs)
@@ -193,7 +195,7 @@ defmodule TimeManagerApi.Timemanager do
     else
       clock = get_clock_user_id(user_id)
       create_workingtime_from_clock(user_id)
-      attrs = %{time: DateTime.utc_now(), status: !clock.status}
+      attrs = %{time: DateTime.utc_now, status: !clock.status}
       update_clock(clock, attrs)
     end
   end

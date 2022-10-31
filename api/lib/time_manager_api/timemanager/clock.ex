@@ -14,7 +14,7 @@ defmodule TimeManagerApi.Timemanager.Clock do
   def changeset(clock, attrs) do
     clock
     |> cast(attrs, [:time, :status, :user])
-    |> validate_required([:time, :status, :user])
+    |> validate_required([:time, :user])
     |> foreign_key_constraint(:user)
   end
 end

@@ -22,8 +22,8 @@ defmodule TimeManagerApiWeb.Router do
   scope "/api", TimeManagerApiWeb do
     pipe_through [:api, :employee]
 
-    post "/clocks/:id", ClockController, :create_with_user_id
-    get "/clocks/:id", ClockController, :get_clock_with_user_id
+    post "/clocks", ClockController, :create_with_user_id
+    get "/clocks", ClockController, :get_clock_with_user_id
 
     # Employee routes
     get "/workingtimes/user/:user_id", WorkingtimesController, :get_workingtimes
