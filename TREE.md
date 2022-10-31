@@ -11,7 +11,7 @@
       - [Profile](#profile)
         - [Edit Profile](#edit-profile)
       - [Working Times](#working-times)
-        - [Clock-in](#clock-in)
+        - [Clock](#clock)
         - [View Working Times](#view-working-times)
           - [View all working times](#view-all-working-times)
           - [View single working time](#view-single-working-time)
@@ -90,11 +90,11 @@
 
 #### Working Times
 
-##### Clock-in
+##### Clock
 
-- **URL**: `/clock-in`
+- **URL**: `/clock`
 - **Method**: `POST`
-- **Description**: Clock-in
+- **Description**: Clock-in or clock-out
 - **Access**: Employee
 
 ##### View Working Times
