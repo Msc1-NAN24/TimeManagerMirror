@@ -37,7 +37,10 @@ defmodule TimeManagerApi.Timemanager do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
-  def get_user(id), do: Repo.get(User, id)
+  def get_user(id) do
+    user = Repo.get(User, id)
+    Repo.preload(user, :team)
+  end
 
   @doc """
   Gets a single user by username and email.

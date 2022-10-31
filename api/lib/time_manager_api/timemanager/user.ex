@@ -15,7 +15,7 @@ defmodule TimeManagerApi.Timemanager.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :password, :rank, :firstname, :lastname])
+    |> cast(attrs, [:email, :password, :rank, :firstname, :lastname, :team_id])
     |> validate_required([:email, :password, :firstname, :lastname])
     |> unique_constraint(:email)
     |> validate_format(:email, ~r/\w+@\w+\.\w+/)

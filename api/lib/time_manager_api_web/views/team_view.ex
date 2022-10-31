@@ -10,6 +10,14 @@ defmodule TimeManagerApiWeb.TeamView do
     %{data: render_one(team, TeamView, "team.json")}
   end
 
+  def render("created.json", %{team: team}) do
+    %{
+      id: team.id,
+      name: team.name,
+      owner: team.owner
+    }
+  end
+
   def render("team.json", %{team: team}) do
     %{
       id: team.id,
