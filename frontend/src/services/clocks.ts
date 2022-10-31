@@ -1,13 +1,12 @@
-import { ICreateClock } from "@/dto/clock";
 import clockRepository from "@/repository/clocks";
 
-const getClockByUserId = async (userId: string) => {
-    const clock = await clockRepository.getClockByUserId(userId);
+const getClock = async () => {
+    const clock = await clockRepository.getClock();
     return clock;
 }
 
-const createClockByUserId = async (userId: string, clock: ICreateClock) => {
-    const createdClock = await clockRepository.createClockByUserId(userId, clock);
+const createClock = async () => {
+    const createdClock = await clockRepository.createClock();
     return createdClock;
 }
 
