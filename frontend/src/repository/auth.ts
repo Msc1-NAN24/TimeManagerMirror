@@ -5,7 +5,9 @@ const authRepository = {
   login: async (email: string, password: string) => {
     try {
       const { data } = await axios.post<{ user: IUser; access_token: string }>(
-        `${import.meta.env.VITE_URL_API}/auth/login`,
+        `${import.meta.env.VITE_URL_API}:${
+          import.meta.env.VITE_PORT_API
+        }/api/auth/login`,
         { email, password }
       );
       return data;
