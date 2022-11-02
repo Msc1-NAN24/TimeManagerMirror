@@ -2,11 +2,11 @@ name: Deploy
 on:
   push:
     branches: [main, deploy-1]
-  pull_request:
-    branches: [main]
+
 
 jobs:
   deploy:
+    if: github.event.pull_request.merged == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: git pull
