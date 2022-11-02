@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import ClockManager from '.@/components/ClockManager.vue';
+import ClockManager from '@/components/ClockManager.vue';
 </script>
 
 <template>
