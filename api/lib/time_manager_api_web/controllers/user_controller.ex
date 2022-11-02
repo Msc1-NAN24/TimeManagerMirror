@@ -11,6 +11,16 @@ defmodule TimeManagerApiWeb.UserController do
   plug :is_manager when action in [:list, :delete, :update, :get]
   plug :is_general_manager when action in [:promote, :revoke]
 
+  def list(conn, %{"email" => email}) do
+    users = Timemanager.find_user_by_email(email)
+    render(conn, "index.json", users: users)
+  end
+
+  def list(conn, %{"firstname" => firstname, "lastname" => lastname}) do
+    users = Timemanager.find_user_by_names(firstname, lastname)
+    render(conn, "index.json", users: users)
+  end
+
   def list(conn, params) do
     users = Timemanager.list_users()
     render(conn, "index.json", users: users)

@@ -26,6 +26,7 @@ defmodule TimeManagerApiWeb.Router do
     get "/clocks", ClockController, :get_clock_with_user_id
 
     # Employee routes
+    get "/workingtimes", WorkingtimesController, :get_workingtimes
     get "/workingtimes/user/:user_id", WorkingtimesController, :get_workingtimes
     get "/workingtimes/user/:user_id/:id", WorkingtimesController, :get_workingtimes
 
