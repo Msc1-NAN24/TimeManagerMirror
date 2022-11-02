@@ -4,7 +4,7 @@ defmodule TimeManagerApi.Timemanager.Team do
 
   schema "teams" do
     field :name, :string
-    field :owner, :id
+    belongs_to :owner, TimeManagerApi.Timemanager.User
     has_many :members, TimeManagerApi.Timemanager.User
     timestamps()
   end
@@ -12,8 +12,8 @@ defmodule TimeManagerApi.Timemanager.Team do
   @doc false
   def changeset(team, attrs) do
     team
-    |> cast(attrs, [:name, :owner])
-    |> validate_required([:name, :owner])
+    |> cast(attrs, [:name, :owner_id])
+    |> validate_required([:name, :owner_id])
     |> unique_constraint(:name)
     |> foreign_key_constraint(:owner)
   end

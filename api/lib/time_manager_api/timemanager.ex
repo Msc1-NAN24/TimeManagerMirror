@@ -7,6 +7,7 @@ defmodule TimeManagerApi.Timemanager do
   alias TimeManagerApi.Repo
 
   alias TimeManagerApi.Timemanager.User
+  alias TimeManagerApi.Timemanager.Team
 
   @doc """
   Returns the list of users.
@@ -59,6 +60,17 @@ defmodule TimeManagerApi.Timemanager do
   def get_user_by_att!(username, email), do: Repo.get_by!(User, username: username, email: email)
 
   def get_user_by_email(email), do: Repo.get_by(User, email: email)
+
+  def find_user_by_email(email) do
+    match = email <> "%"
+    Repo.all(from u in User, where: ilike(u.email, ^match))
+  end
+
+  def find_user_by_names(firstname, lastname) do
+    matchFirst = firstname <> "%"
+    matchLast = lastname <> "%"
+    Repo.all(from u in User, where: ilike(u.firstname, ^matchFirst), where: ilike(u.lastname, ^matchLast))
+  end
 
   @doc """
   Creates a user.
@@ -204,9 +216,10 @@ defmodule TimeManagerApi.Timemanager do
   end
 
   def create_workingtime_from_clock(user_id) do
+    IO.inspect "Creating WORKING TIMES !"
     clock = get_clock_user_id(user_id)
     if clock.status do
-      attrs = %{user: user_id, start: clock.time, end: DateTime.utc_now()}
+      attrs = %{user_id: user_id, start: clock.time, end: DateTime.utc_now()}
       create_workingtimes(attrs)
     end
   end
@@ -263,15 +276,15 @@ defmodule TimeManagerApi.Timemanager do
   # WORKINGTIMES
 
   def get_workingtimes(user_id, id) do
-    Repo.one(from w in Workingtimes, where: w.user == ^user_id and w.id == ^id)
+    Repo.one(from w in Workingtimes, where: w.user_id == ^user_id and w.id == ^id, preload: :user)
   end
 
   def get_workingtimes(user_id) do
-    Repo.all(from w in Workingtimes, where: w.user == ^user_id)
+    Repo.all(from w in Workingtimes, where: w.user_id == ^user_id, preload: :user)
   end
 
   def get_workingtimes_by_id(id) do
-    Repo.one(from w in Workingtimes, where: w.id == ^id)
+    Repo.one(from w in Workingtimes, where: w.id == ^id, preload: :user)
   end
 
   def filter_workingtimes(user_id, start_time, end_time) do
@@ -306,6 +319,26 @@ defmodule TimeManagerApi.Timemanager do
     Repo.delete(workingtimes)
   end
 
+  def get_team_workingtimes(%Team{} = team) do
+    values = Enum.map(team.members, fn x -> x.id end)
+    Repo.all(from w in Workingtimes, where: w.user_id in ^values, preload: :user)
+  end
+
+  def get_team_workingtimes(%Team{} = team, %{:start_time => start_time, :end_time => end_time}) do
+    values = Enum.map(team.members, fn x -> x.id end)
+    Repo.all(from w in Workingtimes, where: w.user_id in ^values, where: w.start >= ^start_time and w.start <= ^end_time, preload: :user)
+  end
+
+  def get_team_workingtimes(%Team{} = team, %{:start_time => start_time}) do
+    values = Enum.map(team.members, fn x -> x.id end)
+    Repo.all(from w in Workingtimes, where: w.user_id in ^values, where: w.start >= ^start_time, preload: :user)
+  end
+
+  def get_team_workingtimes(%Team{} = team, %{:end_time => end_time}) do
+    values = Enum.map(team.members, fn x -> x.id end)
+    Repo.all(from w in Workingtimes, where: w.user_id in ^values, where: w.start <= ^end_time, preload: :user)
+  end
+
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking workingtimes changes.
 
@@ -331,7 +364,9 @@ defmodule TimeManagerApi.Timemanager do
 
   """
   def list_teams do
-    Repo.all(Team)
+    teams = Repo.all(Team)
+    Repo.preload(teams, :members)
+    Repo.preload(teams, :owner)
   end
 
   @doc """
@@ -352,7 +387,8 @@ defmodule TimeManagerApi.Timemanager do
 
   def get_team(id) do
     team = Repo.get(Team, id)
-    Repo.preload(team, :members)
+    team = Repo.preload(team, :members)
+    Repo.preload(team, :owner)
   end
 
   @doc """
@@ -374,8 +410,8 @@ defmodule TimeManagerApi.Timemanager do
   end
 
   def get_manager_teams(manager_id) do
-    abc = Repo.all(from t in Team, where: t.owner == ^manager_id)
-    Repo.preload(abc, :members)
+    abc = Repo.all(from t in Team, where: t.owner_id == ^manager_id, preload: :members)
+    Repo.preload(abc, :owner)
   end
 
   @doc """
@@ -422,6 +458,7 @@ defmodule TimeManagerApi.Timemanager do
 
   """
   def change_team(%Team{} = team, attrs \\ %{}) do
-    Team.changeset(team, attrs)
+    team = Team.changeset(team, attrs)
+    Repo.preload(team, :owner)
   end
 end

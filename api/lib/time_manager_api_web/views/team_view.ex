@@ -14,7 +14,7 @@ defmodule TimeManagerApiWeb.TeamView do
     %{
       id: team.id,
       name: team.name,
-      owner: team.owner
+      owner: render_one(team.owner, TimeManagerApiWeb.UserView, "user.json", as: :user)
     }
   end
 
@@ -22,7 +22,7 @@ defmodule TimeManagerApiWeb.TeamView do
     %{
       id: team.id,
       name: team.name,
-      owner: team.owner,
+      owner: render_one(team.owner, TimeManagerApiWeb.UserView, "user.json", as: :user),
       members: render_many(team.members, TimeManagerApiWeb.UserView, "user.json", as: :user)
     }
   end

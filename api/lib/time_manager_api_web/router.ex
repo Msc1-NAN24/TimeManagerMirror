@@ -34,6 +34,10 @@ defmodule TimeManagerApiWeb.Router do
     post "/workingtimes/user/:user_id", WorkingtimesController, :create
     put "/workingtimes/entry/:id", WorkingtimesController, :update
     delete "/workingtimes/entry/:id", WorkingtimesController, :delete
+
+    get "/workingtimes/team/:id", WorkingtimesController, :get_workingtimes_team
+
+    get "/workingtimes", WorkingtimesController, :get_workingtimes
   end
 
   scope "/api/users", TimeManagerApiWeb do
@@ -48,6 +52,8 @@ defmodule TimeManagerApiWeb.Router do
     put "/:id", UserController, :update
     post "/:id/promote", UserController, :promote
     post "/:id/revoke", UserController, :revoke
+    post "/:id/reset-password", UserController, :reset_password_user
+    post "/reset-password", UserController, :reset_password
   end
 
   scope "/api/auth", TimeManagerApiWeb do
