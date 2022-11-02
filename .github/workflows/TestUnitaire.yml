@@ -3,7 +3,7 @@ on:
 
 defaults:
   run:
-    working-directory: ./api
+    working-directory: api
 
 jobs:
   run_tests:
@@ -13,5 +13,4 @@ jobs:
       - uses: actions/checkout@v2
       # Give it any name you like
       - name: "run dem tests"
-        working-directory: ./api
         uses: Adzz/elixir_run_tests_action@v2.0.0
