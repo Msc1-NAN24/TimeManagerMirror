@@ -6,7 +6,3 @@ export interface IClock {
     time: string;
     user: IUser;
 }
-
-export interface ICreateClock {
-    time: string;
-}
