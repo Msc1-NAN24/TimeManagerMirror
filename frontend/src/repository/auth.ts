@@ -5,9 +5,7 @@ const authRepository = {
   login: async (email: string, password: string) => {
     try {
       const { data } = await axios.post<{ user: IUser; access_token: string }>(
-        `${import.meta.env.VITE_URL_API}:${
-          import.meta.env.VITE_PORT_API
-        }/api/auth/login`,
+        '/api/auth/login',
         { email, password }
       );
       return data;
@@ -18,7 +16,7 @@ const authRepository = {
   register: async (createUser: ICreateUser) => {
     try {
       const { data } = await axios.post<IUser>(
-        `${import.meta.env.VITE_URL_API}/auth/register`,
+        '/api/auth/register',
         createUser
       );
       return data;
