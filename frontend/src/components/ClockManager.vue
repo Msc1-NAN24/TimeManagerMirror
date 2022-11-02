@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import * as dateFns from 'date-fns';
 import clockRepository from '@/repository/clocks';
 import clockLogo from '@/assets/clock.png';
 import { ref } from 'vue';
