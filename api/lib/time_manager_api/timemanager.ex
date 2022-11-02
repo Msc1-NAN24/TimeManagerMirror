@@ -7,6 +7,7 @@ defmodule TimeManagerApi.Timemanager do
   alias TimeManagerApi.Repo
 
   alias TimeManagerApi.Timemanager.User
+  alias TimeManagerApi.Timemanager.Team
 
   @doc """
   Returns the list of users.
@@ -316,6 +317,26 @@ defmodule TimeManagerApi.Timemanager do
 
   def delete_workingtimes(%Workingtimes{} = workingtimes) do
     Repo.delete(workingtimes)
+  end
+
+  def get_team_workingtimes(%Team{} = team) do
+    values = Enum.map(team.members, fn x -> x.id end)
+    Repo.all(from w in Workingtimes, where: w.user_id in ^values, preload: :user)
+  end
+
+  def get_team_workingtimes(%Team{} = team, %{:start_time => start_time, :end_time => end_time}) do
+    values = Enum.map(team.members, fn x -> x.id end)
+    Repo.all(from w in Workingtimes, where: w.user_id in ^values, where: w.start >= ^start_time and w.start <= ^end_time, preload: :user)
+  end
+
+  def get_team_workingtimes(%Team{} = team, %{:start_time => start_time}) do
+    values = Enum.map(team.members, fn x -> x.id end)
+    Repo.all(from w in Workingtimes, where: w.user_id in ^values, where: w.start >= ^start_time, preload: :user)
+  end
+
+  def get_team_workingtimes(%Team{} = team, %{:end_time => end_time}) do
+    values = Enum.map(team.members, fn x -> x.id end)
+    Repo.all(from w in Workingtimes, where: w.user_id in ^values, where: w.start <= ^end_time, preload: :user)
   end
 
   @doc """

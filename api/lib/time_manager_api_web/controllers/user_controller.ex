@@ -9,7 +9,7 @@ defmodule TimeManagerApiWeb.UserController do
   import TimeManagerApiWeb.Router
 
   plug :is_manager when action in [:list, :delete, :update, :get]
-  plug :is_general_manager when action in [:promote, :revoke]
+  plug :is_general_manager when action in [:promote, :revoke, :reset_password_user]
 
   def list(conn, %{"email" => email}) do
     users = Timemanager.find_user_by_email(email)
@@ -87,6 +87,24 @@ defmodule TimeManagerApiWeb.UserController do
           send_resp(conn, :ok, "")
         _ -> send_error(conn, "Can't revoke user !")
       end
+    end
+  end
+
+  def reset_password(conn, %{"new_password" => new_password, "last_password" => last_password}) do
+    with true <- TimeManagerApi.Auth.verify(conn.user, last_password) do
+      Timemanager.update_user(conn.user, %{password: TimeManagerApi.Auth.hash_password(new_password)})
+      send_resp(conn, :ok, "")
+    else false ->
+      send_error(conn, "Invalid password !")
+    end
+  end
+
+  def reset_password_user(conn, %{"id" => id, "new_password" => new_password}) do
+    with %User{} = user <- Timemanager.get_user(id) do
+      Timemanager.update_user(user, %{password: TimeManagerApi.Auth.hash_password(new_password)})
+      send_resp(conn, :ok, "")
+    else _ ->
+      send_error(conn, "Invalid user id !")
     end
   end
 
