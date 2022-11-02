@@ -8,12 +8,19 @@
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
-    "dev": "vite"
+    "dev": "vite",
+    "format": "prettier --write .",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
     "axios": "^1.1.3",
     "core-js": "^3.8.3",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "luxon": "^3.0.4",
     "prettier": "^2.7.1",
     "roboto-fontface": "*",
