@@ -1,2 +1,2 @@
 <script></script>
-<template></template>
+<template>User template</template>
