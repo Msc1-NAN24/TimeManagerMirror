@@ -2,35 +2,35 @@ version: '3.1'
 
 services:
   nginx-proxy:
-    image: nginxproxy/nginx-proxy:latest
+    image: jwilder/nginx-proxy
+    labels:
+      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy"
     restart: always
-    volumes:
-      - /etc/ssl_certificates:/etc/nginx/certs:ro
-      - /etc/nginx/vhost.d:/etc/nginx/vhost.d:rw
-      - /usr/share/nginx/html:/usr/share/nginx/html:rw
-      - /home/debian/projects/docker/nginx/nginx.conf:/etc/nginx/conf.d/custom.conf:ro
-      - /var/run/docker.sock:/tmp/docker.sock:ro
     ports:
-      - 80:80
-      - 443:443
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx-proxy/certs:/etc/nginx/certs/:ro
+      - ./nginx-proxy/vhost:/etc/nginx/vhost.d/
+      - ./nginx-proxy/html:/usr/share/nginx/html/
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - dhparam:/etc/nginx/dhparam
 
   acme-companion:
-    image: nginxproxy/acme-companion:latest
-    container_name: nginx-proxy-acme
-    depends_on:
-      - nginx-proxy
-    restart: always
+    image: nginxproxy/acme-companion
+    container_name: acme-companion
+    restart: unless-stopped
     volumes:
-      - /etc/ssl_certificates:/etc/nginx/certs:rw
-      - /etc/nginx/vhost.d:/etc/nginx/vhost.d:rw
-      - /usr/share/nginx/html:/usr/share/nginx/html:rw
+      - ./nginx-proxy/html:/usr/share/nginx/html/
+      - ./nginx-proxy/vhost:/etc/nginx/vhost.d/
+      - ./nginx-proxy/certs:/etc/nginx/certs/:rw
+      - ./nginx-proxy/acme:/etc/acme.sh
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /srv/acme.sh:/etc/acme.sh:rw
+    environment:
+      - DEFAULT_EMAIL=admin@hahn-webdesign.de
+      - NGINX_PROXY_CONTAINER=nginx-proxy
 
 networks:
   default:
     external:
       name: nginx-proxy
-
-volumes:
-  dhparam:
