@@ -12,6 +12,7 @@ services:
     environment:
       VITE_URL_API: ${API_URL}
       VIRTUAL_HOST: ${VIRTUAL_HOST_FRONT}
+      LETSENCRYPT_HOST: ${VIRTUAL_HOST_FRONT}
     expose:
       - '${FRONTEND_PORT}'
 
@@ -32,6 +33,7 @@ services:
       FRONTEND_URL: ${FRONTEND_URL}
       API_PORT: ${API_PORT}
       VIRTUAL_HOST: ${VIRTUAL_HOST_API}
+      LETSENCRYPT_HOST: ${VIRTUAL_HOST_API}
     restart: always
     depends_on:
       - db
