@@ -1,8 +1,8 @@
 import { IClock } from "@/dto/clock";
-import axios from "axios";
+import Api from "@/utils/Api";
 
 const getClock = async () => {
-    const { data } = await axios.get<IClock>('/api/clocks', {
+    const { data } = await Api.get<IClock>('/clocks', {
         headers: {
             Authorization: `${localStorage.getItem("token")}`,
         },
@@ -11,7 +11,7 @@ const getClock = async () => {
 }
 
 const createClock = async () => {
-    const { data } = await axios.post<IClock>('/api/clocks', {}, {
+    const { data } = await Api.post<IClock>('/clocks', {}, {
         headers: {
             Authorization: `${localStorage.getItem("token")}`,
         },
