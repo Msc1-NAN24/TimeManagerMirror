@@ -2,35 +2,36 @@ version: '3.1'
 
 services:
   nginx-proxy:
-      image: jwilder/nginx-proxy
-      restart: always
-      ports:
-        - "80:80"
-        - "443:443"
-      volumes:
-        - ./nginx-proxy/certs:/etc/nginx/certs/:ro
-        - ./nginx-proxy/vhost:/etc/nginx/vhost.d/
-        - ./nginx-proxy/html:/usr/share/nginx/html/
-        - /var/run/docker.sock:/tmp/docker.sock:ro
-        - dhparam:/etc/nginx/dhparam
+    image: nginxproxy/nginx-proxy:0.9
+    labels:
+      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy"
+    restart: always
+    volumes:
+      - /etc/ssl_certificates:/etc/nginx/certs:ro
+      - /etc/nginx/vhost.d:/etc/nginx/vhost.d:rw
+      - /usr/share/nginx/html:/usr/share/nginx/html:rw
+      - /home/debian/projects/docker/nginx/nginx.conf:/etc/nginx/conf.d/custom.conf:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    ports:
+      - 80:80
+      - 443:443
 
   acme-companion:
-        image: nginxproxy/acme-companion
-        container_name: acme-companion
-        restart: unless-stopped
-        volumes:
-          - ./nginx-proxy/html:/usr/share/nginx/html/
-          - ./nginx-proxy/vhost:/etc/nginx/vhost.d/
-          - ./nginx-proxy/certs:/etc/nginx/certs/:rw
-          - ./nginx-proxy/acme:/etc/acme.sh
-          - /var/run/docker.sock:/var/run/docker.sock:ro
-        environment:
-          - DEFAULT_EMAIL=admin@time-manager.tech
-          - NGINX_PROXY_CONTAINER=nginx-proxy
+    image: nginxproxy/acme-companion:2.0.1
+    container_name: nginx-proxy-acme
+    depends_on:
+      - nginx-proxy
+    restart: always
+    volumes:
+      - /etc/ssl_certificates:/etc/nginx/certs:rw
+      - /etc/nginx/vhost.d:/etc/nginx/vhost.d:rw
+      - /usr/share/nginx/html:/usr/share/nginx/html:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /srv/acme.sh:/etc/acme.sh:rw
 
-networks: 
-  default: 
-    external: 
+networks:
+  default:
+    external:
       name: nginx-proxy
 
 volumes:
