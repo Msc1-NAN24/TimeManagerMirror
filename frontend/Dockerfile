@@ -12,3 +12,5 @@ EXPOSE ${PORT}
 ENV WEB_PORT=${PORT}
 
 CMD serve -s dist -p ${WEB_PORT}
+
+# CMD pnpm run dev
