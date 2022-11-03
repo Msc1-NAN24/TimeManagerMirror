@@ -8,8 +8,8 @@ services:
       args:
         PORT: ${FRONTEND_PORT}
     container_name: tm_client
+    restart: always
     environment:
-      VITE_PORT_API: ${API_PORT}
       VITE_URL_API: ${API_URL}
       VIRTUAL_HOST: ${VIRTUAL_HOST_FRONT}
     expose:
@@ -32,6 +32,7 @@ services:
       FRONTEND_URL: ${FRONTEND_URL}
       API_PORT: ${API_PORT}
       VIRTUAL_HOST: ${VIRTUAL_HOST_API}
+    restart: always
     depends_on:
       - db
 
