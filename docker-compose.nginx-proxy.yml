@@ -14,7 +14,6 @@ services:
       - ./nginx-proxy/vhost:/etc/nginx/vhost.d/
       - ./nginx-proxy/html:/usr/share/nginx/html/
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - dhparam:/etc/nginx/dhparam
 
   acme-companion:
     image: nginxproxy/acme-companion
