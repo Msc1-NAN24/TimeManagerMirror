@@ -21,11 +21,11 @@ createApp(App)
   .mount("#app");
 
 // Fix Property 'env' does not exist on type 'ImportMeta'.
-declare global {
-  interface ImportMeta {
-    env: {
-      VITE_URL_API: string;
-      VITE_PORT_API: string;
-    };
-  }
-}
+// declare global {
+//   interface ImportMeta {
+//     env: {
+//       VITE_URL_API: string;
+//       VITE_PORT_API: string;
+//     };
+//   }
+// }

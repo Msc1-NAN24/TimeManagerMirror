@@ -5,7 +5,7 @@ import {IAuthLogin} from "@/dto/auth";
 
 const authRepository = {
   login: (email: string, password: string, callback: (user?: IAuthLogin, error?) => void) => {
-    api.post<IAuthLogin>(`auth/login`, {email, password}).then((response) => {
+    axios.post<IAuthLogin>(`/api/auth/login`, {email, password}).then((response) => {
       callback(response.data);
     }).catch((err) => {
       callback(undefined, "Une erreur est survenue !");
@@ -14,7 +14,7 @@ const authRepository = {
   register: async (createUser: ICreateUser) => {
     try {
       const { data } = await axios.post<IUser>(
-        `${import.meta.env.VITE_URL_API}/auth/register`,
+        '/api/auth/register',
         createUser
       );
       return data;

@@ -3,12 +3,12 @@ import axios from "axios";
 import api, {authorize} from "@/utils/Api";
 
 const getUserById = async (id: number) => {
-  const { data } = await axios.get<IUser>(`${process.env.URL_API}/user/${id}`);
+  const { data } = await axios.get<IUser>(`/api/user/${id}`);
   return data;
 };
 
 const getMe = (accessToken: string, callback: (user?: IUser, error?) => void) => {
-  api.get<IUser>(`users/me`, authorize(accessToken)).then((response) => {
+  axios.get<IUser>(`/api/user/me`, authorize(accessToken)).then((response) => {
     callback(response.data)
   }).catch((err) => {
     console.log(err);
@@ -17,19 +17,19 @@ const getMe = (accessToken: string, callback: (user?: IUser, error?) => void) =>
 };
 
 const getAllUsers = async () => {
-  const { data } = await axios.get<IUser[]>(`${process.env.URL_API}/users`);
+  const { data } = await axios.get<IUser[]>('/api/users');
   return data;
 };
 const updateUser = async (id: number, updateUser: IUpdateUser) => {
   const { data } = await axios.patch<IUser>(
-    `${process.env.URL_API}/user/${id}`,
+    `/api/user/${id}`,
     updateUser
   );
   return data;
 };
 const deleteUser = async (id: number) => {
   const { data } = await axios.delete<IUser>(
-    `${process.env.URL_API}/user/${id}`
+    `/api/user/${id}`
   );
   return data;
 };
