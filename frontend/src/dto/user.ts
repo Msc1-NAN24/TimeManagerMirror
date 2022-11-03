@@ -1,7 +1,7 @@
 enum rank {
-  user,
+  employee,
   manager,
-  generalManager,
+  general_manager,
 }
 
 export interface IUser {

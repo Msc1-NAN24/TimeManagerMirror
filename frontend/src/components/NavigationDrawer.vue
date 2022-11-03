@@ -17,7 +17,7 @@
         <v-list density="compact" nav>
             <v-list-item prepend-icon="mdi-star" title="Dashboard" value="dashboard" @click="this.router.push({name: 'home'})"></v-list-item>
             <v-list-item prepend-icon="mdi-folder" title="Workingtimes" value="workingtimes"></v-list-item>
-            <v-list-item prepend-icon="mdi-account-multiple" title="Teams" value="teams" @click="onClickBtn"></v-list-item>
+            <v-list-item v-if="user?.rank === 'manager'" prepend-icon="mdi-account-multiple" title="Teams" value="teams" @click="onClickBtn"></v-list-item>
         </v-list>
         <v-list style="bottom: 0; position: absolute;">
             <v-list-item prepend-icon="" title="" value="clock">
