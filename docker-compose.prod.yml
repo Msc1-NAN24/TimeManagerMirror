@@ -14,8 +14,6 @@ services:
       VIRTUAL_HOST: ${VIRTUAL_HOST_FRONT}
     expose:
       - '${FRONTEND_PORT}'
-    depends_on:
-      - nginx-proxy
 
   api:
     build:
@@ -36,7 +34,6 @@ services:
       VIRTUAL_HOST: ${VIRTUAL_HOST_API}
     depends_on:
       - db
-      - nginx-proxy
 
   db:
     image: postgres
@@ -48,12 +45,9 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
 
 
-  nginx-proxy:
-      image: jwilder/nginx-proxy
-      network_mode: bridge
-      ports:
-        - "80:80"
-      volumes:
-        - /var/run/docker.sock:/tmp/docker.sock:ro
+networks: 
+  default: 
+    external:
+      name: nginx-proxy
 
 
