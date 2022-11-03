@@ -31,10 +31,10 @@ The goal is to create an application of time management in 7 steps :
 
 To use this project, you'll need ...
 
-
 ## Design Thinking
 
 ### Mockup on Figma
+
 [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/file/wYBTJmu62lzp90DoSrea4a/Untitled?node-id=0%3A1)
 
 ## Deployement
