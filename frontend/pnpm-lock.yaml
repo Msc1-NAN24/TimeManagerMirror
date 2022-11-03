@@ -4,6 +4,7 @@ specifiers:
   '@babel/core': '>=7.8.0 <8.0.0'
   '@mdi/font': 5.9.55
   '@types/jest': ^27.0.1
+  '@types/luxon': ^3.0.2
   '@types/webfontloader': ^1.0.0
   '@typescript-eslint/eslint-plugin': ^5.4.0
   '@typescript-eslint/parser': ^5.4.0
@@ -63,6 +64,7 @@ dependencies:
 devDependencies:
   '@babel/core': 7.19.6
   '@types/jest': 27.5.2
+  '@types/luxon': 3.0.2
   '@types/webfontloader': 1.6.35
   '@typescript-eslint/eslint-plugin': 5.41.0_32z22rklvrfh4nbzcwqtxcqueq
   '@typescript-eslint/parser': 5.41.0_typescript@4.5.5
@@ -1918,6 +1920,10 @@ packages:
 
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
+    dev: true
+
+  /@types/luxon/3.0.2:
+    resolution: {integrity: sha512-HM2OVWckUMmXbWYZufmWT2XMURGDZ6XbyNyQ+Lx+gCFGFqbZaIjsz7b+AGeGP/AuVYHBiuGY+wXfweP1RremnA==}
     dev: true
 
   /@types/mime/3.0.1:

@@ -1,35 +1,40 @@
 import { IUpdateUser, IUser } from "@/dto/user";
-import Api, {authorize} from "@/utils/Api";
+import axios from "axios";
+import { authorize } from "@/utils/Api";
+import Api from "@/utils/Api";
 
 const getUserById = async (id: number) => {
-  const { data } = await Api.get<IUser>(`/user/${id}`);
+  const { data } = await Api.get<IUser>(`/users/${id}`);
   return data;
 };
 
-const getMe = (accessToken: string, callback: (user?: IUser, error?: string) => void) => {
-  Api.get<IUser>(`/users/me`, authorize(accessToken)).then((response) => {
-    callback(response.data)
-  }).catch((err) => {
-    console.log(err);
-    callback(undefined, "Une erreur est survenue lors de la récupération de vos données !");
-  });
+const getMe = (
+  accessToken: string,
+  callback: (user?: IUser, error?: string) => void
+) => {
+  Api.get<IUser>(`/users/me`, authorize(accessToken))
+    .then((response) => {
+      callback(response.data);
+    })
+    .catch((err) => {
+      console.log(err);
+      callback(
+        undefined,
+        "Une erreur est survenue lors de la récupération de vos données !"
+      );
+    });
 };
 
 const getAllUsers = async () => {
-  const { data } = await Api.get<IUser[]>('/users');
+  const { data } = await axios.get<IUser[]>("/api/users");
   return data;
 };
 const updateUser = async (id: number, updateUser: IUpdateUser) => {
-  const { data } = await Api.patch<IUser>(
-    `/user/${id}`,
-    updateUser
-  );
+  const { data } = await axios.patch<IUser>(`/api/user/${id}`, updateUser);
   return data;
 };
 const deleteUser = async (id: number) => {
-  const { data } = await Api.delete<IUser>(
-    `/user/${id}`
-  );
+  const { data } = await axios.delete<IUser>(`/api/user/${id}`);
   return data;
 };
 
