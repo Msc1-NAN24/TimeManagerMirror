@@ -1,4 +1,5 @@
 import { ICreateUser, IUser } from "@/dto/user";
+import axios from "axios";
 import {IAuthLogin} from "@/dto/auth";
 import Api from "@/utils/Api";
 

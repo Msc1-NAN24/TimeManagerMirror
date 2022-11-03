@@ -12,6 +12,9 @@
 > This project is an EPITECH Project. If you are an EPITECH student, move out the way! Nothing to see here... The groups don't want to be involved to your -42.
 > If you're not, no worries! You're welcome here!
 
+[![Deploy](https://github.com/TimeManager-NAN3/TimeManagerMirror/actions/workflows/deploy.yml/badge.svg)](https://github.com/TimeManager-NAN3/TimeManagerMirror/actions/workflows/deploy.yml)
+[![Build](https://github.com/TimeManager-NAN3/TimeManagerMirror/actions/workflows/build.yml/badge.svg)](https://github.com/TimeManager-NAN3/TimeManagerMirror/actions/workflows/build.yml)
+
 ## Project
 
 The goal is to create an application of time management in 7 steps :
@@ -27,6 +30,12 @@ The goal is to create an application of time management in 7 steps :
 ## Prerequisites
 
 To use this project, you'll need ...
+
+## Design Thinking
+
+### Mockup on Figma
+
+[![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/file/wYBTJmu62lzp90DoSrea4a/Untitled?node-id=0%3A1)
 
 ## Deployement
 

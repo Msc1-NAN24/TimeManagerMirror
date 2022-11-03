@@ -1,15 +1,24 @@
 <script lang="ts" setup>
 
-import {useAuthStore} from "@/store/AuthStore";
+import {IsLogged, useAuthStore} from "@/store/AuthStore";
 import {storeToRefs} from "pinia";
 import ClockManager from "@/components/ClockManager.vue";
+import {useRouter} from "vue-router";
 
 const auth = useAuthStore();
+const router = useRouter();
 const {user, isLogged} = storeToRefs(auth);
 
 function onClickBtn() {
-  console.log(user);
+  console.log(user?.value);
 }
+
+auth.$subscribe((mutation, state) => {
+  if (state.isLogged == IsLogged.NotLogged) {
+    router.push({name: 'login'})
+  }
+}, {detached: true});
+
 </script>
 
 <template>
@@ -21,6 +30,7 @@ function onClickBtn() {
         <v-row class="top">
           <v-list>
             <v-list-item
+              @click="router.push({name: 'profile'})"
               prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
               :title="`${user?.firstname} ${user?.lastname}`"
               :subtitle="user?.email"
@@ -28,9 +38,9 @@ function onClickBtn() {
           </v-list>
           <v-divider></v-divider>
           <v-list>
-            <v-list-item prepend-icon="mdi-folder" title="Workingtimes" value="workingtimes"></v-list-item>
-            <v-list-item prepend-icon="mdi-account-multiple" title="Teams" value="teams" @click="onClickBtn"></v-list-item>
-            <v-list-item prepend-icon="mdi-star" title="Dashboard" value="bashboard"></v-list-item>
+            <v-list-item prepend-icon="mdi-star" title="Dashboard" value="dashboard" @click="router.push({name: 'home'})"></v-list-item>
+            <v-list-item prepend-icon="mdi-folder" title="Workingtimes" value="workingtimes" @click="onClickBtn"></v-list-item>
+            <v-list-item v-if="user?.rank === 'manager'" prepend-icon="mdi-account-multiple" title="Teams" value="teams" @click="onClickBtn"></v-list-item>
           </v-list>
         </v-row>
         <v-row class="bottom">

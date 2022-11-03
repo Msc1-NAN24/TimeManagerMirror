@@ -36,9 +36,8 @@ export default {
       this.loading = true;
       authService.login(this.email, this.password, (auth, error) => {
         if (auth !== undefined && error === undefined) {
-          console.log('ABC', auth);
           this.auth.login(auth.access_token, auth.user);
-          //this.$router.push({ name: "home" });
+          this.$router.push({ name: "home" });
         } else {
           console.log(error);
         }

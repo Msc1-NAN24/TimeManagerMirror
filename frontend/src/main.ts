@@ -11,7 +11,6 @@ declare global {
   interface ImportMeta {
     env: {
       VITE_URL_API: string;
-      VITE_PORT_API: string;
     };
   }
 }
