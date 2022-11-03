@@ -109,7 +109,6 @@ export default {
       this.$router.push({ name: "home" });
 
       authService.register(user).then((res) => {
-        console.log("res", res);
         this.$router.push({ name: "login" });
       });
     },

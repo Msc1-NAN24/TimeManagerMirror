@@ -28,7 +28,6 @@ export const useAuthStore = defineStore('auth', {
       this.user = user;
       this.isLogged = IsLogged.Logged;
       this.accessToken = accessToken;
-      console.log(this.accessToken);
       localStorage.setItem(TOKEN_STORAGE_KEY, accessToken)
     },
     loginFromStorage() {
@@ -40,13 +39,15 @@ export const useAuthStore = defineStore('auth', {
       userRepository.getMe(token, (user, error) => {
         if (user !== undefined) {
           this.user = user;
+        } else if (error) {
+          this.isLogged = IsLogged.NotLogged;
         }
       });
     },
     clearAuthStorage() {
       localStorage.removeItem(TOKEN_STORAGE_KEY)
     },
-    logout() {
+    logoutUser() {
       this.user = undefined;
       this.isLogged = IsLogged.NotLogged;
       this.accessToken = '';
