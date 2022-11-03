@@ -12,49 +12,31 @@ const router = createRouter({
     {
       path: "/workingTimes/:userI",
       name: "workingTimes",
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import("../views/WorkingTimes.vue"),
     },
     {
       path: "/workingTime/:userid/:workingtimeid",
       name: "workingTime",
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import("../views/WorkingTime.vue"),
     },
     {
       path: "/clock/:username",
       name: "clock",
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import("../views/Clock.vue"),
     },
     {
       path: "/chartManager/:userid",
       name: "chartManager",
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import("../views/ChartManager.vue"),
     },
     {
       path: "/login",
       name: "login",
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import("../views/Login.vue"),
     },
     {
       path: "/register",
       name: "register",
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import("../views/Register.vue"),
     },
   ],
