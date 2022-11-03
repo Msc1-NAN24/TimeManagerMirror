@@ -32,7 +32,7 @@ defmodule TimeManagerApiWeb.UserController do
   end
 
   def get_me(conn, _params) do
-    render(conn, "show.json", user: conn.user)
+    render(conn, "user.json", user: conn.user)
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
