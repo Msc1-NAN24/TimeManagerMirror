@@ -2,8 +2,6 @@ version: '3.1'
 
 services:
   client:
-    env_file:
-        - .env.prod
     build:
       context: frontend
       dockerfile: Dockerfile
@@ -15,11 +13,9 @@ services:
       VITE_URL_API: ${API_URL}
       VIRTUAL_HOST: ${VIRTUAL_HOST_FRONT}
     expose:
-      - 4500
+      - '${FRONTEND_PORT}'
 
   api:
-    env_file:
-        - .env.prod
     build:
       context: api
       dockerfile: Dockerfile
@@ -40,8 +36,6 @@ services:
       - db
 
   db:
-    env_file:
-        - .env.prod
     image: postgres
     container_name: tm_db
     restart: always
