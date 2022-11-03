@@ -1,66 +1,67 @@
 version: '3.1'
 
 services:
-  front:
+  base:
+      env_file:
+        - .env.prod
+  client:
+    extends:
+        service: base
     build:
       context: frontend
       dockerfile: Dockerfile
       args:
         PORT: ${FRONTEND_PORT}
-    container_name: tm_web
+    container_name: tm_client
     environment:
       VITE_PORT_API: ${API_PORT}
       VITE_URL_API: ${API_URL}
-      VIRTUAL_HOST: "time-manager.tech"
-      VIRTUAL_PORT: 4500
+      VIRTUAL_HOST: ${VIRTUAL_HOST_FRONT}
     expose:
       - 4500
 
   api:
+    extends:
+      service: base
     build:
       context: api
       dockerfile: Dockerfile
       args:
         PORT: ${API_PORT}
     container_name: tm_api
-    expose:
-      - 4000
+    ports:
+      - '${API_PORT}:${API_PORT}'
     environment:
-      VIRTUAL_HOST: "time-manager.tech/api"
-      VIRTUAL_PORT: 4000
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_HOST: ${POSTGRES_PROD_HOST}
       FRONTEND_URL: ${FRONTEND_URL}
       API_PORT: ${API_PORT}
+      VIRTUAL_HOST: ${VIRTUAL_HOST_API}
+    networks:
+      - TM
     depends_on:
       - db
 
-
   db:
+    extends:
+      service: base
     image: postgres
     container_name: tm_db
     restart: always
-    ports:
-      - '5432:5432'
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
-
-  adminer:
-    image: adminer
-    container_name: tm_adminer
-    restart: always
-    ports:
-      - '8080:8080'
+    networks:
+      - TM
 
   nginx-proxy:
-    image: nginxproxy/nginx-proxy
-    ports:
-      - "80:80"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-    depends_on:
-    - front
+      image: jwilder/nginx-proxy
+      network_mode: bridge
+      ports:
+        - "80:80"
+      volumes:
+        - /var/run/docker.sock:/tmp/docker.sock:ro
+
