@@ -8,10 +8,9 @@ defmodule TimeManagerApiWeb.WorkingtimesController do
 
   import TimeManagerApiWeb.Router
 
-  plug :is_manager when action in [:get_workingtimes_manager, :create, :update, :delete]
+  plug :is_manager when action in [:get_workingtimes_manager, :get_workingtimes_team, :create, :update, :delete]
 
   # CUSTOM ROUTES
-
   def get_workingtimes(conn, %{"user_id" => user_id, "id" => id}) do
     workingtimes = Timemanager.get_workingtimes(user_id, id)
     render(conn, "show.json", workingtimes: workingtimes)
@@ -42,6 +41,55 @@ defmodule TimeManagerApiWeb.WorkingtimesController do
     render(conn, "index.json", workingtimes: workingtimes)
   end
 
+  def get_workingtimes(conn, _params) do
+    workingtimes = Timemanager.get_workingtimes(conn.user.id)
+    render(conn, "index.json", %{workingtimes: workingtimes})
+  end
+
+  #
+  # TEAM WORKING TIMES ROUTES
+  #
+
+  def get_workingtimes_team(conn, %{"id" => id, "start" => start_time, "end" => end_time}) do
+    with nil <- Timemanager.get_team(id) do
+      send_error(conn, "Invalid Team id!")
+    else %Timemanager.Team{} = team ->
+      workingtimes = Timemanager.get_team_workingtimes(team, %{start_time: start_time, end_time: end_time});
+      render(conn, "index.json", %{workingtimes: workingtimes})
+    end
+  end
+
+  def get_workingtimes_team(conn, %{"id" => id, "start" => start_time}) do
+    with nil <- Timemanager.get_team(id) do
+      send_error(conn, "Invalid Team id!")
+    else %Timemanager.Team{} = team ->
+      workingtimes = Timemanager.get_team_workingtimes(team, %{start_time: start_time});
+      render(conn, "index.json", %{workingtimes: workingtimes})
+    end
+  end
+
+  def get_workingtimes_team(conn, %{"id" => id, "end" => end_time}) do
+    with nil <- Timemanager.get_team(id) do
+      send_error(conn, "Invalid Team id!")
+    else %Timemanager.Team{} = team ->
+      workingtimes = Timemanager.get_team_workingtimes(team, %{end_time: end_time});
+      render(conn, "index.json", %{workingtimes: workingtimes})
+    end
+  end
+
+  def get_workingtimes_team(conn, %{"id" => id}) do
+    with nil <- Timemanager.get_team(id) do
+      send_error(conn, "Invalid Team id!")
+    else %Timemanager.Team{} = team ->
+      workingtimes = Timemanager.get_team_workingtimes(team);
+      render(conn, "index.json", %{workingtimes: workingtimes})
+    end
+  end
+
+  #
+  #
+  #
+
   def create(conn) do
     with {:ok, %Workingtimes{} = workingtimes} <- Timemanager.create_workingtimes(conn.body_params) do
       conn
@@ -64,4 +112,13 @@ defmodule TimeManagerApiWeb.WorkingtimesController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  def send_error(conn, message) do
+    conn
+    |> put_status(:bad_request)
+    |> put_view(TimeManagerApiWeb.ErrorView)
+    |> render("error.json", %{error: message})
+    |> halt()
+  end
+
 end

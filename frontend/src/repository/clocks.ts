@@ -1,22 +1,22 @@
 import { IClock } from "@/dto/clock";
-import axios from "axios";
+import Api from "@/utils/Api";
 
 const getClock = async () => {
-    const { data } = await axios.get<IClock>(`${import.meta.env.VITE_URL_API}/clocks`, {
+    const { data } = await Api.get<IClock>('/clocks', {
         headers: {
             Authorization: `${localStorage.getItem("token")}`,
         },
     });
-    return data;
+    return data.data;
 }
 
 const createClock = async () => {
-    const { data } = await axios.post<IClock>(`${import.meta.env.VITE_URL_API}/clocks`, {
+    const { data } = await Api.post<IClock>('/clocks', {}, {
         headers: {
             Authorization: `${localStorage.getItem("token")}`,
         },
     });
-    return data;
+    return data.data;
 }
 
 const clockRepository = {

@@ -7,10 +7,9 @@ enum rank {
 export interface IUser {
   id: number;
   email: string;
-  password: string;
   rank: rank;
-  lastname?: string;
-  firstname?: string;
+  lastname: string;
+  firstname: string;
 }
 
 export interface IUpdateUser {

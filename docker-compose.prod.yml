@@ -45,7 +45,6 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
 
-
 networks: 
   default: 
     external:

@@ -7,9 +7,10 @@ defmodule TimeManagerApiWeb.TeamController do
   action_fallback TimeManagerApiWeb.FallbackController
 
   def create(conn, %{"name" => name}) do
-    with {:ok, created_team} <- Timemanager.create_team(%{name: name, owner: conn.user.id}) do
+    with {:ok, created_team} <- Timemanager.create_team(%{name: name, owner_id: conn.user.id}) do
+      team = Timemanager.get_team(created_team.id);
       conn
-      |> render("created.json", %{team: created_team})
+      |> render("created.json", %{team: team})
     else error ->
       send_error(conn, "Can't create team !")
     end
@@ -73,7 +74,7 @@ defmodule TimeManagerApiWeb.TeamController do
     if is_nil(team) do
       send_error(conn, "Invalid Team ID !")
     else
-      if team.owner == conn.user.id do
+      if team.owner.id == conn.user.id do
         Timemanager.delete_team(team)
         send_resp(conn, :accepted, "")
       else

@@ -1,16 +1,12 @@
 import authRepository from "@/repository/auth";
-import { ICreateUser } from "@/dto/user";
+import {ICreateUser} from "@/dto/user";
+import {IAuthLogin} from "@/dto/auth";
 
 const authService = {
-  login: async (email: string, password: string) => {
-    const { user, access_token } = await authRepository.login(email, password);
-    localStorage.setItem("token", access_token);
-    return user;
+  login: (email: string, password: string, callback: (auth?: IAuthLogin, error?: string) => void) => {
+    authRepository.login(email, password, callback);
   },
-  register: async (user: ICreateUser) => {
-    const createdUser = await authRepository.register(user);
-    return createdUser;
-  },
+  register: async (user: ICreateUser) => await authRepository.register(user),
 };
 
 export default authService;

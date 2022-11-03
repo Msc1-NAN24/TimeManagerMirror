@@ -5,7 +5,7 @@ defmodule TimeManagerApi.Timemanager.Workingtimes do
   schema "workingtimes" do
     field :end, :utc_datetime_usec
     field :start, :utc_datetime_usec
-    field :user, :id
+    belongs_to :user, TimeManagerApi.Timemanager.User
 
     timestamps()
   end
@@ -15,8 +15,8 @@ defmodule TimeManagerApi.Timemanager.Workingtimes do
     IO.puts "-----changeset-----"
     IO.inspect attrs
     workingtimes
-    |> cast(attrs, [:start, :end, :user])
-    |> validate_required([:start, :end, :user])
+    |> cast(attrs, [:start, :end, :user_id])
+    |> validate_required([:start, :end, :user_id])
     |> foreign_key_constraint(:user)
   end
 end

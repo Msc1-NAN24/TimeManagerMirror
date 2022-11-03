@@ -1,7 +1,20 @@
 <script lang="ts">
 import authService from "@/services/auth";
+import {IsLogged, useAuthStore} from "@/store/AuthStore";
+import { useRouter } from 'vue-router'
 
 export default {
+  setup() {
+    const auth = useAuthStore();
+    const router = useRouter();
+    if (auth.isLogged === IsLogged.Logged) {
+      router.push({ name: "home" });
+    }
+    return {
+      auth,
+      router,
+    }
+  },
   data: () => ({
     form: false,
     show: false,
@@ -17,16 +30,18 @@ export default {
     ],
     loading: false,
   }),
-
   methods: {
     onSubmit() {
       if (!this.form || !this.email || !this.password) return;
-
       this.loading = true;
-
-      authService.login(this.email, this.password).then((res) => {
-        console.log(res);
-        this.$router.push({ name: "home" });
+      authService.login(this.email, this.password, (auth, error) => {
+        if (auth !== undefined && error === undefined) {
+          console.log('ABC', auth);
+          this.auth.login(auth.access_token, auth.user);
+          //this.$router.push({ name: "home" });
+        } else {
+          console.log(error);
+        }
       });
     },
     required(v: string) {

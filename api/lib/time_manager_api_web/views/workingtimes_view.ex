@@ -14,7 +14,18 @@ defmodule TimeManagerApiWeb.WorkingtimesView do
     %{
       id: workingtimes.id,
       start: workingtimes.start,
-      end: workingtimes.end
+      end: workingtimes.end,
+      user: render_one(workingtimes.user, TimeManagerApiWeb.UserView, "user.json", as: :user),
     }
   end
+
+  def render("team_workingtimes.json", %{workingtimes: workingtimes}) do
+    %{
+      id: workingtimes.id,
+      start: workingtimes.start,
+      end: workingtimes.end,
+      user: render_one(workingtimes.user, TimeManagerApiWeb.UserView, "user.json", as: :user),
+    }
+  end
+
 end
