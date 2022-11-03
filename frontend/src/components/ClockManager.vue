@@ -23,7 +23,9 @@ async function getClock() {
         isCounting.value = false
         startingTime.value = "-"
     } else {
+        console.log(clock.time)
         startingTime.value = clock.time
+        startingTimeFormated.value = luxon.DateTime.fromISO(clock.time).toFormat("hh:mm:ss")
         updateDurationTime()
     }
 }
@@ -43,6 +45,9 @@ function updateDurationTime() {
     if (isCounting.value === true) {
         getDurationTime()
         setTimeout(updateDurationTime, 1000)
+    } else {
+        durationTime.value = "--:--:--"
+        startingTimeFormated.value = "-"
     }
 }
 </script>
@@ -53,8 +58,8 @@ function updateDurationTime() {
         <img :src="clockLogo" alt="clock logo"/>
         <p class="time" v-text="durationTime"></p>
         <v-btn class="counter-button" color="success" @click="clockIn()">
-            <p v-if="isCounting">Commencer</p>
-            <p v-else>Arrêter</p>
+            <p v-if="isCounting">Arrêter</p>
+            <p v-else>Commencer</p>
         </v-btn>
         <p class="last-clock">Heure de début: {{ startingTimeFormated }}</p>
     </div>

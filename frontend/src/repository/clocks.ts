@@ -7,16 +7,16 @@ const getClock = async () => {
             Authorization: `${localStorage.getItem("token")}`,
         },
     });
-    return data;
+    return data.data;
 }
 
 const createClock = async () => {
-    const { data } = await axios.post<IClock>('/api/clocks', {
+    const { data } = await axios.post<IClock>('/api/clocks', {}, {
         headers: {
             Authorization: `${localStorage.getItem("token")}`,
         },
     });
-    return data;
+    return data.data;
 }
 
 const clockRepository = {
