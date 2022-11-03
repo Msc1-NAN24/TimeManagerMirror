@@ -1,10 +1,9 @@
 import { ICreateUser, IUser } from "@/dto/user";
-import axios, {AxiosResponse} from "axios";
-import api from "@/utils/Api";
+import axios from "axios";
 import {IAuthLogin} from "@/dto/auth";
 
 const authRepository = {
-  login: (email: string, password: string, callback: (user?: IAuthLogin, error?) => void) => {
+  login: (email: string, password: string, callback: (user?: IAuthLogin, error?: string) => void) => {
     axios.post<IAuthLogin>(`/api/auth/login`, {email, password}).then((response) => {
       callback(response.data);
     }).catch((err) => {

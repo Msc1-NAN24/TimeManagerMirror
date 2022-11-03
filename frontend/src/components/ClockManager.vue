@@ -13,7 +13,6 @@ getClock()
 
 async function clockIn() {
     const clock = await clockRepository.createClock()
-    console.log(clock)
     getClock()
 }
 async function getClock() {
@@ -36,7 +35,6 @@ function getDurationTime() {
     } else {
         const now = luxon.DateTime.local();
         const diff = now.diff(luxon.DateTime.fromISO(startingTime.value));
-        console.log(diff.toFormat("hh:mm:ss"));
         durationTime.value = diff.toFormat("hh:mm:ss")
     }
 }
@@ -79,7 +77,6 @@ function updateDurationTime() {
 
 .clock-comp {
   background: transparent;
-  background-color: aquamarine;
   margin: auto;
   display: flex;
   flex-direction: column;

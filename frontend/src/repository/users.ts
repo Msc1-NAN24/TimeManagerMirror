@@ -1,13 +1,13 @@
 import { IUpdateUser, IUser } from "@/dto/user";
 import axios from "axios";
-import api, {authorize} from "@/utils/Api";
+import {authorize} from "@/utils/Api";
 
 const getUserById = async (id: number) => {
   const { data } = await axios.get<IUser>(`/api/user/${id}`);
   return data;
 };
 
-const getMe = (accessToken: string, callback: (user?: IUser, error?) => void) => {
+const getMe = (accessToken: string, callback: (user?: IUser, error?: string) => void) => {
   axios.get<IUser>(`/api/user/me`, authorize(accessToken)).then((response) => {
     callback(response.data)
   }).catch((err) => {
