@@ -49,7 +49,7 @@ defmodule TimeManagerApiWeb.UserController do
     end
   end
 
-  def delete_me(conn) do
+  def delete_me(conn, _params) do
     Timemanager.delete_user(conn.user);
     send_resp(conn, :ok, "")
   end

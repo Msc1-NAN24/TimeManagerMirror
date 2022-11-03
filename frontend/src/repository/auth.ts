@@ -1,6 +1,5 @@
 import { ICreateUser, IUser } from "@/dto/user";
-import axios, {AxiosResponse} from "axios";
-import api from "@/utils/Api";
+import axios from "axios";
 import {IAuthLogin} from "@/dto/auth";
 
 const authRepository = {
