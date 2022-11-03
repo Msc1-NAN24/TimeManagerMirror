@@ -9,9 +9,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2.5.0
-        
       - name: git pull
         uses: appleboy/ssh-action@v0.1.2
         with:
@@ -20,6 +17,7 @@ jobs:
           username: ${{secrets.SSH_USERNAME}}
           script: |
             cd TimeManagerMirror
+            git checkout feat/devops/docker-compose.prod
             git pull
 
       - name: docker Build
