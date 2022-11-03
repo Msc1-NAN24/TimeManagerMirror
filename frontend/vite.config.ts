@@ -1,9 +1,8 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import vuetify from 'vite-plugin-vuetify'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import vuetify from "vite-plugin-vuetify";
 
-const path = require('path')
-
+const path = require("path");
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -13,18 +12,10 @@ export default defineConfig({
       autoImport: true,
     }),
   ],
-  define: { 'process.env': {} },
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:4000',
-        changeOrigin: true,
-      },
-    },
-  },
+  define: { "process.env": {} },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'),
+      "@": path.resolve(__dirname, "src"),
     },
   },
   /* remove the need to specify .vue files https://vitejs.dev/config/#resolve-extensions
@@ -40,4 +31,4 @@ export default defineConfig({
     ]
   },
   */
-})
+});

@@ -6,6 +6,16 @@ import { loadFonts } from "./plugins/webfontloader";
 import {createPinia} from "pinia";
 import {useAuth} from "@/hook/useAuth";
 
+// Fix Property 'env' does not exist on type 'ImportMeta'.
+declare global {
+  interface ImportMeta {
+    env: {
+      VITE_URL_API: string;
+      VITE_PORT_API: string;
+    };
+  }
+}
+  
 loadFonts();
 
 const pinia = createPinia();
@@ -19,13 +29,3 @@ createApp(App)
     auth.loginFromStorage();
   })
   .mount("#app");
-
-// Fix Property 'env' does not exist on type 'ImportMeta'.
-// declare global {
-//   interface ImportMeta {
-//     env: {
-//       VITE_URL_API: string;
-//       VITE_PORT_API: string;
-//     };
-//   }
-// }
