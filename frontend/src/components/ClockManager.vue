@@ -4,7 +4,7 @@ import clockLogo from '@/assets/clock.png';
 import { ref } from 'vue';
 import * as luxon from 'luxon';
 
-const isCounting = ref(true)
+const isCounting = ref(false)
 const durationTime = ref("--:--:--")
 const startingTime = ref("-")
 const startingTimeFormated = ref("-")
@@ -17,22 +17,23 @@ async function clockIn() {
 }
 async function getClock() {
     const clock = await clockRepository.getClock()
-    isCounting.value = clock.status
-    if (isCounting.value === null || clock.status === false) {
+    const status = clock.status
+    if (status === null || status === false) {
         isCounting.value = false
         startingTime.value = "-"
+        startingTimeFormated.value = "-"
+        durationTime.value = "--:--:--"
     } else {
         console.log(clock.time)
+        isCounting.value = status
         startingTime.value = clock.time
-        startingTimeFormated.value = luxon.DateTime.fromISO(clock.time).toFormat("hh:mm:ss")
+        startingTimeFormated.value = luxon.DateTime.fromISO(clock.time).toFormat("HH:mm:ss")
         updateDurationTime()
     }
 }
 
 function getDurationTime() {
-    if (isCounting.value === false) {
-        durationTime.value = "--:--:--"
-    } else {
+    if (isCounting.value !== false) {
         const now = luxon.DateTime.local();
         const diff = now.diff(luxon.DateTime.fromISO(startingTime.value));
         durationTime.value = diff.toFormat("hh:mm:ss")
@@ -43,9 +44,6 @@ function updateDurationTime() {
     if (isCounting.value === true) {
         getDurationTime()
         setTimeout(updateDurationTime, 1000)
-    } else {
-        durationTime.value = "--:--:--"
-        startingTimeFormated.value = "-"
     }
 }
 </script>
