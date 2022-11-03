@@ -7,7 +7,7 @@ const getClock = async () => {
             Authorization: `${localStorage.getItem("token")}`,
         },
     });
-    return data.data;
+    return data;
 }
 
 const createClock = async () => {
@@ -16,7 +16,7 @@ const createClock = async () => {
             Authorization: `${localStorage.getItem("token")}`,
         },
     });
-    return data.data;
+    return data;
 }
 
 const clockRepository = {
