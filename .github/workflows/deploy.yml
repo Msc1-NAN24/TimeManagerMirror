@@ -1,6 +1,6 @@
 name: Deploy
 on:
-  pull-request:
+  pull_request:
     branches: [feat/devops/docker-compose.prod]
   push:
     branches: [main]
