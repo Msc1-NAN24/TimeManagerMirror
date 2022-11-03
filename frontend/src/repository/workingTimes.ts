@@ -1,42 +1,42 @@
 import { ICreateWorkingTime, IUpdateWorkingTime, IWorkingTime } from "@/dto/workingTime";
-import axios from "axios";
+import Api from "@/utils/Api";
 
 // User Routes
 
 const getAllWorkingTimesByUser = async (userId: number) => {
-    const { data } = await axios.get<IWorkingTime[]>(`/api/workingtimes/user/${userId}`);
+    const { data } = await Api.get<IWorkingTime[]>(`/workingtimes/user/${userId}`);
     return data;
 }
 
 const getWorkingTimesByUserByPeriod = async (userId: number, start: string, end: string) => {
-    const { data } = await axios.get<IWorkingTime[]>(`/api/workingtimes/user/${userId}?start=${start}&end=${end}`);
+    const { data } = await Api.get<IWorkingTime[]>(`/workingtimes/user/${userId}?start=${start}&end=${end}`);
     return data;
 }
 
 const getWorkingTimeByUserById = async (userId: number, workingTimeId: number) => {
-    const { data } = await axios.get<IWorkingTime>(`/api/workingtimes/user/${userId}/${workingTimeId}`);
+    const { data } = await Api.get<IWorkingTime>(`/workingtimes/user/${userId}/${workingTimeId}`);
     return data;
 }
 
 const createWorkingTime = async (userId: number, workingTime: ICreateWorkingTime) => {
-    const { data } = await axios.post<IWorkingTime>(`/api/workingtimes/user/${userId}`, workingTime);
+    const { data } = await Api.post<IWorkingTime>(`/workingtimes/user/${userId}`, workingTime);
     return data;
 }
 
 // Manager Routes
 
 const getWorkingTimeById = async (workingTimeId: number) => {
-    const { data } = await axios.get<IWorkingTime>(`/api/workingtimes/entry/${workingTimeId}`);
+    const { data } = await Api.get<IWorkingTime>(`/workingtimes/entry/${workingTimeId}`);
     return data;
 }
 
 const updateWorkingTime = async (workingTimeId: number, workingTime: IUpdateWorkingTime) => {
-    const { data } = await axios.patch<IWorkingTime>(`/api/workingtimes/entry/${workingTimeId}`, workingTime);
+    const { data } = await Api.patch<IWorkingTime>(`/workingtimes/entry/${workingTimeId}`, workingTime);
     return data;
 }
 
 const deleteWorkingTime = async (workingTimeId: number) => {
-    const { data } = await axios.delete<IWorkingTime>(`/api/workingtimes/entry/${workingTimeId}`);
+    const { data } = await Api.delete<IWorkingTime>(`/workingtimes/entry/${workingTimeId}`);
     return data;
 }
 

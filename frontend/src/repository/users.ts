@@ -1,14 +1,13 @@
 import { IUpdateUser, IUser } from "@/dto/user";
-import axios from "axios";
-import {authorize} from "@/utils/Api";
+import Api, {authorize} from "@/utils/Api";
 
 const getUserById = async (id: number) => {
-  const { data } = await axios.get<IUser>(`/api/user/${id}`);
+  const { data } = await Api.get<IUser>(`/user/${id}`);
   return data;
 };
 
 const getMe = (accessToken: string, callback: (user?: IUser, error?: string) => void) => {
-  axios.get<IUser>(`/api/user/me`, authorize(accessToken)).then((response) => {
+  Api.get<IUser>(`/users/me`, authorize(accessToken)).then((response) => {
     callback(response.data)
   }).catch((err) => {
     console.log(err);
@@ -17,19 +16,19 @@ const getMe = (accessToken: string, callback: (user?: IUser, error?: string) => 
 };
 
 const getAllUsers = async () => {
-  const { data } = await axios.get<IUser[]>('/api/users');
+  const { data } = await Api.get<IUser[]>('/users');
   return data;
 };
 const updateUser = async (id: number, updateUser: IUpdateUser) => {
-  const { data } = await axios.patch<IUser>(
-    `/api/user/${id}`,
+  const { data } = await Api.patch<IUser>(
+    `/user/${id}`,
     updateUser
   );
   return data;
 };
 const deleteUser = async (id: number) => {
-  const { data } = await axios.delete<IUser>(
-    `/api/user/${id}`
+  const { data } = await Api.delete<IUser>(
+    `/user/${id}`
   );
   return data;
 };
