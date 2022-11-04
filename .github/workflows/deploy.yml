@@ -15,7 +15,6 @@ jobs:
           username: ${{secrets.SSH_USERNAME}}
           script: |
             cd TimeManagerMirror
-            git checkout feat/devops/docker-compose.prod
             git pull
 
       - name: docker Build
