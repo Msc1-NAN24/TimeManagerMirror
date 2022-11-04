@@ -166,7 +166,7 @@ paths:
     get:
       summary: Get user information
       description: Provides information about the logged in user
-      operationId: getUser
+      operationId: getUserById
       tags:
         - Users
         - Managers
@@ -191,7 +191,7 @@ paths:
     put:
       summary: Update user information
       description: Updates the logged in user's information
-      operationId: updateUser
+      operationId: updateUserById
       tags:
         - Users
         - Employees
@@ -224,17 +224,17 @@ paths:
     delete:
       summary: Delete user
       description: Deletes the logged in user
-      operationId: deleteUser
+      operationId: deleteUserById
       tags:
         - Users
         - Employees
       parameters:
-            - name: id
-              in: path
-              description: ID of the user to delete
-              required: true
-              schema:
-                type: integer
+        - name: id
+          in: path
+          description: ID of the user to delete
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
           description: User deleted
@@ -259,6 +259,13 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ResetUserPassword'
+      parameters:
+        - name: id
+          in: path
+          description: ID of the user to reset the password of
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
           description: Password reset
@@ -562,6 +569,13 @@ paths:
       tags:
         - Teams
         - Managers
+      parameters:
+        - name: id
+          in: path
+          description: ID of the team to remove members
+          required: true
+          schema:
+            type: integer
       requestBody:
         description: Team member to remove
         content:
@@ -611,7 +625,7 @@ paths:
         - Working Times
         - Managers
       parameters:
-        - name: workingTimeId
+        - name: id
           in: path
           description: ID of the working time to get
           required: true
@@ -640,12 +654,6 @@ paths:
         - name: id
           in: path
           description: ID of the team to update working time from
-          required: true
-          schema:
-            type: integer
-        - name: workingTimeId
-          in: path
-          description: ID of the working time to update
           required: true
           schema:
             type: integer
@@ -680,12 +688,6 @@ paths:
         - name: id
           in: path
           description: ID of the team to delete working time from
-          required: true
-          schema:
-            type: integer
-        - name: workingTimeId
-          in: path
-          description: ID of the working time to delete
           required: true
           schema:
             type: integer
@@ -821,13 +823,10 @@ components:
       properties:
         email:
           type: string
-          required: false
         firstname:
           type: string
-          required: false
         lastname:
           type: string
-          required: false
     WorkingTimes:
       type: object
       properties:
