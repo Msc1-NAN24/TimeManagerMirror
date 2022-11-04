@@ -25,32 +25,32 @@ export const useAuthStore = defineStore('auth', {
   }) as AuthStoreType,
   actions: {
     login(accessToken: string, user: IUser) {
-      this.user = user;
-      this.isLogged = IsLogged.Logged;
-      this.accessToken = accessToken;
+      this.$patch({
+        user,
+        accessToken,
+        isLogged: IsLogged.Logged,
+      });
       localStorage.setItem(TOKEN_STORAGE_KEY, accessToken)
     },
     loginFromStorage() {
       const token = localStorage.getItem(TOKEN_STORAGE_KEY);
       if (token != null) {
-        this.accessToken = token;
-        this.isLogged = IsLogged.Logged;
+        this.$patch({
+          accessToken: token,
+          isLogged: IsLogged.Logged
+        })
       }
       userRepository.getMe(token, (user, error) => {
         if (user !== undefined) {
-          this.user = user;
+          this.$patch({user: user})
         } else if (error) {
-          this.isLogged = IsLogged.NotLogged;
+          this.$patch({isLogged: IsLogged.NotLogged})
         }
       });
     },
-    clearAuthStorage() {
-      localStorage.removeItem(TOKEN_STORAGE_KEY)
-    },
     logoutUser() {
-      this.user = undefined;
-      this.isLogged = IsLogged.NotLogged;
-      this.accessToken = '';
+      localStorage.removeItem(TOKEN_STORAGE_KEY);
+      this.$patch({user: undefined, isLogged: IsLogged.NotLogged, accessToken: ''});
     }
   },
 });

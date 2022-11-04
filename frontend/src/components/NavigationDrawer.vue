@@ -7,17 +7,25 @@ import {useRouter} from "vue-router";
 
 const auth = useAuthStore();
 const router = useRouter();
-const {user, isLogged} = storeToRefs(auth);
-
-function onClickBtn() {
-  console.log(user?.value);
-}
+const {user} = storeToRefs(auth);
 
 auth.$subscribe((mutation, state) => {
   if (state.isLogged == IsLogged.NotLogged) {
     router.push({name: 'login'})
   }
 }, {detached: true});
+
+function onClickBtn() {
+  console.log(user?.value);
+}
+
+function onClickTeams() {
+  this.router.push({name: 'teams'});
+}
+
+</script>
+
+<script lang="ts" >
 
 </script>
 
@@ -38,9 +46,10 @@ auth.$subscribe((mutation, state) => {
           </v-list>
           <v-divider></v-divider>
           <v-list>
-            <v-list-item prepend-icon="mdi-star" title="Dashboard" value="dashboard" @click="router.push({name: 'home'})"></v-list-item>
-            <v-list-item prepend-icon="mdi-folder" title="Workingtimes" value="workingtimes" @click="onClickBtn"></v-list-item>
-            <v-list-item v-if="user?.rank === 'manager'" prepend-icon="mdi-account-multiple" title="Teams" value="teams" @click="onClickBtn"></v-list-item>
+            <v-list-item prepend-icon="mdi-monitor-dashboard" title="Dashboard" value="dashboard" @click="router.push({name: 'home'})"></v-list-item>
+            <v-list-item prepend-icon="mdi-calendar-blank-multiple" title="Workingtimes" value="workingtimes" @click="onClickBtn"></v-list-item>
+            <v-list-item v-if="user?.rank === 'manager' || user?.rank === 'general_manager'" prepend-icon="mdi-account-group" title="Teams" value="teams" @click="onClickBtn"></v-list-item>
+            <v-list-item v-if="user?.rank === 'general_manager'" prepend-icon="mdi-account-multiple-outline" title="Utilisateurs" value="teams" @click="onClickTeams"></v-list-item>
           </v-list>
         </v-row>
         <v-row class="bottom">
@@ -48,6 +57,9 @@ auth.$subscribe((mutation, state) => {
         </v-row>
     </v-container>
   </v-navigation-drawer>
+  <v-main style="height: 250px; margin-top: 20px; width: 80%">
+    <router-view />
+  </v-main>
 </template>
 
 <style scoped>

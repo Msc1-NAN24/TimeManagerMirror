@@ -1,8 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import ProfilePage from "@/views/users/ProfilePage.vue";
 import NavigationDrawer from "@/components/NavigationDrawer.vue";
-import {tr} from "vuetify/locale";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -37,11 +35,29 @@ const router = createRouter({
           component: () => import("../views/ChartManager.vue"),
         },
         {
+          path: "/teams",
+          children: [
+            {
+              path: "/",
+              name: "teams",
+              component: import("../views/teams/TeamListPage.vue"),
+            },
+            {
+              path: "/:id",
+              name: "team",
+              component: import("../views/teams/TeamPage.vue"),
+            }
+          ]
+        },
+        {
           path: "/user/profile",
           name: "profile",
-          components: {
-            default: () => ProfilePage,
-          }
+          component: () => import("../views/users/ProfilePage.vue"),
+        },
+        {
+          path: '/user/reset-password',
+          name: 'reset-password',
+          component: () => import("../views/users/ChangePasswordPage.vue")
         }
       ]
     },
