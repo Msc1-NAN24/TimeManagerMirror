@@ -7,7 +7,13 @@ import {useRouter} from "vue-router";
 
 const auth = useAuthStore();
 const router = useRouter();
-const {user, isLogged} = storeToRefs(auth);
+const {user} = storeToRefs(auth);
+
+auth.$subscribe((mutation, state) => {
+  if (state.isLogged == IsLogged.NotLogged) {
+    router.push({name: 'login'})
+  }
+}, {detached: true});
 
 function onClickBtn() {
   console.log(user?.value);
@@ -17,11 +23,9 @@ function onClickTeams() {
   this.router.push({name: 'teams'});
 }
 
-auth.$subscribe((mutation, state) => {
-  if (state.isLogged == IsLogged.NotLogged) {
-    router.push({name: 'login'})
-  }
-}, {detached: true});
+</script>
+
+<script lang="ts" >
 
 </script>
 
@@ -53,6 +57,9 @@ auth.$subscribe((mutation, state) => {
         </v-row>
     </v-container>
   </v-navigation-drawer>
+  <v-main style="height: 250px; margin-top: 20px; width: 80%">
+    <router-view />
+  </v-main>
 </template>
 
 <style scoped>

@@ -1,8 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import NavigationDrawer from "@/components/NavigationDrawer.vue";
-import TeamListPage from "@/views/teams/TeamListPage.vue";
-import TeamPage from "@/views/teams/TeamPage.vue";
 
 const router = createRouter({
   history: createWebHistory(),
