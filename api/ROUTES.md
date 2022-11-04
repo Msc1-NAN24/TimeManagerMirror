@@ -16,3 +16,4 @@
 | GET    | /workingtimes/entry/:id | Get a specific workingtime    |
 | PUT    | /workingtimes/entry/:id | Update a specific workingtime |
 | DELETE | /workingtimes/entry/:id | Delete a specific workingtime |
+| GET    | /api/teams/:teamId      | Get a specific team           |

@@ -14,6 +14,11 @@ if config_env() == :dev do
     show_sensitive_data_on_connection_error: true,
     pool_size: 10
 
+  config :cors_plug,
+    origin: [System.fetch_env!("FRONTEND_URL")],
+    max_age: 86400,
+    methods: ["GET", "POST"]
+
   # For development, we disable any cache and enable
   # debugging and code reloading.
   #
@@ -23,7 +28,7 @@ if config_env() == :dev do
   config :time_manager_api, TimeManagerApiWeb.Endpoint,
     # Binding to loopback ipv4 address prevents access from other machines.
     # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-    http: [ip: {0, 0, 0, 0}, port: 4000],
+    http: [ip: {0, 0, 0, 0}, port: System.fetch_env!("API_PORT") || 4000],
     check_origin: false,
     code_reloader: true,
     debug_errors: true,

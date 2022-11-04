@@ -22,8 +22,8 @@ defmodule TimeManagerApiWeb.Router do
   scope "/api", TimeManagerApiWeb do
     pipe_through [:api, :employee]
 
-    post "/clocks/:id", ClockController, :create_with_user_id
-    get "/clocks/:id", ClockController, :get_clock_with_user_id
+    post "/clocks", ClockController, :create_with_user_id
+    get "/clocks", ClockController, :get_clock_with_user_id
 
     # Employee routes
     get "/workingtimes/user/:user_id", WorkingtimesController, :get_workingtimes
@@ -34,6 +34,10 @@ defmodule TimeManagerApiWeb.Router do
     post "/workingtimes/user/:user_id", WorkingtimesController, :create
     put "/workingtimes/entry/:id", WorkingtimesController, :update
     delete "/workingtimes/entry/:id", WorkingtimesController, :delete
+
+    get "/workingtimes/team/:id", WorkingtimesController, :get_workingtimes_team
+
+    get "/workingtimes", WorkingtimesController, :get_workingtimes
   end
 
   scope "/api/users", TimeManagerApiWeb do
@@ -48,6 +52,8 @@ defmodule TimeManagerApiWeb.Router do
     put "/:id", UserController, :update
     post "/:id/promote", UserController, :promote
     post "/:id/revoke", UserController, :revoke
+    post "/:id/reset-password", UserController, :reset_password_user
+    post "/reset-password", UserController, :reset_password
   end
 
   scope "/api/auth", TimeManagerApiWeb do
@@ -55,6 +61,22 @@ defmodule TimeManagerApiWeb.Router do
 
     post "/register", AuthController, :register
     post "/login", AuthController, :login
+  end
+
+
+  scope "/api/teams", TimeManagerApiWeb do
+    pipe_through [:api, :manager]
+
+    post "/", TeamController, :create
+    get "/", TeamController, :list
+
+    get "/:id", TeamController, :get
+    delete "/:id", TeamController, :delete
+    patch "/:id", TeamController, :update
+
+    post "/:id/members/add", TeamController, :add_member
+    post "/:id/members/remove", TeamController, :remove_member
+
   end
 
   def is_manager(conn, _opts) do

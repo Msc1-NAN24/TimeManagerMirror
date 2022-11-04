@@ -1,5 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import NavigationDrawer from '@/components/NavigationDrawer.vue';
+</script>
 
 <template>
-  <main>Home</main>
+  <v-layout>
+    <v-main style="min-height: 100vh">
+      <main>Home</main>
+    </v-main>
+  </v-layout>
 </template>
