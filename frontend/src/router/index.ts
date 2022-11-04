@@ -58,7 +58,12 @@ const router = createRouter({
           path: '/user/reset-password',
           name: 'reset-password',
           component: () => import("../views/users/ChangePasswordPage.vue")
-        }
+        },
+        {
+          path: "/users-management",
+          name: "users-management",
+          component: () => import("../views/users/UsersManagement.vue"),
+        },
       ]
     },
     {
