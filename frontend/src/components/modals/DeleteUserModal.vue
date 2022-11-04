@@ -1,3 +1,7 @@
+<script setup>
+
+</script>
+
 <template>
   <v-dialog
       v-model="$props.open"

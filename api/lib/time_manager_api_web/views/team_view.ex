@@ -3,11 +3,11 @@ defmodule TimeManagerApiWeb.TeamView do
   alias TimeManagerApiWeb.TeamView
 
   def render("teams.json", %{teams: teams}) do
-    %{data: render_many(teams, TeamView, "team.json")}
+    render_many(teams, TeamView, "team.json")
   end
 
   def render("show.json", %{team: team}) do
-    %{data: render_one(team, TeamView, "team.json")}
+    render_one(team, TeamView, "team.json")
   end
 
   def render("created.json", %{team: team}) do
@@ -23,7 +23,9 @@ defmodule TimeManagerApiWeb.TeamView do
       id: team.id,
       name: team.name,
       owner: render_one(team.owner, TimeManagerApiWeb.UserView, "user.json", as: :user),
-      members: render_many(team.members, TimeManagerApiWeb.UserView, "user.json", as: :user)
+      members: render_many(team.members, TimeManagerApiWeb.UserView, "user.json", as: :user),
+      updated_at: team.updated_at,
+      inserted_at: team.inserted_at
     }
   end
 
