@@ -1,45 +1,75 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import NavigationDrawer from "@/components/NavigationDrawer.vue";
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes: [
     {
       path: "/",
-      name: "home",
-      component: HomeView,
+      component: NavigationDrawer,
+      children: [
+        {
+          path: "/",
+          component: HomeView,
+          name: "home"
+        },
+        {
+          path: "/workingTimes/:userI",
+          name: "workingTimes",
+          component: () => import("../views/WorkingTimes.vue"),
+        },
+        {
+          path: "/workingTime/:userid/:workingtimeid",
+          name: "workingTime",
+          component: () => import("../views/WorkingTime.vue"),
+        },
+        {
+          path: "/clock/:username",
+          name: "clock",
+          component: () => import("../views/Clock.vue"),
+        },
+        {
+          path: "/chartManager/:userid",
+          name: "chartManager",
+          component: () => import("../views/ChartManager.vue"),
+        },
+        {
+          path: "/teams",
+          children: [
+            {
+              path: "",
+              name: "teams",
+              component: () => import("../views/teams/TeamListPage.vue"),
+            },
+            {
+              path: ":id",
+              name: "team",
+              component: () => import("../views/teams/TeamPage.vue"),
+            }
+          ]
+        },
+        {
+          path: "/user/profile",
+          name: "profile",
+          component: () => import("../views/users/ProfilePage.vue"),
+        },
+        {
+          path: '/user/reset-password',
+          name: 'reset-password',
+          component: () => import("../views/users/ChangePasswordPage.vue")
+        }
+      ]
     },
     {
-      path: "/workingTimes/:userI",
-      name: "workingTimes",
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import("../views/WorkingTimes.vue"),
+      path: "/login",
+      name: "login",
+      component: () => import("../views/Login.vue"),
     },
     {
-      path: "/workingTime/:userid/:workingtimeid",
-      name: "workingTime",
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import("../views/WorkingTime.vue"),
-    },
-    {
-      path: "/clock/:username",
-      name: "clock",
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import("../views/Clock.vue"),
-    },
-    {
-      path: "/chartManager/:userid",
-      name: "chartManager",
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import("../views/ChartManager.vue"),
+      path: "/register",
+      name: "register",
+      component: () => import("../views/Register.vue"),
     },
   ],
 });

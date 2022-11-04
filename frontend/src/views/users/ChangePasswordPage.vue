@@ -1,0 +1,75 @@
+<template>
+  <h1>Changer mon mot de passe</h1>
+  <v-form class="forms">
+    <v-text-field
+        variant="outlined"
+        :append-icon="showLastPassword ? 'mdi-eye' : 'mdi-eye-off'"
+        :type="showLastPassword ? 'text' : 'password'"
+        name="input-10-2"
+        label="Ancien password"
+        :rules="[rules.required]"
+        @click:append="showLastPassword = !showLastPassword"
+    ></v-text-field>
+    <v-text-field
+        variant="outlined"
+        :append-icon="showNewPassword ? 'mdi-eye' : 'mdi-eye-off'"
+        :type="showNewPassword ? 'text' : 'password'"
+        name="input-10-2"
+        label="Nouveau mot de passe"
+        hint="Minimum 8 caractères"
+        :rules="[rules.required, rules.min]"
+        @click:append="showNewPassword = !showNewPassword"
+    ></v-text-field>
+  </v-form>
+  <div class="actions">
+    <v-btn variant="outlined" color="primary" @click="onClickCancel">Annuler</v-btn>
+    <v-btn variant="elevated" color="success" @click="onClickValidate">Valider</v-btn>
+  </div>
+</template>
+
+<script>
+import {useRouter} from "vue-router";
+import {useAuthStore} from "@/store/AuthStore";
+
+export default {
+  name: "ChangePasswordPage",
+  setup() {
+    const router = useRouter();
+    const auth = useAuthStore();
+    return {
+      router,
+      auth,
+    }
+  },
+  data() {
+    return {
+      showLastPassword: false,
+      showNewPassword: false,
+
+      rules: {
+        required: value => !!value || 'Required.',
+        min: v => v.length >= 8 || 'Min 8 characters',
+      },
+    }
+  },
+  methods: {
+    onClickCancel() {
+      this.router.push({name: 'profile'});
+    },
+    onClickValidate() {
+
+    }
+  }
+}
+</script>
+
+<style scoped>
+.forms {
+  margin-top: 40px;
+}
+.actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 20px
+}
+</style>

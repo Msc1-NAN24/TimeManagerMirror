@@ -12,9 +12,13 @@
 > This project is an EPITECH Project. If you are an EPITECH student, move out the way! Nothing to see here... The groups don't want to be involved to your -42.
 > If you're not, no worries! You're welcome here!
 
+[![Deploy](https://github.com/TimeManager-NAN3/TimeManagerMirror/actions/workflows/deploy.yml/badge.svg)](https://github.com/TimeManager-NAN3/TimeManagerMirror/actions/workflows/deploy.yml)
+[![Build](https://github.com/TimeManager-NAN3/TimeManagerMirror/actions/workflows/build.yml/badge.svg)](https://github.com/TimeManager-NAN3/TimeManagerMirror/actions/workflows/build.yml)
+
 ## Project
 
-The goal is to create an application of time management in 7 steps :  
+The goal is to create an application of time management in 7 steps :
+
 1. API
 2. Frontend
 3. DevOps
@@ -27,6 +31,12 @@ The goal is to create an application of time management in 7 steps :
 
 To use this project, you'll need ...
 
+## Design Thinking
+
+### Mockup on Figma
+
+[![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/file/wYBTJmu62lzp90DoSrea4a/Untitled?node-id=0%3A1)
+
 ## Deployement
 
 For the deployement you just need ...
@@ -34,26 +44,26 @@ For the deployement you just need ...
 ## Implemented routes
 
 - /api/register -> [POST] to register a user
-    * params: login, password, email, firstname, lastname
+  - params: login, password, email, firstname, lastname
 - /api/login -> [POST] to login
-    * params: login, password, email, firstname, lastname
+  - params: login, password, email, firstname, lastname
 - /api/users -> [PUT/GET] to update or get user informations
-    * headers: 'authorization' with the value of the token return by /api/register or /api/login
+  - headers: 'authorization' with the value of the token return by /api/register or /api/login
 
 ## Technologies
 
-* Automatisation
-    * Docker
-* Front-end
-    * VueJS
-* API
-    * Phoenix
-* Database
-    * PostgreSQL
+- Automatisation
+  - Docker
+- Front-end
+  - VueJS
+- API
+  - Phoenix
+- Database
+  - PostgreSQL
 
 ## Authors
 
-* **Nicolas SANS** - [frnikho](https://github.com/frnikho)
-* **Maël QUEAU** - [mael-queau](https://github.com/mael-queau)
-* **Elie MORICEAU** - [eliemoriceau](https://github.com/eliemoriceau)
-* **Valentin BOUCHET** - [valentinbouchet](https://github.com/valentinbouchet)
+- **Nicolas SANS** - [frnikho](https://github.com/frnikho)
+- **Maël QUEAU** - [mael-queau](https://github.com/mael-queau)
+- **Elie MORICEAU** - [eliemoriceau](https://github.com/eliemoriceau)
+- **Valentin BOUCHET** - [valentinbouchet](https://github.com/valentinbouchet)

@@ -3,10 +3,7 @@ defmodule TimeManagerApi.Auth do
   @token_age_secs 14 * 86_400
   alias TimeManagerApi.Timemanager.User
 
-
-
   def hash_password(password) do
-    IO.inspect password
     Phoenix.Token.encrypt(TimeManagerApiWeb.Endpoint, @salt, password)
   end
 
