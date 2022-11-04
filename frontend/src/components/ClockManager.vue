@@ -58,12 +58,10 @@ function updateDurationTime() {
     <h1>Pointeuse</h1>
     <img :src="clockLogo" alt="clock logo" />
     <p class="time" v-text="durationTime"></p>
-    <Toast>
-      <v-btn class="counter-button" color="success" @click="clockIn()">
-        <p v-if="isCounting">Arrêter</p>
-        <p v-else>Commencer</p>
-      </v-btn>
-    </Toast>
+    <v-btn class="counter-button" color="success" @click="clockIn()">
+      <p v-if="isCounting">Arrêter</p>
+      <p v-else>Commencer</p>
+    </v-btn>
     <p class="last-clock">Heure de début: {{ startingTimeFormated }}</p>
   </div>
 </template>
