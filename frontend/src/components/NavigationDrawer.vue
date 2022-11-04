@@ -7,7 +7,7 @@
         class="bg-grey-lighten-3">
         <v-list>
             <v-list-item
-                @click="this.router.push({name: 'profile'})"
+                @click="onClickUserInfo"
                 prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
                 :title="`${user?.firstname} ${user?.lastname}`"
                 :subtitle="user?.email"
@@ -15,9 +15,10 @@
         </v-list>
         <v-divider></v-divider>
         <v-list density="compact" nav>
-            <v-list-item prepend-icon="mdi-star" title="Dashboard" value="dashboard" @click="this.router.push({name: 'home'})"></v-list-item>
-            <v-list-item prepend-icon="mdi-folder" title="Workingtimes" value="workingtimes"></v-list-item>
-            <v-list-item v-if="user?.rank === 'manager'" prepend-icon="mdi-account-multiple" title="Teams" value="teams" @click="onClickBtn"></v-list-item>
+            <v-list-item prepend-icon="mdi-monitor-dashboard" title="Dashboard" value="dashboard" @click="this.router.push({name: 'home'})"></v-list-item>
+            <v-list-item prepend-icon="mdi-calendar-blank-multiple" title="Workingtimes" value="workingtimes"></v-list-item>
+          <v-list-item v-if="user?.rank === 'manager' || user?.rank === 'general_manager'" prepend-icon="mdi-account-group" title="Teams" value="teams" @click="onClickTeams"></v-list-item>
+          <v-list-item v-if="user?.rank === 'general_manager'" prepend-icon="mdi-account-multiple-outline" title="Utilisateurs" value="teams" @click="onClickBtn"></v-list-item>
         </v-list>
         <v-list style="bottom: 0; position: absolute;">
             <v-list-item prepend-icon="" title="" value="clock">
@@ -40,13 +41,12 @@ export default {
   setup() {
     const auth = useAuthStore();
     const router = useRouter();
-    const {user, isLogged} = storeToRefs(auth);
     auth.$subscribe((mutation, state) => {
       if (state.isLogged == IsLogged.NotLogged) {
         router.push({name: 'login'})
       }
     }, {detached: true});
-
+    const {user, isLogged} = storeToRefs(auth);
     return {
       user,
       isLogged,
@@ -64,6 +64,9 @@ export default {
     },
     onClickUserInfo() {
       this.router.push({name: 'profile'});
+    },
+    onClickTeams() {
+      this.router.push({name: 'teams'});
     },
     onUpdateDrawer(enable: boolean) {
       this.drawer = enable;

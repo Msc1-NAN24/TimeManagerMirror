@@ -18,8 +18,11 @@
         required></v-text-field>
   </v-form>
   <div class="d-flex" style="gap: 20px">
-    <v-btn variant="tonal" color="secondary" @click="onClickUpdate">Mettre à jour</v-btn>
-    <v-btn variant="tonal" color="secondary" @click="onClickChangePassword">Changer mon mot de passe</v-btn>
+    <v-btn variant="flat" color="success" @click="onClickUpdate">Mettre à jour</v-btn>
+    <v-btn variant="flat" color="warning" @click="onClickChangePassword">Changer mon mot de passe</v-btn>
+  </div>
+  <div class="d-flex" style="gap: 20px; margin-top: 20px">
+    <v-btn variant="outlined" color="info" @click="onClickLogout">Se déconnecter</v-btn>
     <v-btn variant="tonal" color="error" @click="onClickDelete">Supprimer mon compte</v-btn>
   </div>
 </template>
@@ -63,13 +66,16 @@ export default {
       this.openDeleteDialog = true;
     },
     onClickChangePassword() {
-
+      this.router.push({name: 'reset-password'})
     },
     onCloseModal() {
       this.openDeleteDialog = false;
     },
     onUserDeleted() {
       this.openDeleteDialog = false;
+      this.auth.logoutUser();
+    },
+    onClickLogout() {
       this.auth.logoutUser();
     }
   }
