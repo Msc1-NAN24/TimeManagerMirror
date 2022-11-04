@@ -46,9 +46,9 @@ defmodule TimeManagerApiWeb.Router do
     get "/", UserController, :list
     get "/me", UserController, :get_me
     get "/:id", UserController, :get
-    delete "/", UserController, :delete_me
+    delete "/me", UserController, :delete_me
     delete "/:id", UserController, :delete
-    put "/", UserController, :update_me
+    put "/me", UserController, :update_me
     put "/:id", UserController, :update
     post "/:id/promote", UserController, :promote
     post "/:id/revoke", UserController, :revoke

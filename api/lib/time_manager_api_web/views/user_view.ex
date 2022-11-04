@@ -3,11 +3,11 @@ defmodule TimeManagerApiWeb.UserView do
   alias TimeManagerApiWeb.UserView
 
   def render("index.json", %{users: users}) do
-    %{data: render_many(users, UserView, "user.json")}
+    render_many(users, UserView, "user.json")
   end
 
   def render("show.json", %{user: user}) do
-    %{data: render_one(user, UserView, "user.json")}
+    render_one(user, UserView, "user.json")
   end
 
   def render("user.json", %{user: user}) do
@@ -17,6 +17,8 @@ defmodule TimeManagerApiWeb.UserView do
       lastname: user.lastname,
       email: user.email,
       rank: user.rank,
+      insert_at: user.inserted_at,
+      updated_at: user.updated_at,
     }
   end
 

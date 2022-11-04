@@ -30,18 +30,19 @@ function onClickTeams() {
 </script>
 
 <template>
-  <v-navigation-drawer
-      expand-on-hover
-      class="bg-grey-lighten-3"
-  >
-    <v-container class="container">
+  <v-app>
+    <v-navigation-drawer
+        expand-on-hover
+        class="bg-grey-lighten-3"
+    >
+      <v-container class="container">
         <v-row class="top">
           <v-list>
             <v-list-item
-              @click="router.push({name: 'profile'})"
-              prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-              :title="`${user?.firstname} ${user?.lastname}`"
-              :subtitle="user?.email"
+                @click="router.push({name: 'profile'})"
+                prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
+                :title="`${user?.firstname} ${user?.lastname}`"
+                :subtitle="user?.email"
             ></v-list-item>
           </v-list>
           <v-divider></v-divider>
@@ -55,11 +56,12 @@ function onClickTeams() {
         <v-row class="bottom">
           <ClockManager />
         </v-row>
-    </v-container>
-  </v-navigation-drawer>
-  <v-main style="height: 250px; margin-top: 20px; width: 80%">
-    <router-view />
-  </v-main>
+      </v-container>
+    </v-navigation-drawer>
+    <v-main style="height: 250px; margin-left: 40px; margin-right: 40px; margin-top: 20px; margin-bottom: 20px">
+      <router-view />
+    </v-main>
+  </v-app>
 </template>
 
 <style scoped>

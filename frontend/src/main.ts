@@ -14,7 +14,7 @@ declare global {
     };
   }
 }
-  
+
 loadFonts();
 
 const pinia = createPinia();
