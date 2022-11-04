@@ -38,14 +38,14 @@ const router = createRouter({
           path: "/teams",
           children: [
             {
-              path: "/",
+              path: "",
               name: "teams",
-              component: import("../views/teams/TeamListPage.vue"),
+              component: () => import("../views/teams/TeamListPage.vue"),
             },
             {
-              path: "/:id",
+              path: ":id",
               name: "team",
-              component: import("../views/teams/TeamPage.vue"),
+              component: () => import("../views/teams/TeamPage.vue"),
             }
           ]
         },
