@@ -4,6 +4,7 @@ specifiers:
   '@babel/core': '>=7.8.0 <8.0.0'
   '@mdi/font': 5.9.55
   '@types/jest': ^27.0.1
+  '@types/luxon': ^3.0.3
   '@types/webfontloader': ^1.0.0
   '@typescript-eslint/eslint-plugin': ^5.4.0
   '@typescript-eslint/parser': ^5.4.0
@@ -40,6 +41,7 @@ specifiers:
   vue: ^3.2.13
   vue-cli-plugin-vuetify: ~2.5.8
   vue-router: ^4.0.3
+  vue-toast-notification: ^3.0
   vuetify: ^3.0.0-beta.0
   webfontloader: ^1.0.0
   webpack: '>=4.0.0 <5.0.0 || >=5.0.0 <6.0.0'
@@ -57,12 +59,14 @@ dependencies:
   roboto-fontface: 0.10.0
   vue: 3.2.41
   vue-router: 4.1.6_vue@3.2.41
+  vue-toast-notification: 3.0.4_vue@3.2.41
   vuetify: 3.0.0-beta.15_hfmdtciki7cfunpdmwe3rjwrky
   webfontloader: 1.6.28
 
 devDependencies:
   '@babel/core': 7.19.6
   '@types/jest': 27.5.2
+  '@types/luxon': 3.0.3
   '@types/webfontloader': 1.6.35
   '@typescript-eslint/eslint-plugin': 5.41.0_32z22rklvrfh4nbzcwqtxcqueq
   '@typescript-eslint/parser': 5.41.0_typescript@4.5.5
@@ -1918,6 +1922,10 @@ packages:
 
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
+    dev: true
+
+  /@types/luxon/3.0.3:
+    resolution: {integrity: sha512-oHbqYmoYCihi5S09sdtf/sHh27+msnQ6qhrXJDFpUy/M7ohWcSpqNN5Mi22A2WHCsJ4ypD3zyJbCpyxvfC+VVw==}
     dev: true
 
   /@types/mime/3.0.1:
@@ -9696,6 +9704,15 @@ packages:
   /vue-template-es2015-compiler/1.9.1:
     resolution: {integrity: sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==}
     dev: true
+
+  /vue-toast-notification/3.0.4_vue@3.2.41:
+    resolution: {integrity: sha512-rEhLtcKg8SVdBpdN7PrNst5nmY8dw0j3NkNImqurhlGurqR/QDKoou0t2PuCReEOCTKqHvfLCle2I3kwQWDWDQ==}
+    engines: {node: '>=12.15.0'}
+    peerDependencies:
+      vue: ^3.0
+    dependencies:
+      vue: 3.2.41
+    dev: false
 
   /vue/3.2.41:
     resolution: {integrity: sha512-uuuvnrDXEeZ9VUPljgHkqB5IaVO8SxhPpqF2eWOukVrBnRBx2THPSGQBnVRt0GrIG1gvCmFXMGbd7FqcT1ixNQ==}
