@@ -1,0 +1,21 @@
+_id: req_wrk_7f42856afd4e4c20ac0f80bc87e6a6757c785edd1
+type: Request
+parentId: fld_wrk_7f42856afd4e4c20ac0f80bc87e6a6754f7b3cfa
+modified: 1667577545987
+created: 1667577545987
+url: "{{ base_url }}/users/{{ id }}"
+name: Get user information
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1667577545987
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

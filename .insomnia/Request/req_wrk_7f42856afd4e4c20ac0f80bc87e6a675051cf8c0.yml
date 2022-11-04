@@ -1,0 +1,29 @@
+_id: req_wrk_7f42856afd4e4c20ac0f80bc87e6a675051cf8c0
+type: Request
+parentId: wrk_7f42856afd4e4c20ac0f80bc87e6a675
+modified: 1667577545990
+created: 1667577545990
+url: "{{ base_url }}/users/reset-password"
+name: Reset the user's password
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "new_password": "string",
+      "last_password": "string"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1667577545990
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

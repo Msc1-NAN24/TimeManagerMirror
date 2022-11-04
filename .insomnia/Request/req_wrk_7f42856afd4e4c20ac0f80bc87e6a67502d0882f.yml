@@ -1,0 +1,21 @@
+_id: req_wrk_7f42856afd4e4c20ac0f80bc87e6a67502d0882f
+type: Request
+parentId: fld_wrk_7f42856afd4e4c20ac0f80bc87e6a675cbfd44d9
+modified: 1667577545969
+created: 1667577545969
+url: "{{ base_url }}/workingtimes/team/{{ id }}"
+name: Get team working times
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1667577545969
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

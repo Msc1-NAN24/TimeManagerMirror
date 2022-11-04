@@ -1,0 +1,29 @@
+_id: req_wrk_7f42856afd4e4c20ac0f80bc87e6a67535559810
+type: Request
+parentId: fld_wrk_7f42856afd4e4c20ac0f80bc87e6a675ca9ac925
+modified: 1667577545979
+created: 1667577545979
+url: "{{ base_url }}/workingtimes/{{ id }}"
+name: Edit working times
+description: ""
+method: PATCH
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "start": "2022-11-04T15:59:05.952Z",
+      "end": "2022-11-04T15:59:05.952Z"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1667577545979
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
