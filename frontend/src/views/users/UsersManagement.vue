@@ -3,7 +3,7 @@ import userService from '@/services/users';
 import userRepository from '@/repository/users';
 import { ref } from 'vue';
 
-const items = [] as any;
+const items = ref([] as any);
 const roles = ["employee", "manager", "general_manager"];
 const selected = ref(null);
 const isUser = ref(false);
@@ -13,13 +13,13 @@ const user = ref({
   firstname: '',
   lastname: '',
   email: '',
-  role: ''
+  rank: ''
 });
 const updateUser = ref({
   firstname: '',
   lastname: '',
   email: '',
-  role: ''
+  rank: ''
 });
 
 refreshUsers()
@@ -27,14 +27,17 @@ refreshUsers()
 function refreshUsers() {
   userService.getAllUsers().then((response) => {
     console.log(response);
+    items.value = []
     for (let i = 0; i < response.length; i++) {
-      items.push({ title: response[i].firstname, icon: 'mdi-account', route: 'users', id: response[i].id });
+      items.value.push({ title: response[i].firstname, icon: 'mdi-account', route: 'users', id: response[i].id });
     }
-    console.log(items)
+    console.log(items.value)
   });
 }
 
 function searchUsers() {
+   isUser.value = false;
+   isEditing.value = false;
   if (selected.value != null) {
     userService.getUserById(selected.value).then((response) => {
       console.log(response);
@@ -43,7 +46,7 @@ function searchUsers() {
       user.value.firstname = response.firstname;
       user.value.lastname = response.lastname;
       user.value.email = response.email;
-      user.value.role = response.rank;
+      user.value.rank = response.rank;
       updateUser.value = user.value;
     });
   } else {
@@ -55,8 +58,9 @@ function deleteUser() {
   if (selected.value != null) {
     userRepository.deleteUserById(selected.value).then((response) => {
       console.log(response);
-      refreshUsers();
+      selected.value = null;
       isUser.value = false;
+      refreshUsers();
     });
   } else {
     console.log('No user selected');
@@ -68,6 +72,7 @@ function saveUser() {
     userService.updateUser(selected.value, updateUser.value
     ).then((response) => {
       console.log(response);
+      isEditing.value = false;
       refreshUsers();
     });
   } else {
@@ -103,7 +108,8 @@ function saveUser() {
           <v-text-field v-model="updateUser.email" :placeholder="user.email"></v-text-field>
         </td>
         <td style="width: 28%">
-          <v-select v-model="updateUser.role" solo :items="roles" :value="user.role" append-inner-icon=""></v-select>
+          <v-select v-if="user.rank != 'general_manager'" v-model="updateUser.rank" solo :items="roles" :value="user.rank" append-inner-icon=""></v-select>
+          <v-select v-else v-model="updateUser.rank" solo :items="roles" :value="user.rank" append-inner-icon="" disabled></v-select>
         </td>
         <td style="width: 7%">
           <v-btn icon color="success" @click="saveUser()">
@@ -118,16 +124,16 @@ function saveUser() {
       </tr>
       <tr v-else>
         <td style="width: 15%">
-          <v-text-field v-model="updateUser.firstname" :label="user.firstname" disabled></v-text-field>
+          <v-text-field v-model="updateUser.firstname" disabled></v-text-field>
         </td>
         <td style="width: 15%">
-          <v-text-field v-model="updateUser.lastname" :label="user.lastname" disabled></v-text-field>
+          <v-text-field v-model="updateUser.lastname" disabled></v-text-field>
         </td>
         <td style="width: 28%">
-          <v-text-field v-model="updateUser.email" :label="user.email" disabled></v-text-field>
+          <v-text-field v-model="updateUser.email" disabled></v-text-field>
         </td>
         <td style="width: 28%">
-          <v-select v-model="updateUser.role" solo :items="roles" :value="user.role" disabled append-inner-icon="">
+          <v-select v-model="updateUser.rank" solo :items="roles" :value="user.rank" disabled append-inner-icon="">
           </v-select>
         </td>
         <td style="width: 7%">
@@ -136,7 +142,7 @@ function saveUser() {
           </v-btn>
         </td>
         <td style="width: 7%">
-          <v-btn icon color="error" @click="deleteUser()">
+          <v-btn v-if="user.rank != 'general_manager'" icon color="error" @click="deleteUser()">
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </td>
