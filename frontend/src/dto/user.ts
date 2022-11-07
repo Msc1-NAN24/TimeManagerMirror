@@ -1,13 +1,7 @@
-enum rank {
-  user,
-  manager,
-  generalManager,
-}
-
 export interface IUser {
   id: number;
   email: string;
-  rank: rank;
+  rank: "employee" | "manager" | "general_manager";
   lastname: string;
   firstname: string;
 }
@@ -15,7 +9,7 @@ export interface IUser {
 export interface IUpdateUser {
   email?: string;
   password?: string;
-  rank?: rank;
+  rank?: "employee" | "manager" | "general_manager";
   lastname?: string;
   firstname?: string;
 }

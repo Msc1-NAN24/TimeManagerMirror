@@ -1,7 +1,6 @@
 import { IUpdateUser, IUser } from "@/dto/user";
 import axios from "axios";
-import { authorize } from "@/utils/Api";
-import Api from "@/utils/Api";
+import Api, { authorize } from "@/utils/Api";
 
 const getUserById = async (id: number) => {
   const { data } = await Api.get<IUser>(`/users/${id}`);
@@ -17,11 +16,24 @@ const getMe = (
       callback(response.data);
     })
     .catch((err) => {
-      console.log(err);
       callback(
         undefined,
         "Une erreur est survenue lors de la récupération de vos données !"
       );
+    });
+};
+
+const deleteUser = (
+  accessToken: string,
+  callback: (error?: string) => void
+) => {
+  axios
+    .delete<IUser>(`/api/users/`, authorize(accessToken))
+    .then((response) => {
+      callback(undefined);
+    })
+    .catch((err) => {
+      callback("Une erreur est survenue !");
     });
 };
 
@@ -31,10 +43,6 @@ const getAllUsers = async () => {
 };
 const updateUser = async (id: number, updateUser: IUpdateUser) => {
   const { data } = await axios.patch<IUser>(`/api/user/${id}`, updateUser);
-  return data;
-};
-const deleteUser = async (id: number) => {
-  const { data } = await axios.delete<IUser>(`/api/user/${id}`);
   return data;
 };
 

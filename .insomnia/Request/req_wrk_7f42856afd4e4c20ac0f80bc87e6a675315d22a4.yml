@@ -1,0 +1,21 @@
+_id: req_wrk_7f42856afd4e4c20ac0f80bc87e6a675315d22a4
+type: Request
+parentId: fld_wrk_7f42856afd4e4c20ac0f80bc87e6a67557f2b181
+modified: 1667577545959
+created: 1667577545959
+url: "{{ base_url }}/users/{{ id }}/revoke"
+name: Demote user
+description: ""
+method: POST
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1667577545959
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

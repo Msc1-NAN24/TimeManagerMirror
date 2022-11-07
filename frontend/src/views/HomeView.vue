@@ -4,7 +4,6 @@ import NavigationDrawer from '@/components/NavigationDrawer.vue';
 
 <template>
   <v-layout>
-    <NavigationDrawer />
     <v-main style="min-height: 100vh">
       <main>Home</main>
     </v-main>

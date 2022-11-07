@@ -1,0 +1,29 @@
+_id: req_wrk_7f42856afd4e4c20ac0f80bc87e6a675e09e7fad
+type: Request
+parentId: fld_wrk_7f42856afd4e4c20ac0f80bc87e6a675cbfd44d9
+modified: 1667577545965
+created: 1667577545965
+url: "{{ base_url }}/workingtimes/entry/{{ id }}/"
+name: Update team working time
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "start": "2022-11-04T15:59:05.953Z",
+      "end": "2022-11-04T15:59:05.953Z"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1667577545965
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
