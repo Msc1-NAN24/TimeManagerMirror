@@ -1,7 +1,7 @@
 <script lang="ts">
 import authService from "@/services/auth";
-import {IsLogged, useAuthStore} from "@/store/AuthStore";
-import { useRouter } from 'vue-router'
+import { IsLogged, useAuthStore } from "@/store/AuthStore";
+import { useRouter } from "vue-router";
 
 export default {
   setup() {
@@ -13,7 +13,7 @@ export default {
     return {
       auth,
       router,
-    }
+    };
   },
   data: () => ({
     form: false,
@@ -34,14 +34,19 @@ export default {
     onSubmit() {
       if (!this.form || !this.email || !this.password) return;
       this.loading = true;
-      authService.login(this.email, this.password, (auth, error) => {
-        if (auth !== undefined && error === undefined) {
-          this.auth.login(auth.access_token, auth.user);
-          this.$router.push({ name: "home" });
-        } else {
-          console.log(error);
-        }
-      });
+      authService
+        .login(this.email, this.password, (auth, error) => {
+          if (auth !== undefined && error === undefined) {
+            this.auth.login(auth.access_token, auth.user);
+            this.$router.push({ name: "home" });
+          } else {
+            console.log(error);
+          }
+        })
+        .catch((err) => {
+          this.$toast.error(err);
+          this.loading = false;
+        });
     },
     required(v: string) {
       return !!v || "Field is required";
