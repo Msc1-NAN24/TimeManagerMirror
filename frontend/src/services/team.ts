@@ -1,4 +1,4 @@
-import {ICreateTeam, ITeam} from "@/dto/team";
+import {ICreateTeam, IEditTeam, ITeam, IUserTeam} from "@/dto/team";
 import Api, {authorize} from "@/utils/Api";
 
 export const createTeam = (accessToken: string, body: ICreateTeam, callback: (team?: ITeam, error?: string) => void) => {
@@ -19,6 +19,38 @@ export const getTeams = (accessToken: string, callback: (teams: ITeam[], error?:
 
 export const getTeam = (accessToken: string, teamId: string, callback: (team?: ITeam, error?: string) => void) => {
   Api.get<ITeam>(`/teams/${teamId}`, authorize(accessToken)).then((response) => {
+    return callback(response.data);
+  }).catch((err) => {
+    return callback(undefined, "Une erreur est survenue !");
+  });
+}
+
+export const editTeam = (accessToken: string, teamId: string, body: IEditTeam, callback: (team?: ITeam, error?: string) => void) => {
+  Api.patch<ITeam>(`/teams/${teamId}`, body, authorize(accessToken)).then((response) => {
+    return callback(response.data);
+  }).catch((err) => {
+    return callback(undefined, "Une erreur est survenue !");
+  });
+}
+
+export const deleteTeam = (accessToken: string, teamId: string, callback: (team?: ITeam, error?: string) => void) => {
+  Api.delete<ITeam>(`/teams/${teamId}`, authorize(accessToken)).then((response) => {
+    return callback(response.data);
+  }).catch((err) => {
+    return callback(undefined, "Une erreur est survenue !");
+  });
+}
+
+export const addUserTeam = (accessToken: string, teamId: string, body: IUserTeam, callback: (team?: ITeam, error?: string) => void) => {
+  Api.post<ITeam>(`/teams/${teamId}/members/add`, body, authorize(accessToken)).then((response) => {
+    return callback(response.data);
+  }).catch((err) => {
+    return callback(undefined, "Une erreur est survenue !");
+  });
+}
+
+export const removeUserTeam = (accessToken: string, teamId: string, body: IUserTeam, callback: (team?: ITeam, error?: string) => void) => {
+  Api.post<ITeam>(`/teams/${teamId}/members/remove`, body, authorize(accessToken)).then((response) => {
     return callback(response.data);
   }).catch((err) => {
     return callback(undefined, "Une erreur est survenue !");
