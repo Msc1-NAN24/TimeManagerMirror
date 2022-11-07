@@ -22,6 +22,7 @@ services:
       dockerfile: Dockerfile
       args:
         PORT: ${API_PORT}
+        MIX_ENV: prod
     container_name: tm_api
     expose:
       - '${API_PORT}'
@@ -48,10 +49,11 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - db:/var/lib/postgresql/data
-networks: 
-  default: 
+networks:
+  default:
     external:
       name: nginx-proxy
 volumes:
   db:
+
 
