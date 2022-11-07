@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import CreateTeamModal from "@/components/modals/CreateTeamModal.vue";
+import CreateTeamModal from "@/components/modals/teams/CreateTeamModal.vue";
 import {useRouter} from "vue-router";
 import { ref, onMounted } from 'vue';
 import {useAuthStore} from "@/store/AuthStore";
