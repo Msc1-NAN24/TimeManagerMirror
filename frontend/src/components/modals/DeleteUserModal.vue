@@ -1,26 +1,49 @@
-<script setup>
+<script setup lang="ts">
+import userRepository from "@/repository/users";
+import {useAuthStore} from "@/store/AuthStore";
 
+const auth = useAuthStore();
+const props = defineProps(['open', 'onDismiss', 'onSuccess', 'deleteUser']);
+
+const onClickDelete = () => {
+  if (props.deleteUser) {
+    userRepository.deleteUsers(auth.accessToken, props.deleteUser, (error) => {
+      if (error) {
+        console.log(error);
+      } else {
+        props.onSuccess();
+      }
+    })
+  } else {
+    userRepository.deleteUser(auth.accessToken, (error) => {
+      if (error) {
+        console.log(error);
+      } else {
+        props.onSuccess();
+      }
+    })
+  }
+}
 </script>
 
 <template>
   <v-dialog
-      v-model="$props.open"
-      @close="$props.onDismiss"
-      @click:outside="$props.onDismiss"
-      width="500"
-  >
+      v-model="props.open"
+      @close="props.onDismiss"
+      @click:outside="props.onDismiss"
+      width="500">
     <v-card>
       <v-card-title class="text-h5 grey lighten-2">
-        Supprimer mon compte ?
+        Supprimer {{props.deleteUser !== undefined ? "ce" : 'mon'}} compte ?
       </v-card-title>
       <v-card-text>
-        Voulez-vous supprimer votre compte ? une fois cette opération effectuer, il n'est plus possible de récupérer le compte.
+        Voulez-vous supprimer {{props.deleteUser !== undefined ? "ce" : 'votre'}} compte ? une fois cette opération effectuer, il n'est plus possible de récupérer le compte.
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn
-            @click="this.onClickDelete"
+            @click="onClickDelete"
             color="error"
             text>
           Supprimer
@@ -30,34 +53,5 @@
   </v-dialog>
 </template>
 
-<script>
-import {useAuthStore} from "@/store/AuthStore";
-import {storeToRefs} from "pinia";
-import userRepository from "@/repository/users";
-
-export default {
-  name: "DeleteUserModal",
-  props: ['open', 'onDismiss', 'onSuccess'],
-  setup() {
-    const auth = useAuthStore();
-    return {
-      ...storeToRefs(auth)
-    }
-  },
-  methods: {
-    onClickDelete() {
-      userRepository.deleteUser(this.accessToken, (error) => {
-        if (error) {
-          console.log(error);
-        } else {
-          this.$props.onSuccess();
-        }
-      })
-    }
-  }
-}
-</script>
-
 <style scoped>
-
 </style>
