@@ -4,6 +4,8 @@ export interface IUser {
   rank: "employee" | "manager" | "general_manager";
   lastname: string;
   firstname: string;
+  insert_at: Date;
+  updated_at: Date;
 }
 
 export interface IUpdateUser {

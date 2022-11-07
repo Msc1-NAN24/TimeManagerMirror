@@ -1,9 +1,13 @@
 import { IUpdateUser, IUser } from "@/dto/user";
 import axios from "axios";
-import Api, {authorize} from "@/utils/Api";
+import Api, { authorize } from "@/utils/Api";
 
 const getUserById = async (id: number) => {
-  const { data } = await Api.get<IUser>(`/user/${id}`);
+  const { data } = await Api.get<IUser>(`/users/${id}`, {
+    headers: {
+      Authorization: `${localStorage.getItem("access_token")}`,
+    },
+  });
   return data;
 };
 
@@ -16,22 +20,49 @@ const getMe = (accessToken: string, callback: (user?: IUser, error?: string) => 
 };
 
 const deleteUser = (accessToken: string, callback: (error?: string) => void) => {
-  axios.delete<IUser>(`/api/users/`, authorize(accessToken)).then((response) => {
+  axios.delete<IUser>(`/users/`, authorize(accessToken)).then((response) => {
     callback(undefined)
   }).catch((err) => {
     callback("Une erreur est survenue !");
   });
 }
 
-const getAllUsers = async () => {
-  const { data } = await Api.get<IUser[]>('/users');
+const deleteUsers = (accessToken: string, userId: string, callback: (error?: string) => void) => {
+  axios.delete<IUser>(`/users/${userId}`, authorize(accessToken)).then((response) => {
+    callback(undefined)
+  }).catch((err) => {
+    callback("Une erreur est survenue !");
+  });
+}
+
+const deleteUserById = async (id: number) => {
+  const { data } = await Api.delete<IUser[]>(`/users/${id}`, {
+    headers: {
+      Authorization: `${localStorage.getItem("access_token")}`,
+    },
+  });
   return data;
 };
+
+const getAllUsers = async () => {
+  const { data } = await Api.get<IUser[]>('/users', {
+    headers: {
+      Authorization: `${localStorage.getItem("access_token")}`,
+    },
+  });
+  return data;
+};
+
 const updateUser = async (id: number, updateUser: IUpdateUser) => {
-  const { data } = await Api.patch<IUser>(
-    `/user/${id}`,
-    updateUser
-  );
+  const { data } = await Api.put<IUser>(
+    `/users/${id}`,
+    {
+      user: updateUser
+    }, {
+      headers: {
+        Authorization: `${localStorage.getItem("access_token")}`,
+      },
+    });
   return data;
 };
 
@@ -41,6 +72,8 @@ const userRepository = {
   getAllUsers,
   updateUser,
   deleteUser,
+  deleteUsers,
+  deleteUserById
 };
 
 export default userRepository;

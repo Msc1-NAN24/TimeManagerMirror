@@ -365,8 +365,8 @@ defmodule TimeManagerApi.Timemanager do
   """
   def list_teams do
     teams = Repo.all(Team)
-    Repo.preload(teams, :members)
-    Repo.preload(teams, :owner)
+    teams = Repo.preload(teams, :members)
+    teams = Repo.preload(teams, :owner)
   end
 
   @doc """

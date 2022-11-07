@@ -14,7 +14,7 @@ defmodule TimeManagerApiWeb.ClockController do
   def create_with_user_id(conn, _params) do
     with {:ok, %Clock{} = clock} <- Timemanager.create_clock(conn.user.id) do
       conn
-      |> put_status(:created)
+      |> put_status(:ok)
       |> render("show.json", clock: clock)
     end
   end
