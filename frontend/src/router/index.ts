@@ -15,13 +15,13 @@ const router = createRouter({
           name: "home",
         },
         {
-          path: "/workingTimes/:userI",
-          name: "workingTimes",
+          path: "/workingtimes/:userid",
+          name: "workingtimes",
           component: () => import("../views/WorkingTimes.vue"),
         },
         {
-          path: "/workingTime/:userid/:workingtimeid",
-          name: "workingTime",
+          path: "/workingtime/:userid/:workingtimeid",
+          name: "workingtime",
           component: () => import("../views/WorkingTime.vue"),
         },
         {
@@ -70,6 +70,11 @@ const router = createRouter({
       path: "/register",
       name: "register",
       component: () => import("../views/Register.vue"),
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "not-found",
+      component: () => import("../views/NotFound.vue"),
     },
   ],
 });
