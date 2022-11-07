@@ -3,12 +3,13 @@ FROM elixir:latest
 COPY . /app
 
 WORKDIR /app
+ARG MIX_ENV=dev
 
 RUN mix local.hex --force
 RUN mix local.rebar --force
 RUN mix deps.get
-
-ARG API_PORT
+Run mix ecto.create
+RUN mix ecto.migrate
 EXPOSE ${API_PORT}
 
-CMD mix setup && mix phx.server
+CMD mix phx.server
