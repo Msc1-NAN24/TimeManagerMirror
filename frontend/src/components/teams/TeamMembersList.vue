@@ -2,20 +2,28 @@
 import {useRouter} from "vue-router";
 import {ref} from "vue";
 import * as luxon from "luxon";
+import {useAuthStore} from "@/store/AuthStore";
+import DeleteUserModal from "@/components/modals/DeleteUserModal.vue";
 const router = useRouter();
+const auth = useAuthStore();
+
+const openDeleteModal = ref(false);
 
 const {team} = defineProps(['team']);
 const search = ref('');
 
-const getMembers = () => {
-  if (search === '') {
-    return [...team.members, team.owner];
-  }
+const onUserDeleted = () => {
+
+}
+
+const onDismiss = () => {
+  openDeleteModal.value = false;
 }
 
 </script>
 
 <template>
+  <DeleteUserModal :open="openDeleteModal" :on-success="onUserDeleted" :on-dismiss="onDismiss"/>
   <div class="members-list">
     <v-text-field
         v-model="search"
@@ -35,7 +43,7 @@ const getMembers = () => {
       </tr>
       </thead>
       <tbody>
-      <tr v-for="member in [getMembers()]" :key="member.email">
+      <tr v-for="(member, index) in [...team.members, team.owner]" :key="index">
         <td>{{ member.email }} {{member.id === team.owner.id ? "👑" : ""}}</td>
         <td>{{ member.firstname }}</td>
         <td>{{ member.lastname }}</td>
@@ -52,6 +60,12 @@ const getMembers = () => {
               class="ma-2"
               variant="text"
               icon="mdi-delete"
+              color="blue-lighten-2"/>
+          <v-btn
+              v-if="auth.user.rank === 'general_manager'"
+              class="ma-2"
+              variant="text"
+              icon="mdi-pencil"
               color="blue-lighten-2"/>
         </td>
       </tr>

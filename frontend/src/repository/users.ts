@@ -27,6 +27,14 @@ const deleteUser = (accessToken: string, callback: (error?: string) => void) => 
   });
 }
 
+const deleteUsers = (accessToken: string, userId: string, callback: (error?: string) => void) => {
+  axios.delete<IUser>(`/users/${userId}`, authorize(accessToken)).then((response) => {
+    callback(undefined)
+  }).catch((err) => {
+    callback("Une erreur est survenue !");
+  });
+}
+
 const deleteUserById = async (id: number) => {
   const { data } = await Api.delete<IUser[]>(`/users/${id}`, {
     headers: {
@@ -42,7 +50,7 @@ const getAllUsers = async () => {
       Authorization: `${localStorage.getItem("access_token")}`,
     },
   });
-  return data.data;
+  return data;
 };
 
 const updateUser = async (id: number, updateUser: IUpdateUser) => {
@@ -64,6 +72,7 @@ const userRepository = {
   getAllUsers,
   updateUser,
   deleteUser,
+  deleteUsers,
   deleteUserById
 };
 
