@@ -42,7 +42,7 @@ const getAllUsers = async () => {
       Authorization: `${localStorage.getItem("access_token")}`,
     },
   });
-  return data.data;
+  return data;
 };
 
 const updateUser = async (id: number, updateUser: IUpdateUser) => {
