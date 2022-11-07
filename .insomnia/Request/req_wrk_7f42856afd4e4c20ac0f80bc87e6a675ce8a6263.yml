@@ -1,0 +1,28 @@
+_id: req_wrk_7f42856afd4e4c20ac0f80bc87e6a675ce8a6263
+type: Request
+parentId: fld_wrk_7f42856afd4e4c20ac0f80bc87e6a675cbfd44d9
+modified: 1667577545976
+created: 1667577545976
+url: "{{ base_url }}/teams"
+name: Create a new team
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "name": "string"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1667577545976
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

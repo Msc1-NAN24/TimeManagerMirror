@@ -1,0 +1,21 @@
+_id: req_wrk_7f42856afd4e4c20ac0f80bc87e6a67520c8ff80
+type: Request
+parentId: fld_wrk_7f42856afd4e4c20ac0f80bc87e6a675cbfd44d9
+modified: 1667577545964
+created: 1667577545964
+url: "{{ base_url }}/workingtimes/entry/{{ id }}/"
+name: Delete team working time
+description: ""
+method: DELETE
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1667577545964
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
