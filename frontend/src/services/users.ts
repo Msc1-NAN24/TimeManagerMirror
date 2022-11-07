@@ -13,20 +13,32 @@ const getAllUsers = async () => {
 //   const created_user = await userRepository.CreateUser(user);
 //   return created_user;
 // };
-const updateUser = async (id: number, user: IUpdateUser) => {
-  const updatedUser = await userRepository.updateUser(id, user);
+const updateMyUser = async (accessToken: string, user: IUpdateUser) => {
+  const updatedUser = await userRepository.updateMyUser(accessToken, user);
   return updatedUser;
 };
-const deleteUser = async (id: number): Promise<IUser> => {
-  const user = await userRepository.deleteUser(id);
-  return user;
+const deleteUser = async (accessToken: string) => {
+  await userRepository.deleteUser(accessToken);
+};
+
+const resetMyPassword = async (
+  accessToken: string,
+  new_password: string,
+  last_password: string
+) => {
+  await userRepository.resetMyPassword(
+    accessToken,
+    new_password,
+    last_password
+  );
 };
 
 const userService = {
   getUserById,
   getAllUsers,
-  updateUser,
+  updateMyUser,
   deleteUser,
+  resetMyPassword,
 };
 
 export default userService;
