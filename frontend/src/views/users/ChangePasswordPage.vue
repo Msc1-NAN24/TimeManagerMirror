@@ -71,7 +71,10 @@ export default {
           this.newPassword,
           this.oldPassword
         )
-        .then((res) => this.$toast.success("Mots de passe modifié"))
+        .then((res) => {
+          this.router.push({ name: "profile" });
+          this.$toast.success("Mots de passe modifié");
+        })
         .catch((err) => this.$toast.error(err));
     },
   },
