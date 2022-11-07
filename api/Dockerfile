@@ -8,7 +8,8 @@ ARG MIX_ENV=dev
 RUN mix local.hex --force
 RUN mix local.rebar --force
 RUN mix deps.get
-
+Run mix ecto.create
+RUN mix ecto.migrate
 EXPOSE ${API_PORT}
 
-ENTRYPOINT [ "sh", "./entrypoint.sh" ]
+CMD mix phx.server
