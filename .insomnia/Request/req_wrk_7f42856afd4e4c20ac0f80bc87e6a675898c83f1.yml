@@ -3,7 +3,7 @@ type: Request
 parentId: fld_wrk_7f42856afd4e4c20ac0f80bc87e6a675ca9ac925
 modified: 1667577545978
 created: 1667577545978
-url: "{{ base_url }}/workingtimes/{{ id }}"
+url: "{{ base_url }}/workingtimes/entry/{{ id }}"
 name: Delete working times
 description: ""
 method: DELETE
