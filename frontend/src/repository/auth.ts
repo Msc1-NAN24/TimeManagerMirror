@@ -5,7 +5,11 @@ import Api from "@/utils/Api";
 
 const authRepository = {
   login: async (email: string, password: string) => {
-    await Api.post<IAuthLogin>(`/auth/login`, { email, password });
+    const { data } = await Api.post<IAuthLogin>(`/auth/login`, {
+      email,
+      password,
+    });
+    return data;
   },
   register: async (createUser: ICreateUser) => {
     const { data } = await Api.post<IUser>("/auth/register", createUser);

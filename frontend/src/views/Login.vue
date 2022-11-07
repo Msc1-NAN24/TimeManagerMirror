@@ -35,13 +35,10 @@ export default {
       if (!this.form || !this.email || !this.password) return;
       this.loading = true;
       authService
-        .login(this.email, this.password, (auth, error) => {
-          if (auth !== undefined && error === undefined) {
-            this.auth.login(auth.access_token, auth.user);
-            this.$router.push({ name: "home" });
-          } else {
-            console.log(error);
-          }
+        .login(this.email, this.password)
+        .then(({ access_token, user }) => {
+          this.auth.login(access_token, user);
+          this.$router.push({ name: "home" });
         })
         .catch((err) => {
           this.$toast.error(err);
