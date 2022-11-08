@@ -6,6 +6,10 @@ defmodule TimeManagerApiWeb.WorkingtimesView do
     render_many(workingtimes, WorkingtimesView, "workingtimes.json")
   end
 
+  def render("teams.json", %{workingtimes: workingtimes}) do
+    render_many(workingtimes, WorkingtimesView, "team_workingtimes.json")
+  end
+
   def render("show.json", %{workingtimes: workingtimes}) do
     render_one(workingtimes, WorkingtimesView, "workingtimes.json")
   end

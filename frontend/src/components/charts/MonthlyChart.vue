@@ -17,11 +17,11 @@ import {DateTime} from "luxon";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, LineElement, PointElement)
 
-const props = defineProps(['times', 'onPickerChange']);
+const props = defineProps(['times', 'onPickerChange', 'numberOfDays']);
 
 const date = ref();
 const chartData = ref({
-  labels: [...Array.from({length:DateTime.now().endOf("month").day},(v,k)=>k+1)],
+  labels: [...Array.from({length: props.numberOfDays},(v,k)=>k+1)],
   datasets: [
     {
       label: 'En ligne',
@@ -38,24 +38,15 @@ const chartOptions: Partial<CoreChartOptions<Line>> = {
 }
 
 watch(() => props.times, (times) => {
+  console.log(props.times);
   let connectedInSection = {};
   if (times.length > 0) {
-    let currentDay = DateTime.fromISO(times[0].start).day;
-    for (let i = 0; i < times.length; i++) {
-      if (times[i - 1]?.end !== undefined && DateTime.fromISO(times[i - 1].end).day < DateTime.fromISO(times[i].start).day) {
-        currentDay = DateTime.fromISO(times[i].start).day;
-      }
-      const end = DateTime.fromISO(times[i].end);
-      const start = DateTime.fromISO(times[i].start);
-      const diff = end.diff(start, 'hours');
-      if (connectedInSection[currentDay] === undefined) {
-        connectedInSection[currentDay] = [];
-      }
-      connectedInSection[currentDay].push(diff.toObject().hours)
+    for (let i = 0; i < props.numberOfDays; i++) {
+      connectedInSection[i] = times.filter((wt) => DateTime.fromISO(wt.start).day === i).reduce((last, time) => last + DateTime.fromISO(time.end).diff(DateTime.fromISO(time.start), 'hours').toObject().hours, 0);
     }
   }
   chartData.value = {
-    labels: [...Array.from({length:DateTime.now().endOf("month").day},(v,k)=>k+1)],
+    labels: [...Array.from({length: props.numberOfDays},(v,k)=>k+1)],
     datasets: [
       {
         label: 'En ligne',
@@ -64,7 +55,7 @@ watch(() => props.times, (times) => {
           const section = Object.keys(connectedInSection).find((a) => a == day);
           if (section == undefined)
             return 0;
-          return connectedInSection[section].reduce((hours, currentValue) => currentValue + hours, 0)
+          return connectedInSection[section];
         })],
         tension: 0.2
       },
