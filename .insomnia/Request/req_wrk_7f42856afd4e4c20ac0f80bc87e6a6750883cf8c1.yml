@@ -1,0 +1,28 @@
+_id: req_wrk_7f42856afd4e4c20ac0f80bc87e6a6750883cf8c1
+type: Request
+parentId: fld_wrk_7f42856afd4e4c20ac0f80bc87e6a6754f7b3cfa
+modified: 1667577545971
+created: 1667577545971
+url: "{{ base_url }}/teams/{{ id }}/members/add"
+name: Add team members
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "user_id": 0
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1667577545971
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

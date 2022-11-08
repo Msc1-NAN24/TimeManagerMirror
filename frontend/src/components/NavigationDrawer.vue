@@ -35,7 +35,7 @@ function onClickBtn() {
         <v-row class="top">
           <v-list>
             <v-list-item
-                @click="router.push({name: 'profile'})"
+                @click="router.push({name: 'myProfile'})"
                 prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
                 :title="`${user?.firstname} ${user?.lastname}`"
                 :subtitle="user?.email"

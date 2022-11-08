@@ -1,0 +1,29 @@
+_id: req_wrk_7f42856afd4e4c20ac0f80bc87e6a675a44f64e61
+type: Request
+parentId: fld_wrk_7f42856afd4e4c20ac0f80bc87e6a6758c5b6be2
+modified: 1667577545980
+created: 1667577545980
+url: "{{ base_url }}/workingtimes/user/{{ id }}"
+name: Add working times manually
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "start": "2022-11-04T15:59:05.952Z",
+      "end": "2022-11-04T15:59:05.952Z"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1667577545980
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

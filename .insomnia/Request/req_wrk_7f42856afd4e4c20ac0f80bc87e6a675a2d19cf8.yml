@@ -1,0 +1,23 @@
+_id: req_wrk_7f42856afd4e4c20ac0f80bc87e6a675a2d19cf8
+type: Request
+parentId: fld_wrk_7f42856afd4e4c20ac0f80bc87e6a675ca9ac925
+modified: 1667831235960
+created: 1667831158318
+url: "{{ base_url }}/workingtimes/user/2/1"
+name: Get working times
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: Authorization
+    value: SFMyNTY.g2gDYQJuBgCz0_JRhAFiAAFRgA.nYmFBTXMQNYOKEKF7gDXpS9F38M2d0eDxlo7wENrouM
+authentication: {}
+metaSortKey: -1667831158318
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

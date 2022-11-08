@@ -1,0 +1,23 @@
+_id: req_wrk_7f42856afd4e4c20ac0f80bc87e6a67583655a55
+type: Request
+parentId: fld_wrk_7f42856afd4e4c20ac0f80bc87e6a675ca9ac925
+modified: 1667831220975
+created: 1667577545983
+url: "{{ base_url }}/clocks"
+name: Clock in/out
+description: ""
+method: POST
+body: {}
+parameters: []
+headers:
+  - name: Authorization
+    value: SFMyNTY.g2gDYQJuBgCz0_JRhAFiAAFRgA.nYmFBTXMQNYOKEKF7gDXpS9F38M2d0eDxlo7wENrouM
+authentication: {}
+metaSortKey: -1667577545983
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

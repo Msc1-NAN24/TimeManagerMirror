@@ -72,20 +72,21 @@
   </v-sheet>
 </template>
 
-<script>
+<script lang="ts">
 import authService from "@/services/auth";
 export default {
   data: () => ({
-    firstname: null,
+    firstname: "",
     form: false,
-    lastname: null,
-    email: null,
-    password: null,
-    confirmPassword: null,
+    lastname: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
     terms: false,
     show1: false,
     show2: false,
     loading: false,
+    validePassword: false,
     rules: {
       required: (value) => !!value || "Required.",
       min: (v) => v.length >= 8 || "Min 8 characters",
@@ -106,23 +107,31 @@ export default {
         password: this.password,
         email: this.email,
       };
-      this.$router.push({ name: "home" });
 
-      authService.register(user).then((res) => {
-        this.$router.push({ name: "login" });
-      });
+      authService
+        .register(user)
+        .then((res) => {
+          if (res) {
+            this.$router.push({ name: "login" });
+            this.$toast.success("Création réussie.\nVeuillez vous connectez");
+          } else this.$toast.error(`l'email ${this.email} est déjà utilisé`);
+        })
+        .catch((err) => {
+          this.$toast.error(err);
+          this.loading = false;
+        });
     },
     required(v) {
       return !!v || "Field is required";
     },
-    checkPassword(invalid) {
-      // correct: false
-      if (true == invalid) {
-        this.validPassword = false;
-      } else {
-        this.validPassword = true;
-      }
-    },
+    // checkPassword(invalid) {
+    //   // correct: false
+    //   if (true == invalid) {
+    //     this.validPassword = false;
+    //   } else {
+    //     this.validPassword = true;
+    //   }
+    // },
   },
 };
 </script>
