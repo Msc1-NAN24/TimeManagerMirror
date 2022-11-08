@@ -15,14 +15,14 @@ const router = createRouter({
           name: "home",
         },
         {
+          path: "/workingtimes/:userid/:workingtimeid",
+          name: "workingtime",
+          component: () => import("../views/WorkingTime.vue"),
+        },
+        {
           path: "/workingtimes/:userid",
           name: "workingtimes",
           component: () => import("../views/WorkingTimes.vue"),
-        },
-        {
-          path: "/workingtime/:userid/:workingtimeid",
-          name: "workingtime",
-          component: () => import("../views/WorkingTime.vue"),
         },
         {
           path: "/clock/:username",

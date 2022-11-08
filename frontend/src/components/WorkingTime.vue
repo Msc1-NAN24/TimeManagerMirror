@@ -34,10 +34,10 @@ const clocks = [
 ];
 
 const getClock = (timestamp: string) => {
-  const hour = new Date(timestamp).getHours();
-  const minutes = new Date(timestamp).getMinutes();
-  const index = Math.floor((hour * 60 + minutes) / 30);
-  return clocks[index % 24];
+  const hour = luxon.DateTime.fromISO(timestamp).hour;
+  const minutes = luxon.DateTime.fromISO(timestamp).minute;
+  const offset = Math.floor(minutes / 30) + 1;
+  return clocks[(hour % 12) * 2 + offset];
 };
 </script>
 
