@@ -13,22 +13,24 @@ defmodule TimeManagerApiWeb.WorkingtimesController do
   # CUSTOM ROUTES
   def get_workingtimes(conn, %{"user_id" => user_id, "id" => id}) do
     workingtimes = Timemanager.get_workingtimes(user_id, id)
-    render(conn, "show.json", workingtimes: workingtimes)
+    render(conn, "index.json", workingtimes: workingtimes)
   end
 
   def get_workingtimes(conn, %{"user_id" => user_id, "start" => start_time, "end" => end_time}) do
     workingtimes = Timemanager.filter_workingtimes(user_id, start_time, end_time)
-    render(conn, "show.json", workingtimes: workingtimes)
+    IO.inspect workingtimes
+    render(conn, "index.json", workingtimes: workingtimes)
   end
 
   def get_workingtimes(conn, %{"user_id" => user_id, "start" => start_time}) do
     workingtimes = Timemanager.filter_workingtimes(user_id, start_time, nil)
-    render(conn, "show.json", workingtimes: workingtimes)
+    IO.inspect workingtimes
+    render(conn, "index.json", workingtimes: workingtimes)
   end
 
   def get_workingtimes(conn, %{"user_id" => user_id, "end" => end_time}) do
     workingtimes = Timemanager.filter_workingtimes(user_id, nil, end_time)
-    render(conn, "show.json", workingtimes: workingtimes)
+    render(conn, "index.json", workingtimes: workingtimes)
   end
 
   def get_workingtimes(conn, %{"user_id" => user_id}) do

@@ -292,12 +292,12 @@ defmodule TimeManagerApi.Timemanager do
       get_workingtimes(user_id)
     else
       if start_time == nil do
-        Repo.all(from w in Workingtimes, where: w.user == ^user_id and w.start <= ^end_time)
+        Repo.all(from w in Workingtimes, where: w.user_id == ^user_id and w.start <= ^end_time)
       else
         if end_time == nil do
-          Repo.all(from w in Workingtimes, where: w.user == ^user_id and w.start >= ^start_time)
+          Repo.all(from w in Workingtimes, where: w.user_id == ^user_id and w.start >= ^start_time)
         else
-          Repo.all(from w in Workingtimes, where: w.user == ^user_id and w.start >= ^start_time and w.start <= ^end_time)
+          Repo.all(from w in Workingtimes, where: w.user_id == ^user_id and w.start >= ^start_time and w.start <= ^end_time)
         end
       end
     end

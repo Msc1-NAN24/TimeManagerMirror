@@ -19,8 +19,10 @@ specifiers:
   '@vue/eslint-config-typescript': ^9.1.0
   '@vue/test-utils': ^2.0.0-0
   '@vue/vue3-jest': ^27.0.0-alpha.1
+  '@vuepic/vue-datepicker': ^3.5.3
   axios: ^1.1.3
   babel-jest: ^27.0.6
+  chart.js: ^3.9.1
   core-js: ^3.8.3
   cypress: ^9.7.0
   dotenv: ^16.0.3
@@ -39,16 +41,20 @@ specifiers:
   vite: ^3.0.8
   vite-plugin-vuetify: ^1.0.0-alpha.12
   vue: ^3.2.13
+  vue-chartjs: ^4.1.2
   vue-cli-plugin-vuetify: ~2.5.8
   vue-router: ^4.0.3
   vue-toast-notification: ^3.0
+  vue3-lottie: ^2.4.0
   vuetify: ^3.0.0-beta.0
   webfontloader: ^1.0.0
   webpack: '>=4.0.0 <5.0.0 || >=5.0.0 <6.0.0'
 
 dependencies:
   '@mdi/font': 5.9.55
+  '@vuepic/vue-datepicker': 3.5.3_vue@3.2.41
   axios: 1.1.3
+  chart.js: 3.9.1
   core-js: 3.26.0
   dotenv: 16.0.3
   husky: 8.0.1
@@ -58,8 +64,10 @@ dependencies:
   prettier: 2.7.1
   roboto-fontface: 0.10.0
   vue: 3.2.41
+  vue-chartjs: 4.1.2_chart.js@3.9.1+vue@3.2.41
   vue-router: 4.1.6_vue@3.2.41
   vue-toast-notification: 3.0.4_vue@3.2.41
+  vue3-lottie: 2.4.0_vue@3.2.41
   vuetify: 3.0.0-beta.15_hfmdtciki7cfunpdmwe3rjwrky
   webfontloader: 1.6.28
 
@@ -2874,6 +2882,16 @@ packages:
     resolution: {integrity: sha512-Iu8Tbg3f+emIIMmI2ycSI8QcEuAUgPTgHwesDU1eKMLE4YC/c/sFbGc70QgMq31ijRftV0R7vCm9co6rldCeOA==}
     dev: true
 
+  /@vuepic/vue-datepicker/3.5.3_vue@3.2.41:
+    resolution: {integrity: sha512-tyqnRDuqj02decCwzwGP7ht0erc33Ktcm8zyEx90C7Vt5Y4roq2CV21ovzmdRluUW8p/1abLcL7ZSqedWtAzKw==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      vue: '>=3.2.0'
+    dependencies:
+      date-fns: 2.29.3
+      vue: 3.2.41
+    dev: false
+
   /@vuetify/loader-shared/1.6.0_ic22eydrvkd7h62ekr7t4zjmia:
     resolution: {integrity: sha512-mRvswe5SIecagmKkL1c0UQx5V9ACKLyEGegOOe5vC3ccFH8rMbyI4AVZaAKm/EnGXKirWJ1umL8RQFcGd+C0tw==}
     peerDependencies:
@@ -3654,6 +3672,10 @@ packages:
     engines: {node: '>=12.20'}
     dev: true
 
+  /chart.js/3.9.1:
+    resolution: {integrity: sha512-Ro2JbLmvg83gXF5F4sniaQ+lTbSv18E+TIf2cOeiH1Iqd2PGFOtem+DUufMZsCJwFE7ywPOpfXFBwRTGq7dh6w==}
+    dev: false
+
   /check-more-types/2.24.0:
     resolution: {integrity: sha512-Pj779qHxV2tuapviy1bSZNEL1maXr13bPYpsvSDB68HlYcYuhlDrmGd63i0JHMCLKzc7rUSNIrpdJlhVlNwrxA==}
     engines: {node: '>= 0.8.0'}
@@ -4423,6 +4445,11 @@ packages:
       whatwg-mimetype: 2.3.0
       whatwg-url: 8.7.0
     dev: true
+
+  /date-fns/2.29.3:
+    resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
+    engines: {node: '>=0.11'}
+    dev: false
 
   /dayjs/1.11.6:
     resolution: {integrity: sha512-zZbY5giJAinCG+7AGaw0wIhNZ6J8AhWuSXKvuc1KAyMiRsvGQWqh4L+MomvhdAYjN+lqvVCMq1I41e3YHvXkyQ==}
@@ -7080,7 +7107,6 @@ packages:
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
-    dev: true
 
   /log-symbols/4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
@@ -7107,6 +7133,10 @@ packages:
       cli-cursor: 3.1.0
       slice-ansi: 4.0.0
       wrap-ansi: 6.2.0
+
+  /lottie-web/5.9.6:
+    resolution: {integrity: sha512-JFs7KsHwflugH5qIXBpB4905yC1Sub2MZWtl/elvO/QC6qj1ApqbUZJyjzJseJUtVpgiDaXQLjBlIJGS7UUUXA==}
+    dev: false
 
   /lower-case/2.0.2:
     resolution: {integrity: sha512-7fm3l3NAF9WfN6W3JOmf5drwpVqX78JtoGJ3A6W0a6ZnldM41w2fV5D490psKFTpMds8TJse/eHLFFsNHHjHgg==}
@@ -9539,6 +9569,16 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
+  /vue-chartjs/4.1.2_chart.js@3.9.1+vue@3.2.41:
+    resolution: {integrity: sha512-QSggYjeFv/L4jFSBQpX8NzrAvX0B+Ha6nDgxkTG8tEXxYOOTwKI4phRLe+B4f+REnkmg7hgPY24R0cixZJyXBg==}
+    peerDependencies:
+      chart.js: ^3.7.0
+      vue: ^3.0.0-0 || ^2.6.0
+    dependencies:
+      chart.js: 3.9.1
+      vue: 3.2.41
+    dev: false
+
   /vue-cli-plugin-vuetify/2.5.8_vue@3.2.41+webpack@5.74.0:
     resolution: {integrity: sha512-uqi0/URJETJBbWlQHD1l0pnY7JN8Ytu+AL1fw50HFlGByPa8/xx+mq19GkFXA9FcwFT01IqEc/TkxMPugchomg==}
     peerDependencies:
@@ -9722,6 +9762,17 @@ packages:
       '@vue/runtime-dom': 3.2.41
       '@vue/server-renderer': 3.2.41_vue@3.2.41
       '@vue/shared': 3.2.41
+
+  /vue3-lottie/2.4.0_vue@3.2.41:
+    resolution: {integrity: sha512-arNBADu3vW+1Lf+Pw32mU9T6X7c1bMn1tBvJ0/uo+W0G/0UxHyCwoXzyYIKZWB0WoeEvdo5x7HCf8VH0J7rLsw==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      vue: ^3.2
+    dependencies:
+      lodash: 4.17.21
+      lottie-web: 5.9.6
+      vue: 3.2.41
+    dev: false
 
   /vuetify/3.0.0-beta.15_hfmdtciki7cfunpdmwe3rjwrky:
     resolution: {integrity: sha512-Tw4StO4JJxwzN7RIAJ+nBVTaftlk3TqfqCtMLwJY/SO/ciVru+sHtahOpXIbp8B43d/DIRql3mfnrz1ooTSXtQ==}

@@ -1,25 +1,25 @@
 import { ICreateWorkingTime, IUpdateWorkingTime, IWorkingTime } from "@/dto/workingTime";
-import Api from "@/utils/Api";
+import Api, {authorize} from "@/utils/Api";
 
 // User Routes
 
 const getAllWorkingTimesByUser = async (userId: number) => {
-    const { data } = await Api.get<IWorkingTime[]>(`/workingtimes/user/${userId}`);
+    const { data } = await Api.get<IWorkingTime[]>(`/workingtimes/user/${userId}`, authorize(localStorage.getItem('access_token')));
     return data;
 }
 
 const getWorkingTimesByUserByPeriod = async (userId: number, start: string, end: string) => {
-    const { data } = await Api.get<IWorkingTime[]>(`/workingtimes/user/${userId}?start=${start}&end=${end}`);
+    const { data } = await Api.get<IWorkingTime[]>(`/workingtimes/user/${userId}?start=${start}&end=${end}`, authorize(localStorage.getItem('access_token')));
     return data;
 }
 
 const getWorkingTimeByUserById = async (userId: number, workingTimeId: number) => {
-    const { data } = await Api.get<IWorkingTime>(`/workingtimes/user/${userId}/${workingTimeId}`);
+    const { data } = await Api.get<IWorkingTime>(`/workingtimes/user/${userId}/${workingTimeId}`, authorize(localStorage.getItem('access_token')));
     return data;
 }
 
 const createWorkingTime = async (userId: number, workingTime: ICreateWorkingTime) => {
-    const { data } = await Api.post<IWorkingTime>(`/workingtimes/user/${userId}`, workingTime);
+    const { data } = await Api.post<IWorkingTime>(`/workingtimes/user/${userId}`, workingTime, authorize(localStorage.getItem('access_token')));
     return data;
 }
 

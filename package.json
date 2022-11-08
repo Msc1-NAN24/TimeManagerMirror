@@ -1,7 +1,0 @@
-{
-	"dependencies": {
-		"@lottiefiles/vue-lottie-player": "^1.0.9",
-		"vue3-easy-data-table": "^1.5.12",
-		"vue3-lottie": "^2.4.0"
-	}
-}
