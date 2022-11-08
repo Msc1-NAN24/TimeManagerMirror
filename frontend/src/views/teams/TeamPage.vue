@@ -9,6 +9,8 @@ import TeamMembersList from "@/components/teams/TeamMembersList.vue";
 import EditTeamModal from "@/components/modals/teams/EditTeamModal.vue";
 import DeleteTeamModal from "@/components/modals/teams/DeleteTeamModal.vue";
 import {useToast} from "vue-toast-notification";
+import WeeklyChart from "@/components/charts/WeeklyChart.vue";
+import AverageDailyChart from "@/components/charts/AverageDailyChart.vue";
 const route = useRoute();
 const auth = useAuthStore();
 
@@ -31,8 +33,13 @@ const loadTeam = (teamId: string) => {
       toast.error("Une erreur est survenue ! #1300");
     } else if (teams !== undefined) {
       team.value = teams;
+      loadWorkingTimes(teams.id);
     }
   });
+}
+
+const loadWorkingTimes = (id: string) => {
+
 }
 
 onMounted(() => {
@@ -77,11 +84,15 @@ const onTeamDeleted = (newTeam: ITeam) => {
           variant="elevated"
           text>Supprimer la team</v-btn>
     </div>
-    <TeamMembersList :team="team"/>
+
+    <AverageDailyChart/>
+
+    <TeamMembersList :team="team" :reload="() => loadTeam(team.id)"/>
   </div>
 </template>
 
 <style scoped>
+
 .actions {
   display: flex;
   flex-direction: row;

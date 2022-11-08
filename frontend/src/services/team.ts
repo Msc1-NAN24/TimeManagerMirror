@@ -41,12 +41,9 @@ export const deleteTeam = (accessToken: string, teamId: string, callback: (team?
   });
 }
 
-export const addUserTeam = (accessToken: string, teamId: string, body: IUserTeam, callback: (team?: ITeam, error?: string) => void) => {
-  Api.post<ITeam>(`/teams/${teamId}/members/add`, body, authorize(accessToken)).then((response) => {
-    return callback(response.data);
-  }).catch((err) => {
-    return callback(undefined, "Une erreur est survenue !");
-  });
+export const addUserTeam = async (accessToken: string, teamId: string, body: IUserTeam) => {
+  console.log(body);
+  return await Api.post<ITeam>(`/teams/${teamId}/members/add`, body, authorize(accessToken));
 }
 
 export const removeUserTeam = (accessToken: string, teamId: string, body: IUserTeam, callback: (team?: ITeam, error?: string) => void) => {

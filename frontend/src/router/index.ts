@@ -7,6 +7,16 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
+      path: "/login",
+      name: "login",
+      component: () => import("../views/Login.vue"),
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: () => import("../views/Register.vue"),
+    },
+    {
       path: "/",
       component: NavigationDrawer,
       children: [
@@ -70,17 +80,12 @@ const router = createRouter({
           name: "users-management",
           component: () => import("../views/users/UsersManagement.vue"),
         },
+        {
+          path: "/:catchAll(.*)",
+          component: () => import('../views/NotFoundPage.vue'),
+        }
+      ]
       ],
-    },
-    {
-      path: "/login",
-      name: "login",
-      component: () => import("../views/Login.vue"),
-    },
-    {
-      path: "/register",
-      name: "register",
-      component: () => import("../views/Register.vue"),
     },
   ],
 });

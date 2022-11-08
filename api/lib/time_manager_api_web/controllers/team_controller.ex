@@ -53,6 +53,7 @@ defmodule TimeManagerApiWeb.TeamController do
     end
   end
 
+
   def remove_member(conn, %{"id" => id, "user_id" => user_id}) do
     user = Timemanager.get_user(user_id)
     if is_nil(user) do
