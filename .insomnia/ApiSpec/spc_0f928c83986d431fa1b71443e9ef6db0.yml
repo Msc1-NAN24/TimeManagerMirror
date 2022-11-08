@@ -1,7 +1,7 @@
 _id: spc_0f928c83986d431fa1b71443e9ef6db0
 type: ApiSpec
 parentId: wrk_7f42856afd4e4c20ac0f80bc87e6a675
-modified: 1667577562313
+modified: 1667831158354
 created: 1667577225915
 fileName: timemanager.yaml
 contents: >
@@ -316,7 +316,7 @@ contents: >
             description: Unauthorized
           '500':
             description: Internal server error
-    /workingtimes:
+    /workingtimes/user/{id}:
       get:
         summary: Get working times
         description: Used by employees to get their working times.
@@ -324,6 +324,13 @@ contents: >
         tags:
           - Working Times
           - Employees
+        parameters:
+          - name: id
+            in: path
+            description: ID of the working time to get
+            required: true
+            schema:
+              type: integer
         responses:
           '200':
             description: Working times
@@ -342,6 +349,13 @@ contents: >
         tags:
           - Working Times
           - Employees
+        parameters:
+          - name: id
+            in: path
+            description: ID of the working time to add a workingtime for
+            required: true
+            schema:
+              type: integer
         requestBody:
           description: Working time to add
           content:
@@ -358,14 +372,105 @@ contents: >
             description: Unauthorized
           '500':
             description: Internal server error
-    /workingtimes/{id}:
-      patch:
-        summary: Edit working times
-        description: Used by employees to edit working times.
-        operationId: editWorkingTimes
+    /workingtimes/user/{userId}/{id}:
+      get:
+        summary: Get working times
+        description: Used by employees to get a specific workingtime
+        operationId: getUserWorkingTime
         tags:
           - Working Times
           - Employees
+        parameters:
+          - name: id
+            in: path
+            description: ID of the working time to get
+            required: true
+            schema:
+              type: integer
+          - name: userId
+            in: path
+            description: ID of the user checking their workingtimes
+            required: true
+            schema:
+              type: integer
+        responses:
+          '200':
+            description: Working time
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/WorkingTime'
+          '401':
+            description: Unauthorized
+          '500':
+            description: Internal server error
+    /workingtimes/entry/{id}:
+      get:
+        summary: Get working times
+        description: Used by managers to get a specific workingtime
+        operationId: getWorkingTime
+        tags:
+          - Working Times
+          - Managers
+        parameters:
+          - name: id
+            in: path
+            description: ID of the working time to get
+            required: true
+            schema:
+              type: integer
+        responses:
+          '200':
+            description: Working time
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/WorkingTime'
+          '401':
+            description: Unauthorized
+          '500':
+            description: Internal server error
+      post:
+        summary: Add working times
+        description: Used by managers to edit working times.
+        operationId: createWorkingTimes
+        tags:
+          - Working Times
+          - Managers
+        parameters:
+          - name: id
+            in: path
+            description: ID of the working time to edit
+            required: true
+            schema:
+              type: integer
+        requestBody:
+          description: Working time to edit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateWorkingTime'
+          required: true
+        responses:
+          '200':
+            description: Working times created
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/WorkingTime'
+          '400':
+            description: Bad request
+          '401':
+            description: Unauthorized
+          '500':
+            description: Internal server error
+      put:
+        summary: Edit working times
+        description: Used by managers to edit working times.
+        operationId: editWorkingTimes
+        tags:
+          - Working Times
+          - Managers
         parameters:
           - name: id
             in: path
@@ -620,88 +725,6 @@ contents: >
               application/json:
                 schema:
                   $ref: '#/components/schemas/WorkingTimes'
-          '401':
-            description: Unauthorized
-          '500':
-            description: Internal server error
-    /workingtimes/entry/{id}/:
-      get:
-        summary: Get working time
-        description: Used by managers to get a working time.
-        operationId: getWorkingTime
-        tags:
-          - Working Times
-          - Managers
-        parameters:
-          - name: id
-            in: path
-            description: ID of the working time to get
-            required: true
-            schema:
-              type: integer
-        responses:
-          '200':
-            description: Team working time
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/WorkingTime'
-          '401':
-            description: Unauthorized
-          '500':
-            description: Internal server error
-      put:
-        summary: Update team working time
-        description: Used by managers to update a team's working time
-        operationId: updateTeamWorkingTime
-        tags:
-          - Teams
-          - Working Times
-          - Managers
-        parameters:
-          - name: id
-            in: path
-            description: ID of the team to update working time from
-            required: true
-            schema:
-              type: integer
-        requestBody:
-          description: Working time information
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EditWorkingTime'
-        responses:
-          '200':
-            description: Team working time updated
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/WorkingTime'
-          '400':
-            description: Bad request
-          '401':
-            description: Unauthorized
-          '500':
-            description: Internal server error
-      delete:
-        summary: Delete team working time
-        description: Used by managers to delete a team's working time
-        operationId: deleteTeamWorkingTime
-        tags:
-          - Teams
-          - Working Times
-          - Managers
-        parameters:
-          - name: id
-            in: path
-            description: ID of the team to delete working time from
-            required: true
-            schema:
-              type: integer
-        responses:
-          '200':
-            description: Team working time deleted
           '401':
             description: Unauthorized
           '500':
