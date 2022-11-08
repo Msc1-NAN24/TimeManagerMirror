@@ -52,18 +52,19 @@ const getAllUsers = async () => {
   return data;
 };
 
-const updateUser = async (id: number, updateUser: IUpdateUser) => {
+const updateUser = async (
+  accessToken: string,
+  id: number,
+  updateUser: IUpdateUser
+) => {
   const { data } = await Api.put<IUser>(
     `/users/${id}`,
     {
       user: updateUser,
     },
-    {
-      headers: {
-        Authorization: `${localStorage.getItem("access_token")}`,
-      },
-    }
+    authorize(accessToken)
   );
+  return data;
 };
 
 const updateMyUser = async (accessToken: string, updateUser: IUpdateUser) => {
@@ -87,15 +88,30 @@ const resetMyPassword = (
   );
 };
 
+const resetPassword = (
+  accessToken: string,
+  id: string,
+  new_password: string,
+  last_password: string
+) => {
+  return Api.post(
+    `/users/${id}/reset-password`,
+    { new_password, last_password },
+    authorize(accessToken)
+  );
+};
+
 const userRepository = {
   getMe,
   getUserById,
   getAllUsers,
   updateMyUser,
+  updateUser,
   deleteUser,
   resetMyPassword,
   deleteUsers,
   deleteUserById,
+  resetPassword,
 };
 
 export default userRepository;

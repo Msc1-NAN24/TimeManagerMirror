@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import NavigationDrawer from "@/components/NavigationDrawer.vue";
+import { IsLogged, useAuthStore } from "@/store/AuthStore";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -12,7 +13,7 @@ const router = createRouter({
         {
           path: "/",
           component: HomeView,
-          name: "home"
+          name: "home",
         },
         {
           path: "/workingTimes/:userI",
@@ -46,25 +47,30 @@ const router = createRouter({
               path: ":id",
               name: "team",
               component: () => import("../views/teams/TeamPage.vue"),
-            }
-          ]
+            },
+          ],
         },
         {
           path: "/user/profile",
+          name: "myProfile",
+          component: () => import("../views/users/ProfilePage.vue"),
+        },
+        {
+          path: "/user/profile/:id",
           name: "profile",
           component: () => import("../views/users/ProfilePage.vue"),
         },
         {
-          path: '/user/reset-password',
-          name: 'reset-password',
-          component: () => import("../views/users/ChangePasswordPage.vue")
+          path: "/user/reset-password",
+          name: "reset-password",
+          component: () => import("../views/users/ChangePasswordPage.vue"),
         },
         {
           path: "/users-management",
           name: "users-management",
           component: () => import("../views/users/UsersManagement.vue"),
         },
-      ]
+      ],
     },
     {
       path: "/login",
@@ -77,6 +83,18 @@ const router = createRouter({
       component: () => import("../views/Register.vue"),
     },
   ],
+});
+
+router.beforeEach(async (to, from) => {
+  const { isLogged } = useAuthStore();
+  console.log(isLogged);
+  if (
+    to.name !== "register" &&
+    to.name !== "login" &&
+    isLogged !== IsLogged.Logged
+  ) {
+    return { name: "login" };
+  }
 });
 
 export default router;

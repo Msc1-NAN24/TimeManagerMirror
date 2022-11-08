@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     onClickCancel() {
-      this.router.push({ name: "profile" });
+      this.router.push({ name: "myProfile" });
     },
     onClickValidate() {
       servicesUser
@@ -72,7 +72,7 @@ export default {
           this.oldPassword
         )
         .then((res) => {
-          this.router.push({ name: "profile" });
+          this.router.push({ name: "myProfile" });
           this.$toast.success("Mots de passe modifié");
         })
         .catch((err) => this.$toast.error(err));
