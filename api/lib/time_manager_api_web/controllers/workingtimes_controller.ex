@@ -18,7 +18,6 @@ defmodule TimeManagerApiWeb.WorkingtimesController do
 
   def get_workingtimes(conn, %{"user_id" => user_id, "start" => start_time, "end" => end_time}) do
     workingtimes = Timemanager.filter_workingtimes(user_id, start_time, end_time)
-    IO.inspect workingtimes
     render(conn, "index.json", workingtimes: workingtimes)
   end
 
