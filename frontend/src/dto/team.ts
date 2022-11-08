@@ -13,6 +13,7 @@ export interface IUserTeam {
 }
 
 export interface ITeam {
+  id: string;
   owner: IUser;
   members: IUser[];
   name: string;

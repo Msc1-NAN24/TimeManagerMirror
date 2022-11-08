@@ -4,34 +4,56 @@ import {ref} from "vue";
 import * as luxon from "luxon";
 import {useAuthStore} from "@/store/AuthStore";
 import DeleteUserModal from "@/components/modals/DeleteUserModal.vue";
+import AddTeamUserModal from "@/components/modals/teams/AddTeamUserModal.vue";
+import {useToast} from "vue-toast-notification";
+import {IUser} from "@/dto/user";
+import {removeUserTeam} from "@/services/team";
 const router = useRouter();
 const auth = useAuthStore();
 
-const openDeleteModal = ref(false);
+enum ModalType {
+  AddUser,
+  RemoveUser,
+}
 
-const {team} = defineProps(['team']);
+const toast = useToast();
+const open = ref<undefined | ModalType>(undefined);
+
+const {team, reload} = defineProps(['team', 'reload']);
 const search = ref('');
 
-const onUserDeleted = () => {
+const onClickDeleteUser = (user: IUser) => {
+  removeUserTeam(auth.accessToken, team.id, {user_id: user.id}, (team, error) => {
+    if (error) {
+      toast.error("Une erreur est survenue ! #1400");
+    } else {
+      toast.success("L'utilisateur a été supprimer de votre team !");
+      reload();
+    }
+  });
+}
 
+const onUserAdded = () => {
+  toast.success("Les membres ont été ajouter à votre team !");
+  open.value = undefined;
+  reload();
 }
 
 const onDismiss = () => {
-  openDeleteModal.value = false;
+  open.value = undefined;
 }
 
 </script>
 
 <template>
-  <DeleteUserModal :open="openDeleteModal" :on-success="onUserDeleted" :on-dismiss="onDismiss"/>
-  <div class="members-list">
-    <v-text-field
+  <AddTeamUserModal :open="open === ModalType.AddUser" :on-success="onUserAdded" :on-dismiss="onDismiss" :team="team"/>
+<!--    <v-text-field
         v-model="search"
         append-icon="mdi-magnify"
         label="Search"
         single-line
-        hide-details/>
-    <v-table fixed-header height="300px">
+        hide-details/>-->
+    <v-table fixed-header class="members-list">
       <thead>
       <tr>
         <th class="text-left">Email</th>
@@ -60,23 +82,18 @@ const onDismiss = () => {
               class="ma-2"
               variant="text"
               icon="mdi-delete"
-              color="blue-lighten-2"/>
-          <v-btn
-              v-if="auth.user.rank === 'general_manager'"
-              class="ma-2"
-              variant="text"
-              icon="mdi-pencil"
+              @click="() => onClickDeleteUser(member)"
               color="blue-lighten-2"/>
         </td>
       </tr>
       </tbody>
     </v-table>
-  </div>
+    <v-btn rounded @click="open = ModalType.AddUser">Ajouter un utilisateur</v-btn>
 </template>
 
 <style scoped>
 .members-list {
-  padding: 20px;
-  margin: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 </style>
