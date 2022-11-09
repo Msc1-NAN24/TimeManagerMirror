@@ -6,6 +6,7 @@ specifiers:
   '@capacitor/cli': ^4.4.0
   '@capacitor/core': ^4.4.0
   '@capacitor/geolocation': ^4.0.1
+  '@capacitor/local-notifications': ^4.1.2
   '@capacitor/toast': ^4.0.1
   '@mdi/font': 5.9.55
   '@types/jest': ^27.0.1
@@ -60,6 +61,7 @@ dependencies:
   '@capacitor/cli': 4.4.0
   '@capacitor/core': 4.4.0
   '@capacitor/geolocation': 4.0.1_@capacitor+core@4.4.0
+  '@capacitor/local-notifications': 4.1.2_@capacitor+core@4.4.0
   '@capacitor/toast': 4.0.1_@capacitor+core@4.4.0
   '@mdi/font': 5.9.55
   '@vuepic/vue-datepicker': 3.5.3_vue@3.2.41
@@ -1391,6 +1393,14 @@ packages:
 
   /@capacitor/geolocation/4.0.1_@capacitor+core@4.4.0:
     resolution: {integrity: sha512-5dxXfDU1rCkn8xrXk6cQwUr+F2ZRycZoU5zi8MFVnH7JvHruV3B152Uz+urRkF/GtKQrgvxEW78GbejOW+nfYw==}
+    peerDependencies:
+      '@capacitor/core': ^4.0.0
+    dependencies:
+      '@capacitor/core': 4.4.0
+    dev: false
+
+  /@capacitor/local-notifications/4.1.2_@capacitor+core@4.4.0:
+    resolution: {integrity: sha512-oCUridU+QGQmvPfYgG2T03olsg3gVAMQg64I3azw17Ta6OuPCOJg8tf56OT872H9Dsvz0XBS2vBvNdgkYb2zMg==}
     peerDependencies:
       '@capacitor/core': ^4.0.0
     dependencies:

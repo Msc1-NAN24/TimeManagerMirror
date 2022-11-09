@@ -13,30 +13,23 @@
     <v-text-field v-model="lastname" label="Nom" required></v-text-field>
     <v-text-field v-model="email" label="Email" required></v-text-field>
   </v-form>
-  <div class="d-flex" style="gap: 20px">
+  <v-container>
     <v-btn variant="flat" color="success" @click="onClickUpdate"
-      >Mettre à jour</v-btn
-    >
+    >Mettre à jour</v-btn>
     <v-btn
-      variant="flat"
-      color="warning"
-      @click="onClickChangePassword"
-      v-if="!id || currentUser?.rank === 'general_manager'"
-      >Changer mon mot de passe</v-btn
-    >
-  </div>
-  <div class="d-flex" style="gap: 20px; margin-top: 20px">
+        variant="flat"
+        color="warning"
+        @click="onClickChangePassword"
+        v-if="!id || currentUser?.rank === 'general_manager'"
+    >Changer mon mot de passe</v-btn>
     <v-btn
-      variant="outlined"
-      color="info"
-      @click="onClickLogout"
-      v-if="!id || id === currentUser.id"
-      >Se déconnecter</v-btn
-    >
-    <v-btn variant="tonal" color="error" @click="onClickDelete"
-      >Supprimer mon compte</v-btn
-    >
-  </div>
+        variant="outlined"
+        color="info"
+        @click="onClickLogout"
+        v-if="!id || id === currentUser.id"
+    >Se déconnecter</v-btn>
+    <v-btn variant="tonal" color="error" @click="onClickDelete">Supprimer mon compte</v-btn>
+  </v-container>
 </template>
 
 <script lang="ts">

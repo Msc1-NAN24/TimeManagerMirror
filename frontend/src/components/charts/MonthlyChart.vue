@@ -19,7 +19,9 @@ ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale,
 
 const props = defineProps(['times', 'onPickerChange', 'numberOfDays']);
 
-const date = ref();
+const now = DateTime.now();
+const date = ref({month: now.month-1, year: now.year});
+
 const chartData = ref({
   labels: [...Array.from({length: props.numberOfDays},(v,k)=>k+1)],
   datasets: [
@@ -72,7 +74,7 @@ const onMonthChange = (event) => {
 
 <template>
   <div class="title">
-    <h2>Monthly</h2>
+    <h2>Récap mensuel</h2>
     <Datepicker class="picker" v-model="date" :month-picker="true" @update:modelValue="onMonthChange"/>
   </div>
   <Line

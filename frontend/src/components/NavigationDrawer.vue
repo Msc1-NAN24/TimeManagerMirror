@@ -58,10 +58,13 @@ watch(mobile, (value) => {
     <v-navigation-drawer app v-model="drawer" touchless class="bg-grey-lighten-3">
       <v-container class="container">
         <v-row class="top">
-          <v-list>
-            <v-list-item @click="router.push({ name: 'myProfile' })"
-              prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-              :title="`${user?.firstname} ${user?.lastname}`" :subtitle="user?.email"></v-list-item>
+            <v-list class="w-100">
+            <v-list-item
+                @click="router.push({name: 'myProfile'})"
+                prepend-icon="mdi-account-circle"
+                :title="`${user?.firstname} ${user?.lastname}`"
+                :subtitle="user?.email"
+            ></v-list-item>
           </v-list>
           <v-divider></v-divider>
           <v-list>
