@@ -90,7 +90,6 @@ const onWeekChange = (event) => {
     weeklyWorkingTimes.value = response as IWorkingTime[];
   });
 }
-
 </script>
 
 <template>
