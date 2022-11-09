@@ -18,7 +18,8 @@ import {DateTime} from "luxon";
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, LineElement, PointElement)
 
 const props = defineProps(['times', 'onPickerChange', 'startingDay']);
-const date = ref();
+const now = DateTime.now();
+const date = ref([now.startOf("week").toJSDate(), now.endOf("week").toJSDate()]);
 
 const chartData = ref({
   labels: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
@@ -67,7 +68,7 @@ const chartOptions = {
 
 <template>
   <div class="title">
-    <h2>Weekly</h2>
+    <h2>Récap hebdomadaire</h2>
     <Datepicker class="picker" v-model="date" week-picker @update:modelValue="(v) => props.onPickerChange(v)"/>
   </div>
   <Line

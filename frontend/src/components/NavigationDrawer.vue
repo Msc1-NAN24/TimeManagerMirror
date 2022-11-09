@@ -30,22 +30,22 @@ function onClickBtn() {
     <v-navigation-drawer
         app
         expand-on-hover
-        class="bg-grey-lighten-3"
+        class="bg-grey-lighten-5"
     >
       <v-container class="container">
         <v-row class="top">
-          <v-list>
+          <v-list class="w-100">
             <v-list-item
                 @click="router.push({name: 'myProfile'})"
-                prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
+                prepend-icon="mdi-account-circle"
                 :title="`${user?.firstname} ${user?.lastname}`"
                 :subtitle="user?.email"
             ></v-list-item>
           </v-list>
           <v-divider></v-divider>
-          <v-list>
-            <v-list-item prepend-icon="mdi-monitor-dashboard" title="Dashboard" value="dashboard" @click="router.push({name: 'home'})"></v-list-item>
-            <v-list-item prepend-icon="mdi-calendar-blank-multiple" title="Workingtimes" value="workingtimes" @click="onClickBtn"></v-list-item>
+          <v-list class="w-100">
+            <v-list-item prepend-icon="mdi-monitor-dashboard" title="Tableau de bord" value="dashboard" @click="router.push({name: 'home'})"></v-list-item>
+            <v-list-item prepend-icon="mdi-calendar-blank-multiple" title="Temps de travail" value="workingtimes" @click="onClickBtn"></v-list-item>
             <v-list-item v-if="user?.rank === 'manager' || user?.rank === 'general_manager'" prepend-icon="mdi-account-group" title="Teams" value="teams" @click="router.push({name: 'teams'})"></v-list-item>
             <v-list-item v-if="user?.rank === 'general_manager'" prepend-icon="mdi-account-multiple-outline" title="Utilisateurs" value="users" @click="router.push({name: 'users-management'})"></v-list-item>
           </v-list>
@@ -75,6 +75,7 @@ function onClickBtn() {
 .top {
   flex: 0 0 auto;
 }
+
 .bottom {
   flex: 0 0 auto;
   padding: 1em 0;
