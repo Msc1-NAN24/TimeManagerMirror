@@ -37,7 +37,6 @@ const chartData = ref({
 
 const chartOptions: Partial<CoreChartOptions<Doughnut>> = {
   responsive: true,
-  aspectRatio: 1.5,
 };
 
 watch(
@@ -81,6 +80,6 @@ watch(
 </script>
 
 <template>
-  <h2>Daily</h2>
+  <h2>Journalier</h2>
   <Doughnut :chart-options="chartOptions" :chart-data="chartData" />
 </template>

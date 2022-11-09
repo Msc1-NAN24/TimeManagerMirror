@@ -14,6 +14,8 @@
 
 [![Deploy](https://github.com/TimeManager-NAN3/TimeManagerMirror/actions/workflows/deploy.yml/badge.svg)](https://github.com/TimeManager-NAN3/TimeManagerMirror/actions/workflows/deploy.yml)
 [![Build](https://github.com/TimeManager-NAN3/TimeManagerMirror/actions/workflows/build.yml/badge.svg)](https://github.com/TimeManager-NAN3/TimeManagerMirror/actions/workflows/build.yml)
+![Website](https://img.shields.io/website?down_color=red&down_message=offline&style=plastic&up_color=green&up_message=online&url=https%3A%2F%2Ftime-manager.tech%2F)
+![Api](https://img.shields.io/website?down_color=red&down_message=offline&style=plastic&up_color=green&up_message=online&url=https%3A%2F%2Fapi.time-manager.tech/api/status%2F)
 
 ## Project
 
