@@ -107,14 +107,16 @@ router.beforeEach(async (to, from) => {
   }
 });
 
-router.beforeEach(async (to, from) => {
+router.beforeEach((to) => {
   const { user } = useAuthStore();
   const toast = useToast();
+
   if (
     (to.name === "dashboard" || to.name === "profile") &&
     user?.rank === userRank.employee
   ) {
     toast.info("Vous n'avez pas le droit d'accéder a cette page");
+    if (to.name === "profile") return { name: "myProfile" };
     return { name: "home" };
   }
 });
