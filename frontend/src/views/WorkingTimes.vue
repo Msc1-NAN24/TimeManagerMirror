@@ -3,20 +3,24 @@ import { IWorkingTime } from "@/dto/workingTime";
 import { reactive, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "@/utils/Api";
+
 import WorkingTime from "../components/WorkingTime.vue";
+
 const route = useRoute();
 const router = useRouter();
+
 const userId = ref(route.params.userid);
 const workingTimes = reactive<IWorkingTime[]>([]);
+
 async function getWorkingtimes() {
   try {
     const { data } = await axios.get<IWorkingTime[]>(
-        `/workingtimes/user/${userId.value}`,
-        {
-          headers: {
-            Authorization: localStorage.getItem("access_token"),
-          },
-        } as any
+      `/workingtimes/user/${userId.value}`,
+      {
+        headers: {
+          Authorization: localStorage.getItem("access_token"),
+        },
+      }
     );
     return data;
   } catch (error) {
@@ -24,33 +28,42 @@ async function getWorkingtimes() {
     router.push("/not-found");
   }
 }
-watch(
-    userId,
-    async () => {
-      workingTimes.splice(
-          0,
-          workingTimes.length,
-          ...((await getWorkingtimes()) ?? [])
-      );
-    },
-    { immediate: true }
-);
-setInterval(async () => {
-  workingTimes.splice(
+
+setInterval(
+  async () => {
+    workingTimes.splice(
       0,
       workingTimes.length,
       ...((await getWorkingtimes()) ?? [])
+    );
+  },
+  1000,
+  { immediate: true }
+);
+
+setInterval(async () => {
+  workingTimes.splice(
+    0,
+    workingTimes.length,
+    ...((await getWorkingtimes()) ?? [])
   );
 }, 10000);
 </script>
 
 <template>
   <div
-      id="workingtimes__list"
-      v-if="workingTimes !== null"
-      v-for="workingTime in workingTimes"
+    id="workingtimes__list"
+    v-if="workingTimes !== null"
+    v-for="workingTime in workingTimes"
   >
-    <WorkingTime :workingTime="workingTime" />
+    <WorkingTime
+      :workingTime="workingTime"
+      @clicked="
+        () => {
+          router.push(`/workingtimes/${userId}/${workingTime.id}`);
+        }
+      "
+    />
   </div>
 </template>
 
