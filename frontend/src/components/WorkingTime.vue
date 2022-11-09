@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { IWorkingTime } from "@/dto/workingTime";
 import * as luxon from "luxon";
+import { useRoute, useRouter } from "vue-router";
+
+const route = useRoute();
+const router = useRouter();
+
+defineEmits(["clicked"]);
 
 defineProps<{
   workingTime: IWorkingTime;
@@ -45,7 +51,14 @@ const getClock = (timestamp: string) => {
   <div class="workingtime">
     <div class="workingtime__clock">
       <div class="workingtime__clock__header">
-        <div class="workingtime__clock__header__date">
+        <div
+          class="workingtime__clock__header__date mouse-pointer"
+          @click="
+            () => {
+              $emit('clicked');
+            }
+          "
+        >
           {{
             luxon.DateTime.fromISO(workingTime.start).toLocaleString(
               luxon.DateTime.DATE_MED
@@ -105,6 +118,10 @@ const getClock = (timestamp: string) => {
   justify-content: center;
   width: 100%;
   height: 100%;
+}
+
+.mouse-pointer {
+  cursor: pointer;
 }
 
 .workingtime__clock {

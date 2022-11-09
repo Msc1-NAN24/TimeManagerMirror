@@ -8,6 +8,7 @@ import { IsLogged, useAuthStore } from "@/store/AuthStore";
 
 import WorkingTime from "../components/WorkingTime.vue";
 import { storeToRefs } from "pinia";
+import { userRank } from "@/dto/user";
 
 const route = useRoute();
 const router = useRouter();
@@ -107,14 +108,27 @@ async function onSubmit() {
     console.error(error);
   }
 }
+
+async function onDelete() {
+  try {
+    await axios.delete(`/workingtimes/entry/${workingTimeId.value}`, {
+      headers: {
+        Authorization: localStorage.getItem("access_token"),
+      },
+    });
+    router.push("/workingtimes/" + userId.value);
+  } catch (error) {
+    console.error(error);
+  }
+}
 </script>
 
 <template>
   <div>
     <WorkingTime v-if="workingTime" :workingTime="workingTime" />
-    <div id="edit" v-if="user?.rank !== 'employee'">
+    <div id="edit" v-if="user?.rank !== userRank.employee">
       <h2>Edit Working Time</h2>
-      <form @submit.prevent="onSubmit">
+      <form @submit.prevent>
         <div>
           <label for="start">Start</label>
           <input type="datetime-local" id="start" v-model="start" required />
@@ -123,7 +137,8 @@ async function onSubmit() {
           <label for="end">End</label>
           <input type="datetime-local" id="end" v-model="end" required />
         </div>
-        <input type="submit" value="Save" />
+        <input type="submit" value="Save" @click="() => onSubmit()" />
+        <input type="submit" value="Delete" class="delete" @click="onDelete" />
       </form>
     </div>
   </div>
@@ -173,5 +188,9 @@ async function onSubmit() {
 
 #edit form input[type="submit"]:focus {
   outline: none;
+}
+
+#edit form input[type="submit"].delete {
+  background-color: #d63535;
 }
 </style>

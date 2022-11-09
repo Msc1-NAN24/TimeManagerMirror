@@ -29,8 +29,7 @@ async function getWorkingtimes() {
   }
 }
 
-watch(
-  userId,
+setInterval(
   async () => {
     workingTimes.splice(
       0,
@@ -38,6 +37,7 @@ watch(
       ...((await getWorkingtimes()) ?? [])
     );
   },
+  1000,
   { immediate: true }
 );
 
@@ -56,7 +56,14 @@ setInterval(async () => {
     v-if="workingTimes !== null"
     v-for="workingTime in workingTimes"
   >
-    <WorkingTime :workingTime="workingTime" />
+    <WorkingTime
+      :workingTime="workingTime"
+      @clicked="
+        () => {
+          router.push(`/workingtimes/${userId}/${workingTime.id}`);
+        }
+      "
+    />
   </div>
 </template>
 
