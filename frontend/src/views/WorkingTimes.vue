@@ -29,25 +29,25 @@ async function getWorkingtimes() {
   }
 }
 
-setInterval(
-  async () => {
-    workingTimes.splice(
-      0,
-      workingTimes.length,
-      ...((await getWorkingtimes()) ?? [])
-    );
-  },
-  1000,
-  { immediate: true }
-);
-
-setInterval(async () => {
+async function update() {
   workingTimes.splice(
     0,
     workingTimes.length,
     ...((await getWorkingtimes()) ?? [])
   );
-}, 10000);
+}
+
+watch(
+  [userId],
+  () => {
+    update();
+  },
+  { immediate: true }
+);
+
+setInterval(() => {
+  update();
+}, 1000);
 </script>
 
 <template>
