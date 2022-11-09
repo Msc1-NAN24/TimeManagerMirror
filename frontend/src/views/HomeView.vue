@@ -7,8 +7,10 @@ import MonthlyChart from "@/components/charts/MonthlyChart.vue";
 import { IWorkingTime } from "@/dto/workingTime";
 import { onMounted, ref } from "vue";
 import { DateTime } from "luxon";
-
+import {useToast} from "vue-toast-notification";
+import { Toast } from '@capacitor/toast';
 const auth = useAuthStore();
+const toast = useToast();
 const dailyWorkingTimes = ref<IWorkingTime[]>([]);
 const monthlyWorkingTimes = ref<IWorkingTime[]>([]);
 const weeklyWorkingTimes = ref<IWorkingTime[]>([]);
@@ -61,14 +63,16 @@ const loadWorkingTimes = () => {
   }
 };
 
-onMounted(() => {
+onMounted( async () => {
+  await Toast.show({
+    text: 'Hello world!',
+  });
   if (auth.isLogged === IsLogged.Logged) {
     loadWorkingTimes();
   }
 });
 
 const onMonthChange = (event) => {
-  console.log("ABC", event);
   const now = DateTime.now().set({ month: event.month + 1, year: event.year });
   const monthStart = now.startOf("month");
   const monthEnd = now.endOf("month");
@@ -86,8 +90,6 @@ const onWeekChange = (event) => {
     weeklyWorkingTimes.value = response as IWorkingTime[];
   });
 }
-
-
 </script>
 
 <template>

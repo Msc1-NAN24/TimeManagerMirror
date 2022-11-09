@@ -21,7 +21,7 @@ async function clockIn() {
 async function getClock() {
   const clock = await clockRepository.getClock();
   const status = clock.status;
-  if (status === null || status === false) {
+  if (status === undefined || status === false) {
     isCounting.value = false;
     startingTime.value = "-";
     startingTimeFormated.value = "-";

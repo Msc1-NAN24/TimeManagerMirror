@@ -65,18 +65,19 @@ function onClickBtn() {
 
 <style scoped>
 .container {
-  height: 100%;
+  height: 100vh;
   min-height: fit-content;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
+
 .top {
   flex: 0 0 auto;
 }
 .bottom {
-  justify-self: flex-end;
   flex: 0 0 auto;
   padding: 1em 0;
+
 }
 </style>
