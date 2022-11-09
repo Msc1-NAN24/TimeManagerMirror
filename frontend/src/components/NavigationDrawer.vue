@@ -28,6 +28,7 @@ function onClickBtn() {
 <template>
   <v-app>
     <v-navigation-drawer
+        app
         expand-on-hover
         class="bg-grey-lighten-3"
     >
@@ -54,26 +55,29 @@ function onClickBtn() {
         </v-row>
       </v-container>
     </v-navigation-drawer>
-    <v-main style="height: 250px; margin-left: 40px; margin-right: 40px; margin-top: 20px; margin-bottom: 20px">
-      <router-view />
+    <v-main>
+      <v-container fluid>
+        <router-view />
+      </v-container>
     </v-main>
   </v-app>
 </template>
 
 <style scoped>
 .container {
-  height: 100%;
+  height: 100vh;
   min-height: fit-content;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
+
 .top {
   flex: 0 0 auto;
 }
 .bottom {
-  justify-self: flex-end;
   flex: 0 0 auto;
   padding: 1em 0;
+
 }
 </style>

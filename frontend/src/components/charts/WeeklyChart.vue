@@ -10,15 +10,14 @@ import {
   BarElement,
   CategoryScale,
   LinearScale,
-  ArcElement,
-  CoreChartOptions, LineElement, PointElement
+  LineElement, PointElement
 } from 'chart.js'
 import {onUpdated, ref, watch} from "vue";
 import {DateTime} from "luxon";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, LineElement, PointElement)
 
-const props = defineProps(['times', 'onPickerChange']);
+const props = defineProps(['times', 'onPickerChange', 'startingDay']);
 const date = ref();
 
 const chartData = ref({
@@ -26,6 +25,7 @@ const chartData = ref({
   datasets: [
     {
       label: 'En ligne',
+      fill: true,
       backgroundColor: '#f87979',
       data: [40, 39, 10, 40, 39, 80, 40]
     }
@@ -35,31 +35,23 @@ const chartData = ref({
 watch(() => props.times, (times) => {
   let connectedInSection = {};
   if (times.length > 0) {
-    let currentDay = DateTime.fromISO(times[0].start).day;
-    for (let i = 0; i < times.length; i++) {
-      if (times[i - 1]?.end !== undefined && DateTime.fromISO(times[i - 1].end).day < DateTime.fromISO(times[i].start).day) {
-        currentDay = DateTime.fromISO(times[i].start).day;
-      }
-      const end = DateTime.fromISO(times[i].end);
-      const start = DateTime.fromISO(times[i].start);
-      const diff = end.diff(start, 'hours');
-      if (connectedInSection[currentDay] === undefined) {
-        connectedInSection[currentDay] = [];
-      }
-      connectedInSection[currentDay].push(diff.toObject().hours)
+    for (let i = 0; i < 7; i++) {
+      connectedInSection[i] = times.filter((wt) => DateTime.fromISO(wt.start).day % 7 === i).reduce((last, time) => last + DateTime.fromISO(time.end).diff(DateTime.fromISO(time.start), 'hours').toObject().hours, 0);
     }
   }
+  console.log('a', connectedInSection);
   chartData.value = {
     labels: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
     datasets: [
       {
         label: 'En ligne',
         backgroundColor: '#ffd000',
-        data: [...Array.from({length:DateTime.now().endOf("month").day},(v,k)=>k+1).map((day) => {
-          const section = Object.keys(connectedInSection).find((a) => a == day);
+        fill: true,
+        data: [...Array.from({length: 7},(v,k)=>k+1).map((day) => {
+          const section = Object.keys(connectedInSection).find((a) => a == day - 1);
           if (section == undefined)
             return 0;
-          return connectedInSection[section].reduce((hours, currentValue) => currentValue + hours, 0)
+          return connectedInSection[section];
         })],
       }
     ]
@@ -70,7 +62,6 @@ const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
 }
-
 
 </script>
 
