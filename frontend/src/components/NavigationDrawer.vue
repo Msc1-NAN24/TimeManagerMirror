@@ -58,7 +58,6 @@ watch(mobile, (value) => {
     <v-navigation-drawer app v-model="drawer" touchless class="bg-grey-lighten-3">
       <v-container class="container">
         <v-row class="top">
-          <v-list>
             <v-list class="w-100">
             <v-list-item
                 @click="router.push({name: 'myProfile'})"
