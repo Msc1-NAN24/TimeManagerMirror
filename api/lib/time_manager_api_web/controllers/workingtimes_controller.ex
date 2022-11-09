@@ -13,7 +13,7 @@ defmodule TimeManagerApiWeb.WorkingtimesController do
   # CUSTOM ROUTES
   def get_workingtimes(conn, %{"user_id" => user_id, "id" => id}) do
     workingtimes = Timemanager.get_workingtimes(user_id, id)
-    render(conn, "index.json", workingtimes: workingtimes)
+    render(conn, "workingtimes.json", workingtimes: workingtimes)
   end
 
   def get_workingtimes(conn, %{"user_id" => user_id, "start" => start_time, "end" => end_time}) do
@@ -101,7 +101,8 @@ defmodule TimeManagerApiWeb.WorkingtimesController do
   end
 
   def update(conn, %{"id" => id}) do
-    workingtimes = Timemanager.get_workingtimes(id)
+    workingtimes = Timemanager.get_workingtimes_by_id(id)
+    IO.inspect workingtimes
     with {:ok, %Workingtimes{} = workingtimes} <- Timemanager.update_workingtimes(workingtimes, conn.body_params) do
       render(conn, "show.json", workingtimes: workingtimes)
     end

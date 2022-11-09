@@ -60,14 +60,14 @@ watch(mobile, (value) => {
         <v-row class="top">
             <v-list class="w-100">
             <v-list-item
-                @click="router.push({name: 'myProfile'})"
+                @click="() => router.push({name: 'myProfile'})"
                 prepend-icon="mdi-account-circle"
                 :title="`${user?.firstname} ${user?.lastname}`"
                 :subtitle="user?.email"
             ></v-list-item>
           </v-list>
           <v-divider></v-divider>
-          <v-list>
+          <v-list class="w-100">
             <v-list-item prepend-icon="mdi-monitor-dashboard" title="Dashboard" value="dashboard"
               @click="router.push({ name: 'home' })"></v-list-item>
             <v-list-item prepend-icon="mdi-calendar-blank-multiple" title="Workingtimes" value="workingtimes"

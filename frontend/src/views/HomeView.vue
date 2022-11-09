@@ -10,6 +10,7 @@ import { DateTime } from "luxon";
 import {useToast} from "vue-toast-notification";
 import { Toast } from '@capacitor/toast';
 import {LocalNotifications} from "@capacitor/local-notifications";
+
 const auth = useAuthStore();
 const toast = useToast();
 const dailyWorkingTimes = ref<IWorkingTime[]>([]);
@@ -66,17 +67,17 @@ const loadWorkingTimes = () => {
 
 onMounted( async () => {
   try {
-    await LocalNotifications.requestPermissions();
-    await LocalNotifications.schedule({
+    const notifs = await LocalNotifications.schedule({
       notifications: [
         {
-          title: "aaaa",
-          body: "Body",
+          title: 'Title',
+          body: 'Body',
           id: 1,
-          smallIcon: 'house',
-          actionTypeId: 'ABC',
-        }
-      ]
+          schedule: { at: new Date(Date.now() + 1000) },
+          actionTypeId: '',
+          extra: null,
+        },
+      ],
     });
   } catch (er) {
     await Toast.show({
