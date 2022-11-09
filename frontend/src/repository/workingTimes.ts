@@ -12,7 +12,7 @@ import { ca } from "vuetify/locale";
 const getAllWorkingTimesByUser = async (userId: number) => {
   const { data } = await Api.get<IWorkingTime[]>(
     `/workingtimes/user/${userId}`,
-    authorize(localStorage.getItem("access_token"))
+    authorize(localStorage.getItem("access_token") ?? "")
   );
   return data;
 };
@@ -24,7 +24,7 @@ const getWorkingTimesByUserByPeriod = async (
 ) => {
   const { data } = await Api.get<IWorkingTime[]>(
     `/workingtimes/user/${userId}?start=${start}&end=${end}`,
-    authorize(localStorage.getItem("access_token"))
+    authorize(localStorage.getItem("access_token") ?? "")
   );
   return data;
 };
@@ -35,7 +35,7 @@ const getWorkingTimeByUserById = async (
 ) => {
   const { data } = await Api.get<IWorkingTime>(
     `/workingtimes/user/${userId}/${workingTimeId}`,
-    authorize(localStorage.getItem("access_token"))
+    authorize(localStorage.getItem("access_token") ?? "")
   );
   return data;
 };
@@ -47,7 +47,7 @@ const createWorkingTime = async (
   const { data } = await Api.post<IWorkingTime>(
     `/workingtimes/user/${userId}`,
     workingTime,
-    authorize(localStorage.getItem("access_token"))
+    authorize(localStorage.getItem("access_token") ?? "")
   );
   return data;
 };
@@ -55,7 +55,7 @@ const createWorkingTime = async (
 // Manager Routes
 
 const getWorkingTimeById = async (workingTimeId: number) => {
-  const { data } = await axios.get<IWorkingTime>(
+  const { data } = await Api.get<IWorkingTime>(
     `/workingtimes/entry/${workingTimeId}`,
     {
       headers: {
@@ -70,7 +70,7 @@ const updateWorkingTime = async (
   workingTimeId: number,
   workingTime: IUpdateWorkingTime
 ) => {
-  const { data } = await axios.patch<IWorkingTime>(
+  const { data } = await Api.patch<IWorkingTime>(
     `/workingtimes/entry/${workingTimeId}`,
     workingTime,
     {
@@ -83,7 +83,7 @@ const updateWorkingTime = async (
 };
 
 const deleteWorkingTime = async (workingTimeId: number) => {
-  const { data } = await axios.delete<IWorkingTime>(
+  const { data } = await Api.delete<IWorkingTime>(
     `/workingtimes/entry/${workingTimeId}`,
     {
       headers: {
@@ -100,7 +100,7 @@ const getTeamWorkingTime = async (
 ) => {
   Api.get<IWorkingTime[]>(
     `/workingtimes/team/${teamId}`,
-    authorize(localStorage.getItem("access_token"))
+    authorize(localStorage.getItem("access_token") ?? "")
   )
     .then((value) => {
       return callback(value.data);
@@ -118,7 +118,7 @@ const getTeamWorkingTimeByPeriod = async (
 ) => {
   Api.get<IWorkingTime[]>(
     `/workingtimes/team/${teamId}?start=${start}&end=${end}`,
-    authorize(localStorage.getItem("access_token"))
+    authorize(localStorage.getItem("access_token") ?? "")
   )
     .then((value) => {
       return callback(value.data);
