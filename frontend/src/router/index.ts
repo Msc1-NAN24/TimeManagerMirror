@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import NavigationDrawer from "@/components/NavigationDrawer.vue";
 import { IsLogged, useAuthStore } from "@/store/AuthStore";
+import { userRank } from "@/dto/user";
+import { useToast } from "vue-toast-notification";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -66,9 +68,14 @@ const router = createRouter({
           component: () => import("../views/users/ProfilePage.vue"),
         },
         {
-          path: "/user/profile/:id",
+          path: "/user/:id/profile",
           name: "profile",
           component: () => import("../views/users/ProfilePage.vue"),
+        },
+        {
+          path: "/user/:id/dashboard",
+          name: "dashboard",
+          component: () => import("../views/DashboardUser.vue"),
         },
         {
           path: "/user/reset-password",
@@ -82,22 +89,35 @@ const router = createRouter({
         },
         {
           path: "/:catchAll(.*)",
-          component: () => import('../views/NotFoundPage.vue'),
-        }
-      ]
+          component: () => import("../views/NotFoundPage.vue"),
+        },
+      ],
     },
   ],
 });
 
 router.beforeEach(async (to, from) => {
   const { isLogged } = useAuthStore();
-  console.log(isLogged);
   if (
     to.name !== "register" &&
     to.name !== "login" &&
     isLogged !== IsLogged.Logged
   ) {
     return { name: "login" };
+  }
+});
+
+router.beforeEach((to) => {
+  const { user } = useAuthStore();
+  const toast = useToast();
+
+  if (
+    (to.name === "dashboard" || to.name === "profile") &&
+    user?.rank === userRank.employee
+  ) {
+    toast.info("Vous n'avez pas le droit d'accéder a cette page");
+    if (to.name === "profile") return { name: "myProfile" };
+    return { name: "home" };
   }
 });
 
