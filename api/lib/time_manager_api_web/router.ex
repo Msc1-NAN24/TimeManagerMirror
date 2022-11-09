@@ -63,10 +63,6 @@ defmodule TimeManagerApiWeb.Router do
     post "/login", AuthController, :login
   end
 
-  scope "/api/status", TimeManagerApiWeb do
-    get "/", StatusController, :status
-  end
-
 
   scope "/api/teams", TimeManagerApiWeb do
     pipe_through [:api, :manager]

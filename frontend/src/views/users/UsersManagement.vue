@@ -1,17 +1,11 @@
 <script lang="ts" setup>
 import userService from '@/services/users';
 import userRepository from '@/repository/users';
-import {ref} from 'vue';
-import {useAuthStore} from "@/store/AuthStore";
-import {IUpdateUser, userRank} from "@/dto/user";
-import {useToast} from "vue-toast-notification";
-
-const auth = useAuthStore();
-const toast = useToast();
+import { ref } from 'vue';
 
 const items = ref([] as any);
-const roles = ["employee", "manager"];
-const selected = ref<number>(0);
+const roles = ["employee", "manager", "general_manager"];
+const selected = ref(null);
 const isUser = ref(false);
 const isEditing = ref(false);
 const user = ref({
@@ -25,7 +19,7 @@ const updateUser = ref({
   firstname: '',
   lastname: '',
   email: '',
-  rank: '',
+  rank: ''
 });
 
 refreshUsers()
@@ -44,7 +38,7 @@ function refreshUsers() {
 function searchUsers() {
    isUser.value = false;
    isEditing.value = false;
-  if (selected.value !== 0) {
+  if (selected.value != null) {
     userService.getUserById(selected.value).then((response) => {
       console.log(response);
       isUser.value = true;
@@ -61,39 +55,35 @@ function searchUsers() {
 }
 
 function deleteUser() {
-  if (selected.value !== 0) {
+  if (selected.value != null) {
     userRepository.deleteUserById(selected.value).then((response) => {
-      toast.success("Utilisateur supprimé avec succès !");
-      selected.value = 0;
+      console.log(response);
+      selected.value = null;
       isUser.value = false;
       refreshUsers();
     });
   } else {
-    toast.success("Une erreur est survenue !");
     console.log('No user selected');
   }
 }
 
 function saveUser() {
-  if (selected.value !== 0) {
-    userService.updateUser(auth.accessToken, selected.value, updateUser.value
+  if (selected.value != null) {
+    userService.updateUser(selected.value, updateUser.value
     ).then((response) => {
-      toast.success("Utilisateur mis à jour !");
       console.log(response);
       isEditing.value = false;
       refreshUsers();
     });
   } else {
-    toast.error("Une erreur est survenue !");
     console.log('No user selected');
   }
 }
 </script>
 
 <template>
-  <h1 style="margin-bottom: 20px;">Utilisateurs</h1>
-  <v-autocomplete dense filled rounded solo label="Sélectionner un utilisateur" :items="items" item-value="id" v-model="selected"
-    menu-icon="" append-icon="mdi-account-search" @click:append="searchUsers" @update:modelValue="() => searchUsers()">
+  <v-autocomplete dense filled rounded solo label="Select a user" :items="items" item-value="id" v-model="selected"
+    menu-icon="" append-icon="mdi-account-search" @click:append="searchUsers">
   </v-autocomplete>
   <v-table v-if="isUser">
     <thead>
@@ -118,7 +108,7 @@ function saveUser() {
           <v-text-field v-model="updateUser.email" :placeholder="user.email"></v-text-field>
         </td>
         <td style="width: 28%">
-          <v-select v-if="user.rank !== 'general_manager'" v-model="updateUser.rank" solo :items="roles" :value="user.rank" append-inner-icon=""></v-select>
+          <v-select v-if="user.rank != 'general_manager'" v-model="updateUser.rank" solo :items="roles" :value="user.rank" append-inner-icon=""></v-select>
           <v-select v-else v-model="updateUser.rank" solo :items="roles" :value="user.rank" append-inner-icon="" disabled></v-select>
         </td>
         <td style="width: 7%">
@@ -152,7 +142,7 @@ function saveUser() {
           </v-btn>
         </td>
         <td style="width: 7%">
-          <v-btn v-if="user.rank !== 'general_manager'" icon color="error" @click="deleteUser()">
+          <v-btn v-if="user.rank != 'general_manager'" icon color="error" @click="deleteUser()">
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </td>

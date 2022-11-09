@@ -33,10 +33,6 @@ const onClickDeleteUser = (user: IUser) => {
   });
 }
 
-const onClickUserDashboard = (user: IUser) => {
-  router.push({path: `/user/${user.id}/dashboard`});
-}
-
 const onUserAdded = () => {
   toast.success("Les membres ont été ajouter à votre team !");
   open.value = undefined;
@@ -51,6 +47,12 @@ const onDismiss = () => {
 
 <template>
   <AddTeamUserModal :open="open === ModalType.AddUser" :on-success="onUserAdded" :on-dismiss="onDismiss" :team="team"/>
+<!--    <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details/>-->
     <v-table fixed-header class="members-list">
       <thead>
       <tr>
@@ -74,7 +76,6 @@ const onDismiss = () => {
               class="ma-2"
               variant="text"
               icon="mdi-view-dashboard"
-              @click="() => onClickUserDashboard(member)"
               color="blue-lighten-2"/>
           <v-btn
               v-if="member.id !== team.owner.id"
