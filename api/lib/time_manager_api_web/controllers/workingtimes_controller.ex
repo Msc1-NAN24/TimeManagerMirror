@@ -56,7 +56,7 @@ defmodule TimeManagerApiWeb.WorkingtimesController do
       send_error(conn, "Invalid Team id!")
     else %Timemanager.Team{} = team ->
       workingtimes = Timemanager.get_team_workingtimes(team, %{start_time: start_time, end_time: end_time});
-      render(conn, "index.json", %{workingtimes: workingtimes})
+      render(conn, "teams.json", %{workingtimes: workingtimes})
     end
   end
 
@@ -65,7 +65,7 @@ defmodule TimeManagerApiWeb.WorkingtimesController do
       send_error(conn, "Invalid Team id!")
     else %Timemanager.Team{} = team ->
       workingtimes = Timemanager.get_team_workingtimes(team, %{start_time: start_time});
-      render(conn, "index.json", %{workingtimes: workingtimes})
+      render(conn, "teams.json", %{workingtimes: workingtimes})
     end
   end
 
@@ -74,7 +74,7 @@ defmodule TimeManagerApiWeb.WorkingtimesController do
       send_error(conn, "Invalid Team id!")
     else %Timemanager.Team{} = team ->
       workingtimes = Timemanager.get_team_workingtimes(team, %{end_time: end_time});
-      render(conn, "index.json", %{workingtimes: workingtimes})
+      render(conn, "teams.json", %{workingtimes: workingtimes})
     end
   end
 
@@ -83,7 +83,7 @@ defmodule TimeManagerApiWeb.WorkingtimesController do
       send_error(conn, "Invalid Team id!")
     else %Timemanager.Team{} = team ->
       workingtimes = Timemanager.get_team_workingtimes(team);
-      render(conn, "index.json", %{workingtimes: workingtimes})
+      render(conn, "teams.json", %{workingtimes: workingtimes})
     end
   end
 

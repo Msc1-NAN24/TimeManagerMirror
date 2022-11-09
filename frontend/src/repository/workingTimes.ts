@@ -1,5 +1,7 @@
 import { ICreateWorkingTime, IUpdateWorkingTime, IWorkingTime } from "@/dto/workingTime";
 import Api, {authorize} from "@/utils/Api";
+import workingTimes from "@/services/workingTimes";
+import {ca} from "vuetify/locale";
 
 // User Routes
 
@@ -40,8 +42,26 @@ const deleteWorkingTime = async (workingTimeId: number) => {
     return data;
 }
 
+const getTeamWorkingTime = async (teamId: string, callback: (workingTimes: IWorkingTime[]) => void) => {
+    Api.get<IWorkingTime[]>(`/workingtimes/team/${teamId}`, authorize(localStorage.getItem('access_token'))).then((value) => {
+        return callback(value.data);
+    }).catch((err) => {
+        return callback([]);
+    })
+}
+
+const getTeamWorkingTimeByPeriod = async (teamId: string, start: string, end: string, callback: (workingTimes: IWorkingTime[]) => void) => {
+    Api.get<IWorkingTime[]>(`/workingtimes/team/${teamId}?start=${start}&end=${end}`, authorize(localStorage.getItem('access_token'))).then((value) => {
+        return callback(value.data);
+    }).catch((err) => {
+        return callback([]);
+    })
+}
+
 const workingTimeRepository = {
     getAllWorkingTimesByUser,
+    getTeamWorkingTime,
+    getTeamWorkingTimeByPeriod,
     getWorkingTimesByUserByPeriod,
     getWorkingTimeByUserById,
     createWorkingTime,
