@@ -1,9 +1,9 @@
 _id: req_wrk_7f42856afd4e4c20ac0f80bc87e6a675a44f64e6
 type: Request
 parentId: fld_wrk_7f42856afd4e4c20ac0f80bc87e6a675ca9ac925
-modified: 1667577545980
+modified: 1667831210464
 created: 1667577545980
-url: "{{ base_url }}/workingtimes"
+url: "{{ base_url }}/workingtimes/user/{{ id }}"
 name: Add working times manually
 description: ""
 method: POST

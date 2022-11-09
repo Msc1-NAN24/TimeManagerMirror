@@ -1,21 +1,48 @@
 <script lang="ts" setup>
-import CreateTeamModal from "@/components/modals/CreateTeamModal.vue";
+import CreateTeamModal from "@/components/modals/teams/CreateTeamModal.vue";
 import {useRouter} from "vue-router";
+import { ref, onMounted } from 'vue';
+import {useAuthStore} from "@/store/AuthStore";
+import {getTeams} from "@/services/team";
+import TeamList from "@/components/teams/TeamList.vue";
+
 const router = useRouter();
+const auth = useAuthStore();
 
-const onDismiss = () => {
+const open = ref(false)
+const teams = ref([]);
 
+onMounted(() => {
+  loadTeams();
+});
+
+const loadTeams = () => {
+  getTeams(auth.accessToken, (team, error) => {
+    if (error) {
+      console.log(error);
+    } else {
+      teams.value = team;
+    }
+  });
 }
 
-const onSuccess = () => {
+const onCloseModal = () => {
+  open.value = false;
+}
 
+const onSuccess = (team) => {
+  console.log('created', team);
+  open.value = false;
+  loadTeams();
 }
 
 </script>
 
 <template>
   <h1>Mes Teams</h1>
-  <v-btn variant="flat" color="info">Créer une team</v-btn>
+  <CreateTeamModal :open="open" :on-success="onSuccess" :on-dismiss="onCloseModal"/>
+  <v-btn variant="flat" color="info" @click="open = !open">Créer une team</v-btn>
+  <TeamList :teams="teams"/>
 </template>
 
 <style scoped>

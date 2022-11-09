@@ -3,7 +3,7 @@ type: Request
 parentId: fld_wrk_7f42856afd4e4c20ac0f80bc87e6a6758c5b6be2
 modified: 1667577545981
 created: 1667577545981
-url: "{{ base_url }}/workingtimes"
+url: "{{ base_url }}/workingtimes/user/{{ id }}"
 name: Get working times
 description: ""
 method: GET

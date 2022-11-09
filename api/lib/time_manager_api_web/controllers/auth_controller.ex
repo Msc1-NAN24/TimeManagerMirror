@@ -22,19 +22,20 @@ defmodule TimeManagerApiWeb.AuthController do
 
   def login(conn, %{"email" => email, "password" => password}) do
     user = TimeManagerApi.Timemanager.get_user_by_email(email);
-    if (is_nil(user)) do
+    if is_nil(user) do
       conn
       |> put_status(:bad_request)
       |> render("auth_error.json", %{error: "Invalid email !"})
-    end
-    verify = TimeManagerApi.Auth.verify(user, password);
-    if verify == false do
-      conn
-      |> put_status(:bad_request)
-      |> render("auth_error.json", %{error: "Bad password !"})
     else
-      token = TimeManagerApi.Auth.sign(user.id)
-      render(conn, "token.json", %{token: token, user: user})
+      verify = TimeManagerApi.Auth.verify(user, password);
+      if verify == false do
+        conn
+        |> put_status(:bad_request)
+        |> render("auth_error.json", %{error: "Bad password !"})
+      else
+        token = TimeManagerApi.Auth.sign(user.id)
+        render(conn, "token.json", %{token: token, user: user})
+      end
     end
   end
 end

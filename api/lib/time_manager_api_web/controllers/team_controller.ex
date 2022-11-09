@@ -10,6 +10,7 @@ defmodule TimeManagerApiWeb.TeamController do
     with {:ok, created_team} <- Timemanager.create_team(%{name: name, owner_id: conn.user.id}) do
       team = Timemanager.get_team(created_team.id);
       conn
+      |> put_status(:created)
       |> render("created.json", %{team: team})
     else error ->
       send_error(conn, "Can't create team !")
@@ -28,6 +29,7 @@ defmodule TimeManagerApiWeb.TeamController do
   end
 
   def get(conn, %{"id" => id}) do
+    IO.inspect "GET TEAM CALLED "
     with nil <- Timemanager.get_team(id) do
       send_error(conn, "Team not found !")
     else team ->
@@ -50,6 +52,7 @@ defmodule TimeManagerApiWeb.TeamController do
       end
     end
   end
+
 
   def remove_member(conn, %{"id" => id, "user_id" => user_id}) do
     user = Timemanager.get_user(user_id)

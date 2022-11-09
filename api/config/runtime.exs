@@ -17,7 +17,7 @@ if config_env() == :dev do
   config :cors_plug,
     origin: [System.fetch_env!("FRONTEND_URL")],
     max_age: 86400,
-    methods: ["GET", "POST"]
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"]
 
   # For development, we disable any cache and enable
   # debugging and code reloading.

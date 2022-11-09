@@ -1,9 +1,12 @@
 import { IUpdateUser, IUser } from "@/dto/user";
-import axios from "axios";
 import Api, { authorize } from "@/utils/Api";
 
 const getUserById = async (id: number) => {
-  const { data } = await Api.get<IUser>(`/users/${id}`);
+  const { data } = await Api.get<IUser>(`/users/${id}`, {
+    headers: {
+      Authorization: `${localStorage.getItem("access_token")}`,
+    },
+  });
   return data;
 };
 
@@ -23,35 +26,92 @@ const getMe = (
     });
 };
 
-const deleteUser = (
-  accessToken: string,
-  callback: (error?: string) => void
-) => {
-  axios
-    .delete<IUser>(`/api/users/`, authorize(accessToken))
-    .then((response) => {
-      callback(undefined);
-    })
-    .catch((err) => {
-      callback("Une erreur est survenue !");
-    });
+const deleteUser = async (accessToken: string) => {
+  await Api.delete<IUser>(`/users/me`, authorize(accessToken));
+};
+
+const deleteUsers = async (accessToken: string, userId: string) => {
+  await Api.delete<IUser>(`/users/${userId}`, authorize(accessToken));
+};
+
+const deleteUserById = async (id: number) => {
+  const { data } = await Api.delete<IUser[]>(`/users/${id}`, {
+    headers: {
+      Authorization: `${localStorage.getItem("access_token")}`,
+    },
+  });
+  return data;
 };
 
 const getAllUsers = async () => {
-  const { data } = await axios.get<IUser[]>("/api/users");
+  const { data } = await Api.get<IUser[]>("/users", {
+    headers: {
+      Authorization: `${localStorage.getItem("access_token")}`,
+    },
+  });
   return data;
 };
-const updateUser = async (id: number, updateUser: IUpdateUser) => {
-  const { data } = await axios.patch<IUser>(`/api/user/${id}`, updateUser);
+
+const updateUser = async (
+  accessToken: string,
+  id: number,
+  updateUser: IUpdateUser
+) => {
+  const { data } = await Api.put<IUser>(
+    `/users/${id}`,
+    {
+      user: updateUser,
+    },
+    authorize(accessToken)
+  );
   return data;
+};
+
+const updateMyUser = async (accessToken: string, updateUser: IUpdateUser) => {
+  const { data } = await Api.put<IUser>(
+    `/users/me`,
+    { user: updateUser },
+    authorize(accessToken)
+  );
+  return data;
+};
+
+const resetMyPassword = (
+  accessToken: string,
+  new_password: string,
+  last_password: string
+) => {
+  return Api.post(
+    "/users/reset-password",
+    { new_password, last_password },
+    authorize(accessToken)
+  );
+};
+
+const resetPassword = (
+  accessToken: string,
+  id: string,
+  new_password: string,
+  last_password: string
+) => {
+  return Api.post(
+    `/users/${id}/reset-password`,
+    { new_password, last_password },
+    authorize(accessToken)
+  );
 };
 
 const userRepository = {
   getMe,
   getUserById,
   getAllUsers,
+  updateMyUser,
   updateUser,
   deleteUser,
+  resetMyPassword,
+  deleteUsers,
+  deleteUserById,
+  resetPassword,
 };
 
 export default userRepository;
