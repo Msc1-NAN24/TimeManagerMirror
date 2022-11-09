@@ -5,11 +5,15 @@ import workingTimeService from "@/services/workingTimes";
 import WeeklyChart from "@/components/charts/WeeklyChart.vue";
 import MonthlyChart from "@/components/charts/MonthlyChart.vue";
 import {IWorkingTime} from "@/dto/workingTime";
-import {onMounted, ref} from "vue";
 import {DateTime} from "luxon";
+
+import { ref , onMounted} from 'vue';
+import { Toast } from '@capacitor/toast';
+import {useToast} from "vue-toast-notification";
 
 
 const auth = useAuthStore();
+const toast = useToast();
 const dailyWorkingTimes = ref<IWorkingTime[]>([]);
 const monthlyWorkingTimes = ref<IWorkingTime[]>([]);
 const weeklyWorkingTimes = ref<IWorkingTime[]>([]);
@@ -41,7 +45,10 @@ const loadWorkingTimes = () => {
   }
 }
 
-onMounted(() => {
+onMounted( async () => {
+  await Toast.show({
+    text: 'Hello world!',
+  });
   if (auth.isLogged === IsLogged.Logged) {
     loadWorkingTimes();
   }

@@ -4,7 +4,7 @@ defmodule TimeManagerApi.Auth do
   alias TimeManagerApi.Timemanager.User
 
   def hash_password(password) do
-    Phoenix.Token.encrypt(TimeManagerApiWeb.Endpoint, @salt, password)
+    Bcrypt.Base.hash_password(password, Bcrypt.Base.gen_salt(12, true))
   end
 
   def sign(data) do
@@ -12,14 +12,7 @@ defmodule TimeManagerApi.Auth do
   end
 
   def verify(user, password) do
-    with {:ok, decryptedPassword} <- decryptedPassword = Phoenix.Token.decrypt(TimeManagerApiWeb.Endpoint, @salt, user.password) do
-      if password == decryptedPassword do
-        true
-      else
-        false
-      end
-    else {:error, changeset} -> raise "Can't decrypt password !"
-    end
+    Bcrypt.verify_pass(password, user.password)
   end
 
   def verify(data) do

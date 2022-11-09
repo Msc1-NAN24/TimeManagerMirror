@@ -10,8 +10,7 @@ import {
   BarElement,
   CategoryScale,
   LinearScale,
-  ArcElement,
-  CoreChartOptions, LineElement, PointElement
+  LineElement, PointElement
 } from 'chart.js'
 import {onUpdated, ref, watch} from "vue";
 import {DateTime} from "luxon";
@@ -48,7 +47,7 @@ watch(() => props.times, (times) => {
         label: 'En ligne',
         backgroundColor: '#ffd000',
         fill: true,
-        data: [...Array.from({length: 6},(v,k)=>k+1).map((day) => {
+        data: [...Array.from({length: 7},(v,k)=>k+1).map((day) => {
           const section = Object.keys(connectedInSection).find((a) => a == day - 1);
           if (section == undefined)
             return 0;
@@ -63,7 +62,6 @@ const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
 }
-
 
 </script>
 
