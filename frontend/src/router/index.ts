@@ -2,8 +2,19 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import NavigationDrawer from "@/components/NavigationDrawer.vue";
 import { IsLogged, useAuthStore } from "@/store/AuthStore";
-import { userRank } from "@/dto/user";
-import { useToast } from "vue-toast-notification";
+import TeamListPage from "@/views/teams/TeamListPage.vue";
+import TeamPage from "@/views/teams/TeamPage.vue";
+import ProfilePage from "@/views/users/ProfilePage.vue";
+import NotFoundPage from "@/views/NotFoundPage.vue";
+import UsersManagement from "@/views/users/UsersManagement.vue";
+import ChangePasswordPage from "@/views/users/ChangePasswordPage.vue";
+import DashboardUser from "@/views/DashboardUser.vue";
+import ChartManager from "@/components/ChartManager.vue";
+import Clock from "@/views/Clock.vue";
+import WorkingTimes from "@/views/WorkingTimes.vue";
+import WorkingTime from "@/views/WorkingTime.vue";
+import Login from "@/views/auth/Login.vue";
+import Register from "@/views/auth/Register.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -11,12 +22,12 @@ const router = createRouter({
     {
       path: "/login",
       name: "login",
-      component: () => import("../views/auth/Login.vue"),
+      component: Login,
     },
     {
       path: "/register",
       name: "register",
-      component: () => import("../views/auth/Register.vue"),
+      component: Register,
     },
     {
       path: "/",
@@ -30,22 +41,22 @@ const router = createRouter({
         {
           path: "/workingtimes/:userid/:workingtimeid",
           name: "workingtime",
-          component: () => import("../views/WorkingTime.vue"),
+          component: WorkingTime,
         },
         {
           path: "/workingtimes/:userid",
           name: "workingtimes",
-          component: () => import("../views/WorkingTimes.vue"),
+          component: WorkingTimes,
         },
         {
           path: "/clock/:username",
           name: "clock",
-          component: () => import("../views/Clock.vue"),
+          component: Clock,
         },
         {
           path: "/chartManager/:userid",
           name: "chartManager",
-          component: () => import("../views/ChartManager.vue"),
+          component: ChartManager,
         },
         {
           path: "/teams",
@@ -53,50 +64,50 @@ const router = createRouter({
             {
               path: "",
               name: "teams",
-              component: () => import("../views/teams/TeamListPage.vue"),
+              component: TeamListPage,
             },
             {
               path: ":id",
               name: "team",
-              component: () => import("../views/teams/TeamPage.vue"),
+              component: TeamPage,
             },
           ],
         },
         {
           path: "/user/profile",
           name: "myProfile",
-          component: () => import("../views/users/ProfilePage.vue"),
+          component: ProfilePage,
         },
         {
           path: "/user/:id/profile",
           name: "profile",
-          component: () => import("../views/users/ProfilePage.vue"),
+          component: ProfilePage,
         },
         {
           path: "/user/:id/dashboard",
           name: "dashboard",
-          component: () => import("../views/DashboardUser.vue"),
+          component: DashboardUser,
         },
         {
           path: "/user/reset-password",
           name: "reset-password",
-          component: () => import("../views/users/ChangePasswordPage.vue"),
+          component: ChangePasswordPage,
         },
         {
           path: "/users-management",
           name: "users-management",
-          component: () => import("../views/users/UsersManagement.vue"),
+          component: UsersManagement,
         },
         {
           path: "/:catchAll(.*)",
-          component: () => import("../views/NotFoundPage.vue"),
+          component: NotFoundPage,
         },
       ],
     },
     {
       path: "/:pathMatch(.*)*",
       name: "not-found",
-      component: () => import("../views/NotFound.vue"),
+      component: NotFoundPage,
     },
   ],
 });

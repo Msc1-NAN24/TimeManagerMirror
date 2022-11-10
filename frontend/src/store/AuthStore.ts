@@ -33,7 +33,7 @@ export const useAuthStore = defineStore("auth", {
       });
       localStorage.setItem(TOKEN_STORAGE_KEY, accessToken);
     },
-    async loginFromStorage() {
+     loginFromStorage() {
       const token = localStorage.getItem(TOKEN_STORAGE_KEY);
       if (token != null) {
         this.$patch({

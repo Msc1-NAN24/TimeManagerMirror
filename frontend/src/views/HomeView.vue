@@ -139,7 +139,9 @@ const onReloadWeekly = () => {
 </script>
 
 <template>
-  <v-layout>
+  <h1>Bienvenue sur votre tableau de bord, {{auth.user?.firstname}}</h1>
+  <p>Suivez en temps réel votre temps de travail en entreprise</p>
+  <v-layout style="margin-top: 20px;">
     <v-row no-gutters>
       <v-col lg="12" sm="12" md="12" cols="12">
         <WeeklyChart :times="weeklyWorkingTimes" :on-picker-change="onWeekChange" :starting-day="startingDay" :reload="onReloadWeekly"/>

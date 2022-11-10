@@ -3,7 +3,7 @@ import userService from '@/services/users';
 import userRepository from '@/repository/users';
 import {ref} from 'vue';
 import {useAuthStore} from "@/store/AuthStore";
-import {IUpdateUser, userRank} from "@/dto/user";
+import {IUpdateUser, IUser, userRank} from "@/dto/user";
 import {useToast} from "vue-toast-notification";
 
 const auth = useAuthStore();
@@ -11,7 +11,7 @@ const toast = useToast();
 
 const items = ref([] as any);
 const roles = ["employee", "manager"];
-const selected = ref<number>(0);
+const selected = ref<string | number>('');
 const isUser = ref(false);
 const isEditing = ref(false);
 const user = ref({
@@ -45,7 +45,7 @@ function searchUsers() {
    isUser.value = false;
    isEditing.value = false;
   if (selected.value !== 0) {
-    userService.getUserById(selected.value).then((response) => {
+    userService.getUserById(selected.value as number).then((response) => {
       console.log(response);
       isUser.value = true;
       user.value.id = response.id;
@@ -62,7 +62,7 @@ function searchUsers() {
 
 function deleteUser() {
   if (selected.value !== 0) {
-    userRepository.deleteUserById(selected.value).then((response) => {
+    userRepository.deleteUserById(selected.value as number).then((response) => {
       toast.success("Utilisateur supprimé avec succès !");
       selected.value = 0;
       isUser.value = false;
@@ -76,7 +76,7 @@ function deleteUser() {
 
 function saveUser() {
   if (selected.value !== 0) {
-    userService.updateUser(auth.accessToken, selected.value, updateUser.value
+    userService.updateUser(auth.accessToken, selected.value as number, updateUser.value as IUser
     ).then((response) => {
       toast.success("Utilisateur mis à jour !");
       console.log(response);
@@ -95,7 +95,30 @@ function saveUser() {
   <v-autocomplete dense filled rounded solo label="Sélectionner un utilisateur" :items="items" item-value="id" v-model="selected"
     menu-icon="" append-icon="mdi-account-search" @click:append="searchUsers" @update:modelValue="() => searchUsers()">
   </v-autocomplete>
-  <v-table v-if="isUser">
+  <div v-if="isUser" style="padding: 4px">
+      <v-text-field :disabled="!isEditing" label="Prénom" v-model="updateUser.firstname" :placeholder="user.firstname"></v-text-field>
+      <v-text-field :disabled="!isEditing" label="Nom" v-model="updateUser.lastname" :placeholder="user.lastname"></v-text-field>
+      <v-text-field :disabled="!isEditing" label="Email" v-model="updateUser.email" :placeholder="user.email"></v-text-field>
+      <v-select :disabled="!isEditing" label="Rôle" v-if="user.rank !== 'general_manager'" v-model="updateUser.rank" solo :items="roles" :value="user.rank" append-inner-icon=""></v-select>
+      <v-select label="Rôle" v-else v-model="updateUser.rank" solo :items="roles" :value="user.rank" append-inner-icon="" disabled></v-select>
+      <div v-if="isEditing">
+        <v-btn
+            color="success"
+            class="mr-4"
+            prepend-icon="mdi-check"
+            @click="saveUser()">Mettre à jour</v-btn>
+        <v-btn color="error" prepend-icon="mdi-close" @click="isEditing = !isEditing">Annuler</v-btn>
+      </div>
+      <div v-else>
+        <v-btn
+            color="success"
+            class="mr-4"
+            prepend-icon="mdi-account-edit"
+            @click="isEditing = true">Modifier</v-btn>
+      </div>
+  </div>
+
+<!--  <v-table v-if="isUser">
     <thead>
       <tr>
         <th class="text-left">Firstname</th>
@@ -158,5 +181,5 @@ function saveUser() {
         </td>
       </tr>
     </tbody>
-  </v-table>
+  </v-table>-->
 </template>

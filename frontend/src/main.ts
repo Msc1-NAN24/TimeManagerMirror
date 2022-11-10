@@ -4,13 +4,14 @@ import router from "./router";
 import vuetify from "./plugins/vuetify";
 import { loadFonts } from "./plugins/webfontloader";
 import { createPinia } from "pinia";
-import { useAuth } from "@/hook/useAuth";
 import ToastPlugin from "vue-toast-notification";
 import "vue3-lottie/dist/style.css";
 import Vue3Lottie from "vue3-lottie";
 import "vue-toast-notification/dist/theme-sugar.css";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+import {useAuthStore} from "@/store/AuthStore";
+
 
 // Fix Property 'env' does not exist on type 'ImportMeta'.
 declare global {
@@ -27,8 +28,8 @@ const pinia = createPinia();
 
 createApp(App)
   .use(pinia)
-  .use((app, options) => {
-    const auth = useAuth();
+  .use( (app, options) => {
+    const auth = useAuthStore();
     auth.loginFromStorage();
     console.log("app");
   })
