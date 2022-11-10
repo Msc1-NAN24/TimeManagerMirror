@@ -12,18 +12,15 @@ import {useToast} from "vue-toast-notification";
 import AverageDailyChart, {UserWorkingTime} from "@/components/charts/AverageDailyChart.vue";
 import {DateTime} from "luxon";
 import workingTimeService from "@/services/workingTimes";
-import User from "@/components/User.vue";
+import AverageWeeklyChart from "@/components/charts/AverageWeeklyChart.vue";
 import {IWorkingTime} from "@/dto/workingTime";
 const route = useRoute();
 const auth = useAuthStore();
 
 enum ModalType {
   Edit,
-  AddUser,
   DeleteTeam,
 }
-
-
 
 const router = useRouter();
 const toast = useToast();
@@ -32,6 +29,7 @@ const team = ref<undefined | ITeam>(undefined);
 const open = ref<undefined | ModalType>(undefined);
 const times = ref<UserWorkingTime[]>([]);
 const selectedWindowDays = ref(30);
+const startingDay = ref(0);
 
 const loadTeam = (teamId: string) => {
   getTeam(auth.accessToken, teamId, (teams, error) => {
@@ -51,6 +49,8 @@ const loadWorkingTimes = (id: string) => {
   const monthEnd = now.endOf("month");
   const weekStart = now.startOf("week");
   const weekEnd = now.endOf("week");
+
+  startingDay.value = weekStart.day;
   selectedWindowDays.value = monthEnd.day;
 
   workingTimeService.getTeamWorkingTimesByPeriod(id, `${monthStart.toFormat('yyyy-MM-dd')} 00:00:00`, `${monthEnd.toFormat('yyyy-MM-dd')} 00:00:00`, (workingTimes) => {
@@ -87,6 +87,26 @@ const onTeamDeleted = (newTeam: ITeam) => {
   router.push({name: 'teams'})
 }
 
+const onMonthChange = (event) => {
+  const now = DateTime.now().set({ month: event.month + 1, year: event.year });
+  const monthStart = now.startOf("month");
+  const monthEnd = now.endOf("month");
+  selectedWindowDays.value = monthEnd.day;
+  workingTimeService.getTeamWorkingTimesByPeriod(team.value["id"], `${monthStart.toFormat('yyyy-MM-dd')} 00:00:00`, `${monthEnd.toFormat('yyyy-MM-dd')} 00:00:00`, (response) => {
+    const usersWorkingTimes: UserWorkingTime[] = [];
+    console.log(response);
+    response.forEach((wt) => {
+      let uwt = usersWorkingTimes.find((a) => a.user.id === wt.user.id);
+      if (!uwt) {
+        usersWorkingTimes.push({times: [wt], user: wt.user});
+      } else {
+        uwt.times.push(wt);
+      }
+    });
+    times.value = usersWorkingTimes;
+  });
+}
+
 </script>
 
 <template>
@@ -109,7 +129,8 @@ const onTeamDeleted = (newTeam: ITeam) => {
           variant="elevated"
           text>Supprimer la team</v-btn>
     </div>
-    <AverageDailyChart :times="times" :number-of-months="selectedWindowDays"/>
+    <AverageDailyChart :times="times" :number-of-months="selectedWindowDays" :on-month-change="onMonthChange"/>
+    <AverageWeeklyChart :times="times" :starting-day="startingDay"/>
     <TeamMembersList :team="team" :reload="() => loadTeam(team.id)"/>
   </div>
 </template>

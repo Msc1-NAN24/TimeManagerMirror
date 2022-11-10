@@ -307,6 +307,12 @@ defmodule TimeManagerApi.Timemanager do
     %Workingtimes{}
     |> Workingtimes.changeset(attrs)
     |> Repo.insert()
+    |> case do
+      {:ok, workingtimes} ->
+        {:ok, Repo.preload(workingtimes, :user)}
+      {:error, changeset} ->
+        {:error, changeset}
+    end
   end
 
   def update_workingtimes(%Workingtimes{} = workingtimes, attrs) do

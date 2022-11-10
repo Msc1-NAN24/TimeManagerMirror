@@ -80,6 +80,13 @@ const onDismiss = () => {
               v-if="member.id !== team.owner.id"
               class="ma-2"
               variant="text"
+              icon="mdi-briefcase-clock-outline"
+              @click="() => router.push({path: `/workingtimes/${member.id}`})"
+              color="blue-lighten-2"/>
+          <v-btn
+              v-if="member.id !== team.owner.id"
+              class="ma-2"
+              variant="text"
               icon="mdi-delete"
               @click="() => onClickDeleteUser(member)"
               color="blue-lighten-2"/>
