@@ -35,8 +35,21 @@ const chartData = ref({
   ],
 });
 
-const chartOptions: Partial<CoreChartOptions<Doughnut>> = {
+const chartOptions = {
   responsive: true,
+  maintainAspectRatio: true,
+  plugins: {
+    tooltip: {
+      enabled: true,
+      callbacks: {
+        label: (context: any) => {
+          const label = context.label;
+          const value = context.parsed;
+          return `${label}: ${value}h`;
+        },
+      },
+    },
+  },
 };
 
 watch(
