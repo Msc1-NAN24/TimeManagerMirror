@@ -14,22 +14,36 @@
     <v-text-field v-model="email" label="Email" required></v-text-field>
   </v-form>
   <v-container>
-    <v-btn class="actions-button" variant="flat" color="success" @click="onClickUpdate">Mettre à jour</v-btn>
     <v-btn
-        class="actions-button"
-        variant="flat"
-        color="warning"
-        @click="onClickChangePassword"
-        v-if="!id || currentUser?.rank === 'general_manager'"
-    >Changer mon mot de passe</v-btn>
+      class="actions-button"
+      variant="flat"
+      color="success"
+      @click="onClickUpdate"
+      >Mettre à jour</v-btn
+    >
     <v-btn
-        class="actions-button"
-        variant="outlined"
-        color="info"
-        @click="onClickLogout"
-        v-if="!id || id === currentUser.id"
-    >Se déconnecter</v-btn>
-    <v-btn class="actions-button" variant="tonal" color="error" @click="onClickDelete">Supprimer mon compte</v-btn>
+      class="actions-button"
+      variant="flat"
+      color="warning"
+      @click="onClickChangePassword"
+      v-if="!id || currentUser?.rank === 'general_manager'"
+      >Changer mon mot de passe</v-btn
+    >
+    <v-btn
+      class="actions-button"
+      variant="outlined"
+      color="info"
+      @click="onClickLogout"
+      v-if="!id || id === currentUser.id"
+      >Se déconnecter</v-btn
+    >
+    <v-btn
+      class="actions-button"
+      variant="tonal"
+      color="error"
+      @click="onClickDelete"
+      >Supprimer mon compte</v-btn
+    >
   </v-container>
 </template>
 
@@ -61,7 +75,7 @@ export default {
 
     if (
       !isAuthorize([userRank.manager, userRank.general_manager]) &&
-      auth.user?.id !== id
+      route.name === "profile"
     ) {
       toast.info("Vous n'avez pas le droit d'accéder a cette page");
       router.push({ path: "/" });

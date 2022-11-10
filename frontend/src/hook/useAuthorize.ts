@@ -9,14 +9,17 @@ export const useAuthorize = () => {
   const isAuthorize = (rank: userRank | Array<userRank>): boolean => {
     const auth = useAuthStore();
     let user = auth.user;
-    
+
     auth.$subscribe(
       (mutation, state) => {
         if (state.isLogged === IsLogged.Logged) user = state.user;
       },
       { detached: true }
     );
-    if (Array.isArray(rank) && user) return rank.includes(user?.rank);
+
+    if (Array.isArray(rank) && user) {
+      return rank.includes(user?.rank);
+    }
     return rank === user?.rank;
   };
 

@@ -40,7 +40,6 @@ watch(() => props.times, (times) => {
       connectedInSection[i] = times.filter((wt) => DateTime.fromISO(wt.start).day % 7 === i).reduce((last, time) => last + DateTime.fromISO(time.end).diff(DateTime.fromISO(time.start), 'hours').toObject().hours, 0);
     }
   }
-  console.log('a', connectedInSection);
   chartData.value = {
     labels: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
     datasets: [

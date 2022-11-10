@@ -94,7 +94,6 @@ const onMonthChange = (event) => {
   selectedWindowDays.value = monthEnd.day;
   workingTimeService.getTeamWorkingTimesByPeriod(team.value["id"], `${monthStart.toFormat('yyyy-MM-dd')} 00:00:00`, `${monthEnd.toFormat('yyyy-MM-dd')} 00:00:00`, (response) => {
     const usersWorkingTimes: UserWorkingTime[] = [];
-    console.log(response);
     response.forEach((wt) => {
       let uwt = usersWorkingTimes.find((a) => a.user.id === wt.user.id);
       if (!uwt) {
