@@ -32,7 +32,8 @@ defmodule TimeManagerApiWeb.AuthView do
         id: user.id,
         firstname: user.firstname,
         lastname: user.lastname,
-        email: user.email
+        email: user.email,
+        rank: user.rank,
       }
     }
   end
