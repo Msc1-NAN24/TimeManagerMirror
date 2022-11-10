@@ -42,6 +42,7 @@ The goal is to create an application of time management in 7 steps :
 For the deployment, a CI/CD pipeline is used. At each push on the main branch, the pipeline will be triggered. It will build the project and deploy it on the server. You can see the status of the pipeline on the top of this README. If the status is green, the project is deployed and you can access it on [time-manager.tech](https://time-manager.tech/).
 
 ## Local Deployment
+
 ### Prerequisites
 
 Before installation, you need to create a .env file at the root of the repository likes the `/.env.example`
@@ -51,6 +52,7 @@ Moreover, you need Docker and Docker Compose installed on your machine.
 
 A docker compose file is present to creates all needed services for the time manager.
 It is composed of several services:
+
 - Postgres DB
 - Adminer (DB Inspector)
 - Front (VueJS App)
