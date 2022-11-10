@@ -31,7 +31,6 @@ createApp(App)
   .use( (app, options) => {
     const auth = useAuthStore();
     auth.loginFromStorage();
-    console.log("app");
   })
   .use(router)
   .use(vuetify)

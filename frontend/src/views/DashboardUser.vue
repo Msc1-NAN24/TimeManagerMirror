@@ -26,10 +26,7 @@ const startingDay = ref(0);
 const user = ref();
 const toast = useToast();
 
-if (
-  !isAuthorize([userRank.manager, userRank.general_manager]) &&
-  auth.user?.id !== id
-) {
+if (!isAuthorize([userRank.manager, userRank.general_manager])) {
   toast.info("Vous n'avez pas le droit d'accéder a cette page");
   router.push({ name: "home" });
 }
@@ -90,7 +87,6 @@ onMounted(() => {
 });
 
 const onMonthChange = (event) => {
-  console.log("ABC", event);
   const now = DateTime.now().set({ month: event.month + 1, year: event.year });
   const monthStart = now.startOf("month");
   const monthEnd = now.endOf("month");

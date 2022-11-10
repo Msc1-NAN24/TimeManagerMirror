@@ -3,7 +3,7 @@ import userService from '@/services/users';
 import userRepository from '@/repository/users';
 import {ref} from 'vue';
 import {useAuthStore} from "@/store/AuthStore";
-import {IUpdateUser, IUser, userRank} from "@/dto/user";
+import {IUser} from "@/dto/user";
 import {useToast} from "vue-toast-notification";
 
 const auth = useAuthStore();
@@ -32,7 +32,6 @@ refreshUsers()
 
 function refreshUsers() {
   userService.getAllUsers().then((response) => {
-    console.log(response);
     items.value = []
     for (let i = 0; i < response.length; i++) {
       items.value.push({ title: response[i].firstname, icon: 'mdi-account', route: 'users', id: response[i].id });
@@ -45,8 +44,7 @@ function searchUsers() {
    isUser.value = false;
    isEditing.value = false;
   if (selected.value !== 0) {
-    userService.getUserById(selected.value as number).then((response) => {
-      console.log(response);
+    userService.getUserById(selected.value as string).then((response) => {
       isUser.value = true;
       user.value.id = response.id;
       user.value.firstname = response.firstname;
@@ -117,69 +115,4 @@ function saveUser() {
             @click="isEditing = true">Modifier</v-btn>
       </div>
   </div>
-
-<!--  <v-table v-if="isUser">
-    <thead>
-      <tr>
-        <th class="text-left">Firstname</th>
-        <th class="text-left">Lastname</th>
-        <th class="text-left">Email</th>
-        <th class="text-left">Role</th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-if="isEditing">
-        <td style="width: 15%">
-          <v-text-field v-model="updateUser.firstname" :placeholder="user.firstname"></v-text-field>
-        </td>
-        <td style="width: 15%">
-          <v-text-field v-model="updateUser.lastname" :placeholder="user.lastname"></v-text-field>
-        </td>
-        <td style="width: 28%">
-          <v-text-field v-model="updateUser.email" :placeholder="user.email"></v-text-field>
-        </td>
-        <td style="width: 28%">
-          <v-select v-if="user.rank !== 'general_manager'" v-model="updateUser.rank" solo :items="roles" :value="user.rank" append-inner-icon=""></v-select>
-          <v-select v-else v-model="updateUser.rank" solo :items="roles" :value="user.rank" append-inner-icon="" disabled></v-select>
-        </td>
-        <td style="width: 7%">
-          <v-btn icon color="success" @click="saveUser()">
-            <v-icon>mdi-check</v-icon>
-          </v-btn>
-        </td>
-        <td style="width: 7%">
-          <v-btn icon color="error" @click="isEditing = !isEditing">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </td>
-      </tr>
-      <tr v-else>
-        <td style="width: 15%">
-          <v-text-field v-model="updateUser.firstname" disabled></v-text-field>
-        </td>
-        <td style="width: 15%">
-          <v-text-field v-model="updateUser.lastname" disabled></v-text-field>
-        </td>
-        <td style="width: 28%">
-          <v-text-field v-model="updateUser.email" disabled></v-text-field>
-        </td>
-        <td style="width: 28%">
-          <v-select v-model="updateUser.rank" solo :items="roles" :value="user.rank" disabled append-inner-icon="">
-          </v-select>
-        </td>
-        <td style="width: 7%">
-          <v-btn icon color="primary" @click="isEditing = !isEditing">
-            <v-icon>mdi-cog</v-icon>
-          </v-btn>
-        </td>
-        <td style="width: 7%">
-          <v-btn v-if="user.rank !== 'general_manager'" icon color="error" @click="deleteUser()">
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
-        </td>
-      </tr>
-    </tbody>
-  </v-table>-->
 </template>
