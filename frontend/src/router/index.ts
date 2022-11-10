@@ -9,8 +9,6 @@ import NotFoundPage from "@/views/NotFoundPage.vue";
 import UsersManagement from "@/views/users/UsersManagement.vue";
 import ChangePasswordPage from "@/views/users/ChangePasswordPage.vue";
 import DashboardUser from "@/views/DashboardUser.vue";
-import ChartManager from "@/components/ChartManager.vue";
-import Clock from "@/views/Clock.vue";
 import WorkingTimes from "@/views/WorkingTimes.vue";
 import WorkingTime from "@/views/WorkingTime.vue";
 import Login from "@/views/auth/Login.vue";
@@ -47,16 +45,6 @@ const router = createRouter({
           path: "/workingtimes/:userid",
           name: "workingtimes",
           component: WorkingTimes,
-        },
-        {
-          path: "/clock/:username",
-          name: "clock",
-          component: Clock,
-        },
-        {
-          path: "/chartManager/:userid",
-          name: "chartManager",
-          component: ChartManager,
         },
         {
           path: "/teams",
