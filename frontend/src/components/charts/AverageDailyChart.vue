@@ -100,7 +100,7 @@ watch(() => props.times, (times: UserWorkingTime[]) => {
             icon="mdi-refresh"
         ></v-btn>
       </div>
-      <Datepicker class="picker" v-model="date" month-picker @update:modelValue="props.onMonthChange"/>
+      <Datepicker :clearable="false" class="picker" v-model="date" month-picker @update:modelValue="props.onMonthChange"/>
     </div>
     <Line
         :chart-options="chartOptions"
