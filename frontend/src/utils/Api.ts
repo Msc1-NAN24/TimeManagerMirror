@@ -6,6 +6,6 @@ export default axios.create({
 
 export const authorize = (accessToken: string): any => {
   return {
-    headers: {authorization: accessToken}
+    headers: { authorization: accessToken },
   };
-}
+};

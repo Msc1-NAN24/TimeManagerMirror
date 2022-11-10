@@ -31,7 +31,6 @@ const onCloseModal = () => {
 }
 
 const onSuccess = (team) => {
-  console.log('created', team);
   open.value = false;
   loadTeams();
 }

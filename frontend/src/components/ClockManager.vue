@@ -27,7 +27,6 @@ async function getClock() {
     startingTimeFormated.value = "-";
     durationTime.value = "--:--:--";
   } else {
-    console.log(clock.time);
     isCounting.value = status;
     startingTime.value = clock.time;
     startingTimeFormated.value = luxon.DateTime.fromISO(clock.time).toFormat(

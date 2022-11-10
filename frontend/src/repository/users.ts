@@ -1,20 +1,20 @@
 import { IUpdateUser, IUser } from "@/dto/user";
 import Api, { authorize } from "@/utils/Api";
 
-const getUserById = async (id: number) => {
+const getUserById = async (id: string) => {
   const { data } = await Api.get<IUser>(`/users/${id}`, {
     headers: {
       Authorization: `${localStorage.getItem("access_token")}`,
     },
-  });
+  } as any);
   return data;
 };
 
-const getMe = (
+const getMe = async (
   accessToken: string,
   callback: (user?: IUser, error?: string) => void
 ) => {
-  Api.get<IUser>(`/users/me`, authorize(accessToken))
+  await Api.get<IUser>(`/users/me`, authorize(accessToken))
     .then((response) => {
       callback(response.data);
     })

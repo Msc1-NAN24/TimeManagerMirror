@@ -33,21 +33,22 @@ export const useAuthStore = defineStore("auth", {
       });
       localStorage.setItem(TOKEN_STORAGE_KEY, accessToken);
     },
-    loginFromStorage() {
+     loginFromStorage() {
       const token = localStorage.getItem(TOKEN_STORAGE_KEY);
       if (token != null) {
         this.$patch({
           accessToken: token,
           isLogged: IsLogged.Logged,
         });
+        userRepository.getMe(token, (user, error) => {
+          if (user !== undefined) {
+            this.$patch({ user: user, isLogged: IsLogged.Logged });
+          } else if (error) {
+            console.log("err", error);
+            this.$patch({ isLogged: IsLogged.NotLogged });
+          }
+        });
       }
-      userRepository.getMe(token, (user, error) => {
-        if (user !== undefined) {
-          this.$patch({ user: user });
-        } else if (error) {
-          this.$patch({ isLogged: IsLogged.NotLogged });
-        }
-      });
     },
     logoutUser() {
       localStorage.removeItem(TOKEN_STORAGE_KEY);

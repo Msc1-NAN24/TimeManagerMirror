@@ -17,8 +17,9 @@ import {DateTime} from "luxon";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, LineElement, PointElement)
 
-const props = defineProps(['times', 'onPickerChange', 'startingDay']);
-const date = ref();
+const props = defineProps(['times', 'onPickerChange', 'startingDay', 'reload']);
+const now = DateTime.now();
+const date = ref([now.startOf("week").toJSDate(), now.endOf("week").toJSDate()]);
 
 const chartData = ref({
   labels: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
@@ -39,7 +40,6 @@ watch(() => props.times, (times) => {
       connectedInSection[i] = times.filter((wt) => DateTime.fromISO(wt.start).day % 7 === i).reduce((last, time) => last + DateTime.fromISO(time.end).diff(DateTime.fromISO(time.start), 'hours').toObject().hours, 0);
     }
   }
-  console.log('a', connectedInSection);
   chartData.value = {
     labels: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
     datasets: [
@@ -67,7 +67,16 @@ const chartOptions = {
 
 <template>
   <div class="title">
-    <h2>Weekly</h2>
+    <div style="display: flex; flex-direction: row; gap: 10px; align-items: center">
+      <h2>Récap hebdomadaire</h2>
+      <v-btn
+          size="x-small"
+          class="ma-2"
+          color="blue"
+          @click="() => props.reload()"
+          icon="mdi-refresh"
+      ></v-btn>
+    </div>
     <Datepicker class="picker" v-model="date" week-picker @update:modelValue="(v) => props.onPickerChange(v)"/>
   </div>
   <Line

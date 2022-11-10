@@ -7,17 +7,29 @@ import MonthlyChart from "@/components/charts/MonthlyChart.vue";
 import { IWorkingTime } from "@/dto/workingTime";
 import { onMounted, ref } from "vue";
 import { DateTime } from "luxon";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import userService from "@/services/users";
+import { useAuthorize } from "@/hook/useAuthorize";
+import { userRank } from "@/dto/user";
+import { useToast } from "vue-toast-notification";
 
 const auth = useAuthStore();
+const { isAuthorize } = useAuthorize();
 const route = useRoute();
+const router = useRouter();
 const dailyWorkingTimes = ref<IWorkingTime[]>([]);
 const id = Number(route.params.id);
 const monthlyWorkingTimes = ref<IWorkingTime[]>([]);
 const weeklyWorkingTimes = ref<IWorkingTime[]>([]);
+const selectedWindowDays = ref(30);
+const startingDay = ref(0);
 const user = ref();
+const toast = useToast();
 
+if (!isAuthorize([userRank.manager, userRank.general_manager])) {
+  toast.info("Vous n'avez pas le droit d'accéder a cette page");
+  router.push({ name: "home" });
+}
 userService.getUserById(id).then((res) => (user.value = res));
 
 auth.$subscribe(
@@ -33,6 +45,10 @@ const loadWorkingTimes = () => {
   const monthEnd = now.endOf("month");
   const weekStart = now.startOf("week");
   const weekEnd = now.endOf("week");
+
+  startingDay.value = weekStart.day;
+  selectedWindowDays.value = monthEnd.day;
+
   if (auth.isLogged === IsLogged.Logged && auth.user !== undefined) {
     workingTimeService
       .getWorkingTimes(
@@ -71,10 +87,10 @@ onMounted(() => {
 });
 
 const onMonthChange = (event) => {
-  console.log("ABC", event);
   const now = DateTime.now().set({ month: event.month + 1, year: event.year });
   const monthStart = now.startOf("month");
   const monthEnd = now.endOf("month");
+  selectedWindowDays.value = monthEnd.day;
   workingTimeService
     .getWorkingTimes(
       auth.user?.id!,
@@ -89,6 +105,7 @@ const onMonthChange = (event) => {
 const onWeekChange = (event) => {
   const d1 = DateTime.fromJSDate(event[0]);
   const d2 = DateTime.fromJSDate(event[1]);
+  startingDay.value = d1.day;
   workingTimeService
     .getWorkingTimes(
       auth.user?.id!,
@@ -111,6 +128,7 @@ const onWeekChange = (event) => {
         <WeeklyChart
           :times="weeklyWorkingTimes"
           :on-picker-change="onWeekChange"
+          :starting-day="startingDay"
         />
       </v-col>
       <v-col lg="4" cols="4">
@@ -120,6 +138,7 @@ const onWeekChange = (event) => {
         <MonthlyChart
           :times="monthlyWorkingTimes"
           :on-picker-change="onMonthChange"
+          :number-of-days="selectedWindowDays"
         />
       </v-col>
     </v-row>

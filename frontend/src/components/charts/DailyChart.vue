@@ -26,7 +26,7 @@ ChartJS.register(
   ArcElement
 );
 
-const props = defineProps(["times"]);
+const props = defineProps(["times", 'reload']);
 
 const chartData = ref({
   labels: ["En ligne", "Hors ligne"],
@@ -37,7 +37,6 @@ const chartData = ref({
 
 const chartOptions: Partial<CoreChartOptions<Doughnut>> = {
   responsive: true,
-  aspectRatio: 1.5,
 };
 
 watch(
@@ -45,7 +44,6 @@ watch(
   (times) => {
     let connectedInSection = 0;
     for (let wt: IWorkingTime of times) {
-      console.log(wt);
       const end = DateTime.fromISO(wt.end);
       const start = DateTime.fromISO(wt.start);
       const diff = end.diff(start, "hours");
@@ -53,19 +51,15 @@ watch(
     }
     connectedInSection = parseFloat(connectedInSection.toFixed(1));
     const labels =
-      connectedInSection > 7 ? ["En ligne"] : ["En ligne", "Hors ligne"];
+      connectedInSection > 7 ? ["Heure supplémentaire", "En ligne"] : ["En ligne", "Hors ligne"];
 
     const data =
       connectedInSection > 7
         ? [connectedInSection, (7 - connectedInSection) * -1]
         : [connectedInSection, 7 - connectedInSection];
-    console.log(data);
 
     chartData.value = {
-      labels: [
-        connectedInSection > 7 ? "Heure supplémentaire" : "En ligne",
-        "En ligne",
-      ],
+      labels,
       datasets: [
         {
           data,
@@ -81,6 +75,15 @@ watch(
 </script>
 
 <template>
-  <h2>Daily</h2>
+  <div style="display: flex; flex-direction: row; gap: 10px; align-items: center">
+    <h2>Journalier</h2>
+    <v-btn
+        size="x-small"
+        class="ma-2"
+        color="blue"
+        @click="() => props.reload()"
+        icon="mdi-refresh"
+    ></v-btn>
+  </div>
   <Doughnut :chart-options="chartOptions" :chart-data="chartData" />
 </template>
