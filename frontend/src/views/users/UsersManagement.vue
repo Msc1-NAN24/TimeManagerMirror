@@ -81,6 +81,7 @@ function saveUser() {
       toast.success("Utilisateur mis à jour !");
       console.log(response);
       isEditing.value = false;
+      selected.value = '';
       refreshUsers();
     });
   } else {
@@ -119,7 +120,7 @@ function saveUser() {
             color="error"
             class="mr-4"
             prepend-icon="mdi-account-edit"
-            @click="() => null">Supprimer</v-btn>
+            @click="() => deleteUser()">Supprimer</v-btn>
         <v-btn
             color="info"
             class="mr-4"
