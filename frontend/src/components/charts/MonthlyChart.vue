@@ -41,7 +41,12 @@ const chartData = ref({
 
 const chartOptions = {
   responsive: true,
-  maintainAspectRatio: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      display: false,
+    },
+  },
   scales: {
     y: {
       adapters: {
@@ -108,7 +113,7 @@ const onMonthChange = (event) => {
           @click="() => props.reload()"
       ></v-btn>
     </div>
-    <Datepicker class="picker" v-model="date" :month-picker="true" @update:modelValue="onMonthChange"/>
+    <Datepicker class="picker" v-model="date" :clearable="false" :month-picker="true" @update:modelValue="onMonthChange"/>
   </div>
   <Line :chart-options="chartOptions" :chart-data="chartData" />
 </template>

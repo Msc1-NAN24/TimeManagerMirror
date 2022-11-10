@@ -10,10 +10,9 @@ import DeleteTeamModal from "@/components/modals/teams/DeleteTeamModal.vue";
 import { useToast } from "vue-toast-notification";
 import AverageDailyChart, {
   UserWorkingTime,
-} from "@/components/charts/AverageDailyChart.vue";
+} from "@/components/charts/AverageMonthlyChart.vue";
 import { DateTime } from "luxon";
 import workingTimeService from "@/services/workingTimes";
-import AverageWeeklyChart from "@/components/charts/AverageWeeklyChart.vue";
 import { IWorkingTime } from "@/dto/workingTime";
 const route = useRoute();
 const auth = useAuthStore();
