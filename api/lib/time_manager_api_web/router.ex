@@ -29,6 +29,8 @@ defmodule TimeManagerApiWeb.Router do
     get "/workingtimes/user/:user_id", WorkingtimesController, :get_workingtimes
     get "/workingtimes/user/:user_id/:id", WorkingtimesController, :get_workingtimes
 
+    get "/workingtimes/me", WorkingtimesController, :get_workingtimes_me
+
     # Manager routes
     get "/workingtimes/entry/:id", WorkingtimesController, :get_workingtimes_manager
     post "/workingtimes/user/:user_id", WorkingtimesController, :create

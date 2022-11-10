@@ -70,6 +70,11 @@ watch(() => props.times, (times) => {
 const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      display: false,
+    },
+  },
   scales: {
     y: {
       adapters: {
@@ -103,7 +108,7 @@ const chartOptions = {
           icon="mdi-refresh"
       ></v-btn>
     </div>
-    <Datepicker class="picker" v-model="date" week-picker @update:modelValue="(v) => props.onPickerChange(v)"/>
+    <Datepicker class="picker" v-model="date" week-picker :clearable="false" @update:modelValue="(v) => props.onPickerChange(v)"/>
   </div>
   <Line :chart-options="chartOptions" :chart-data="chartData" />
 </template>

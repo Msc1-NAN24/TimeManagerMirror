@@ -141,19 +141,17 @@ const onReloadWeekly = () => {
 <template>
   <h1>Bienvenue sur votre tableau de bord, {{auth.user?.firstname}}</h1>
   <p>Suivez en temps réel votre temps de travail en entreprise</p>
-  <v-layout style="margin-top: 20px;">
-    <v-row no-gutters>
-      <v-col lg="12" sm="12" md="12" cols="12">
-        <WeeklyChart :times="weeklyWorkingTimes" :on-picker-change="onWeekChange" :starting-day="startingDay" :reload="onReloadWeekly"/>
-      </v-col>
-      <v-col lg="4" cols="12">
-        <DailyChart :times="dailyWorkingTimes" :reload="onReloadDaily"/>
-      </v-col>
-      <v-col lg="8" cols="12">
-        <MonthlyChart :times="monthlyWorkingTimes" :on-picker-change="onMonthChange" :number-of-days="selectedWindowDays" :reload="onReloadMonthly"/>
-      </v-col>
-    </v-row>
-  </v-layout>
+  <v-row no-gutters style="margin-top: 20px;">
+    <v-col lg="12" sm="12" md="12" cols="12">
+      <WeeklyChart :times="weeklyWorkingTimes" :on-picker-change="onWeekChange" :starting-day="startingDay" :reload="onReloadWeekly"/>
+    </v-col>
+    <v-col lg="4" cols="12">
+      <DailyChart :times="dailyWorkingTimes" :reload="onReloadDaily"/>
+    </v-col>
+    <v-col lg="8" cols="12">
+      <MonthlyChart :times="monthlyWorkingTimes" :on-picker-change="onMonthChange" :number-of-days="selectedWindowDays" :reload="onReloadMonthly"/>
+    </v-col>
+  </v-row>
 </template>
 
 <style scoped>

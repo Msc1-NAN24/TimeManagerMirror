@@ -1,7 +1,7 @@
 export enum userRank {
-  "employee",
-  "manager",
-  "general_manager",
+  "employee" = "employee",
+  "manager" = "manager",
+  "general_manager" = "general_manager",
 }
 
 export interface IUser {

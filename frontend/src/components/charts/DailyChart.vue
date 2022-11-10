@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Doughnut } from "vue-chartjs";
-
 import {
   Chart as ChartJS,
   Title,
@@ -37,8 +36,11 @@ const chartData = ref({
 
 const chartOptions = {
   responsive: true,
-  maintainAspectRatio: true,
+  maintainAspectRatio: false,
   plugins: {
+    legend: {
+      display: false,
+    },
     tooltip: {
       enabled: true,
       callbacks: {
@@ -90,13 +92,7 @@ watch(
 <template>
   <div style="display: flex; flex-direction: row; gap: 10px; align-items: center">
     <h2>Journalier</h2>
-    <v-btn
-        size="x-small"
-        class="ma-2"
-        color="blue"
-        @click="() => props.reload()"
-        icon="mdi-refresh"
-    ></v-btn>
+    <v-btn size="x-small" class="ma-2" color="blue" @click="() => props.reload()" icon="mdi-refresh"></v-btn>
   </div>
   <Doughnut :chart-options="chartOptions" :chart-data="chartData" />
 </template>
