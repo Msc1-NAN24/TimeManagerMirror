@@ -1,26 +1,27 @@
 <script lang="ts" setup>
-
 import { IsLogged, useAuthStore } from "@/store/AuthStore";
 import { storeToRefs } from "pinia";
+import {useLoading} from "@/hook/useLoading.tsx";
 import ClockManager from "@/components/ClockManager.vue";
 import { useRouter } from "vue-router";
 import { ref, watch } from "vue";
+import Loading from "@/components/Loading.vue";
 
 const auth = useAuthStore();
+const {user} = storeToRefs(auth);
 const router = useRouter();
-const { user } = storeToRefs(auth);
+const {loading} = useLoading();
 const drawer = ref(true);
 const mobile = ref<boolean>(isMobile());
 
+console.log(user?.value);
+
 auth.$subscribe((mutation, state) => {
+  console.log(state.isLogged);
   if (state.isLogged == IsLogged.NotLogged) {
     router.push({ name: 'login' })
   }
 }, { detached: true });
-
-function onClickBtn() {
-  console.log(user?.value);
-}
 
 window.addEventListener('resize', () => {
   mobile.value = isMobile();
@@ -46,7 +47,7 @@ watch(mobile, (value) => {
 
 <template>
   <v-app>
-    <v-app-bar color="deep-grey-lighten-5" dark v-if="mobile">
+    <v-app-bar app color="deep-grey-lighten-5" dark v-if="mobile">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <div class="d-flex align-center w-100">
         <v-toolbar-title style="text-align: center;">Time Manager</v-toolbar-title>
@@ -55,23 +56,23 @@ watch(mobile, (value) => {
         <v-icon>mdi-export</v-icon>
       </v-btn>
     </v-app-bar>
-    <v-navigation-drawer app v-model="drawer" touchless class="bg-grey-lighten-3">
+    <v-navigation-drawer fixed floating app v-model="drawer" touchless class="drawer bg-grey-lighten-3">
       <v-container class="container">
         <v-row class="top">
             <v-list class="w-100">
-            <v-list-item
-                @click="router.push({name: 'myProfile'})"
-                prepend-icon="mdi-account-circle"
-                :title="`${user?.firstname} ${user?.lastname}`"
-                :subtitle="user?.email"
-            ></v-list-item>
+              <v-list-item
+                  @click="() => router.push({name: 'myProfile'})"
+                  prepend-icon="mdi-account-circle"
+                  :title="`${user?.firstname ?? 'Chargement ...'} ${user?.lastname ?? ''}`"
+                  :subtitle="user?.email ?? 'Chargement ...'"
+              ></v-list-item>
           </v-list>
           <v-divider></v-divider>
-          <v-list>
+          <v-list class="w-100">
             <v-list-item prepend-icon="mdi-monitor-dashboard" title="Dashboard" value="dashboard"
               @click="router.push({ name: 'home' })"></v-list-item>
             <v-list-item prepend-icon="mdi-calendar-blank-multiple" title="Workingtimes" value="workingtimes"
-              @click="onClickBtn"></v-list-item>
+              @click="router.push({path: `/workingtimes/${auth.user.id}`})"></v-list-item>
             <v-list-item v-if="user?.rank === 'manager' || user?.rank === 'general_manager'"
               prepend-icon="mdi-account-group" title="Teams" value="teams" @click="router.push({ name: 'teams' })">
             </v-list-item>
@@ -86,13 +87,17 @@ watch(mobile, (value) => {
     </v-navigation-drawer>
     <v-main>
       <v-container fluid>
-        <router-view />
+        <router-view v-if="!loading"/>
+        <div v-if="loading">
+          <Loading/>
+        </div>
       </v-container>
     </v-main>
   </v-app>
 </template>
 
 <style scoped>
+
 .container {
   height: 100vh;
   min-height: fit-content;

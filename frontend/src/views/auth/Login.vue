@@ -54,7 +54,7 @@ const onSubmit = () => {
 
 <template>
   <v-sheet class="pa-12" rounded>
-    <Vue3Lottie :animationData="welcome" :height="300" :width="400" />
+    <Vue3Lottie :animationData="welcome" style="max-width: 400px" />
     <div class="content mx-auto px-6 py-8">
       <h3 style="font-weight: normal">Se connecter</h3>
       <v-form class="py-4" v-model="form" @submit.prevent="onSubmit">

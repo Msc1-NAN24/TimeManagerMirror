@@ -43,6 +43,7 @@ specifiers:
   pinia: ^2.0.23
   prettier: ^2.7.1
   roboto-fontface: '*'
+  skeleton-loader-vue: ^1.0.10
   ts-jest: ^27.0.4
   typescript: ~4.5.5
   vite: ^3.0.8
@@ -77,6 +78,7 @@ dependencies:
   pinia: 2.0.23_ild7djncmi72vluphcjtdwp6eu
   prettier: 2.7.1
   roboto-fontface: 0.10.0
+  skeleton-loader-vue: 1.0.10_vue@3.2.41
   vue: 3.2.41
   vue-chartjs: 4.1.2_chart.js@3.9.1+vue@3.2.41
   vue-router: 4.1.6_vue@3.2.41
@@ -9016,6 +9018,15 @@ packages:
 
   /sisteransi/1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
+
+  /skeleton-loader-vue/1.0.10_vue@3.2.41:
+    resolution: {integrity: sha512-71WVaMrXxpzZp1NY1U+DEXi1EbMJ7PdUDW2aiCXKrP0a0IZBMfLX2Nxq9hQXK7M8YHweTMlCRTDYScH/B3/7nQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      vue: ^2.6.11
+    dependencies:
+      vue: 3.2.41
+    dev: false
 
   /slash/3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}

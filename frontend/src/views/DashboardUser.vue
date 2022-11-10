@@ -7,11 +7,16 @@ import MonthlyChart from "@/components/charts/MonthlyChart.vue";
 import { IWorkingTime } from "@/dto/workingTime";
 import { onMounted, ref } from "vue";
 import { DateTime } from "luxon";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import userService from "@/services/users";
+import { useAuthorize } from "@/hook/useAuthorize";
+import { userRank } from "@/dto/user";
+import { useToast } from "vue-toast-notification";
 
 const auth = useAuthStore();
+const { isAuthorize } = useAuthorize();
 const route = useRoute();
+const router = useRouter();
 const dailyWorkingTimes = ref<IWorkingTime[]>([]);
 const id = Number(route.params.id);
 const monthlyWorkingTimes = ref<IWorkingTime[]>([]);
@@ -19,7 +24,12 @@ const weeklyWorkingTimes = ref<IWorkingTime[]>([]);
 const selectedWindowDays = ref(30);
 const startingDay = ref(0);
 const user = ref();
+const toast = useToast();
 
+if (!isAuthorize([userRank.manager, userRank.general_manager])) {
+  toast.info("Vous n'avez pas le droit d'accéder a cette page");
+  router.push({ name: "home" });
+}
 userService.getUserById(id).then((res) => (user.value = res));
 
 auth.$subscribe(
@@ -77,7 +87,6 @@ onMounted(() => {
 });
 
 const onMonthChange = (event) => {
-  console.log("ABC", event);
   const now = DateTime.now().set({ month: event.month + 1, year: event.year });
   const monthStart = now.startOf("month");
   const monthEnd = now.endOf("month");

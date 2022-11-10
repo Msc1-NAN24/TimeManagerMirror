@@ -21,7 +21,7 @@ import { convertHoursStringToDate, convertToHoursString } from "@/utils/Chart";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, LineElement, PointElement, TimeScale)
 
-const props = defineProps(['times', 'onPickerChange', 'numberOfDays']);
+const props = defineProps(['times', 'onPickerChange', 'numberOfDays', 'reload']);
 
 const now = DateTime.now();
 const date = ref({ month: now.month - 1, year: now.year });
@@ -98,8 +98,17 @@ const onMonthChange = (event) => {
 
 <template>
   <div class="title">
-    <h2>Récap mensuel</h2>
-    <Datepicker class="picker" v-model="date" :month-picker="true" @update:modelValue="onMonthChange" />
+    <div style="display: flex; flex-direction: row; gap: 10px; align-items: center">
+      <h2>Récap mensuel</h2>
+      <v-btn
+          size="x-small"
+          class="ma-2"
+          color="blue"
+          icon="mdi-refresh"
+          @click="() => props.reload()"
+      ></v-btn>
+    </div>
+    <Datepicker class="picker" v-model="date" :month-picker="true" @update:modelValue="onMonthChange"/>
   </div>
   <Line :chart-options="chartOptions" :chart-data="chartData" />
 </template>

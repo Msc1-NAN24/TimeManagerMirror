@@ -2,8 +2,17 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import NavigationDrawer from "@/components/NavigationDrawer.vue";
 import { IsLogged, useAuthStore } from "@/store/AuthStore";
-import { userRank } from "@/dto/user";
-import { useToast } from "vue-toast-notification";
+import TeamListPage from "@/views/teams/TeamListPage.vue";
+import TeamPage from "@/views/teams/TeamPage.vue";
+import ProfilePage from "@/views/users/ProfilePage.vue";
+import NotFoundPage from "@/views/NotFoundPage.vue";
+import UsersManagement from "@/views/users/UsersManagement.vue";
+import ChangePasswordPage from "@/views/users/ChangePasswordPage.vue";
+import DashboardUser from "@/views/DashboardUser.vue";
+import WorkingTimes from "@/views/WorkingTimes.vue";
+import WorkingTime from "@/views/WorkingTime.vue";
+import Login from "@/views/auth/Login.vue";
+import Register from "@/views/auth/Register.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -11,12 +20,12 @@ const router = createRouter({
     {
       path: "/login",
       name: "login",
-      component: () => import("../views/auth/Login.vue"),
+      component: Login,
     },
     {
       path: "/register",
       name: "register",
-      component: () => import("../views/auth/Register.vue"),
+      component: Register,
     },
     {
       path: "/",
@@ -28,24 +37,14 @@ const router = createRouter({
           name: "home",
         },
         {
-          path: "/workingTimes/:userI",
-          name: "workingTimes",
-          component: () => import("../views/WorkingTimes.vue"),
+          path: "/workingtimes/:userid/:workingtimeid",
+          name: "workingtime",
+          component: WorkingTime,
         },
         {
-          path: "/workingTime/:userid/:workingtimeid",
-          name: "workingTime",
-          component: () => import("../views/WorkingTime.vue"),
-        },
-        {
-          path: "/clock/:username",
-          name: "clock",
-          component: () => import("../views/Clock.vue"),
-        },
-        {
-          path: "/chartManager/:userid",
-          name: "chartManager",
-          component: () => import("../views/ChartManager.vue"),
+          path: "/workingtimes/:userid",
+          name: "workingtimes",
+          component: WorkingTimes,
         },
         {
           path: "/teams",
@@ -53,71 +52,63 @@ const router = createRouter({
             {
               path: "",
               name: "teams",
-              component: () => import("../views/teams/TeamListPage.vue"),
+              component: TeamListPage,
             },
             {
               path: ":id",
               name: "team",
-              component: () => import("../views/teams/TeamPage.vue"),
+              component: TeamPage,
             },
           ],
         },
         {
           path: "/user/profile",
           name: "myProfile",
-          component: () => import("../views/users/ProfilePage.vue"),
+          component: ProfilePage,
         },
         {
           path: "/user/:id/profile",
           name: "profile",
-          component: () => import("../views/users/ProfilePage.vue"),
+          component: ProfilePage,
         },
         {
           path: "/user/:id/dashboard",
           name: "dashboard",
-          component: () => import("../views/DashboardUser.vue"),
+          component: DashboardUser,
         },
         {
           path: "/user/reset-password",
           name: "reset-password",
-          component: () => import("../views/users/ChangePasswordPage.vue"),
+          component: ChangePasswordPage,
         },
         {
           path: "/users-management",
           name: "users-management",
-          component: () => import("../views/users/UsersManagement.vue"),
+          component: UsersManagement,
         },
         {
           path: "/:catchAll(.*)",
-          component: () => import("../views/NotFoundPage.vue"),
+          component: NotFoundPage,
         },
       ],
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "not-found",
+      component: NotFoundPage,
     },
   ],
 });
 
-router.beforeEach(async (to, from) => {
-  const { isLogged } = useAuthStore();
+router.beforeEach((to) => {
+  const { isLogged, user } = useAuthStore();
+
   if (
     to.name !== "register" &&
     to.name !== "login" &&
     isLogged !== IsLogged.Logged
   ) {
     return { name: "login" };
-  }
-});
-
-router.beforeEach((to) => {
-  const { user } = useAuthStore();
-  const toast = useToast();
-
-  if (
-    (to.name === "dashboard" || to.name === "profile") &&
-    user?.rank === userRank.employee
-  ) {
-    toast.info("Vous n'avez pas le droit d'accéder a cette page");
-    if (to.name === "profile") return { name: "myProfile" };
-    return { name: "home" };
   }
 });
 

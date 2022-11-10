@@ -13,7 +13,6 @@ const users = ref<IUser[]>([]);
 const selectedUsers = ref([]);
 
 const onClickAdd = async () => {
-  console.log(selectedUsers.value);
   const selectedUsersValue = users.value
       .filter((user) => selectedUsers.value.some((v) => user.email === v))
 
