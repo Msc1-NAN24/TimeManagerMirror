@@ -32,7 +32,6 @@ refreshUsers()
 
 function refreshUsers() {
   userService.getAllUsers().then((response) => {
-    console.log(response);
     items.value = []
     for (let i = 0; i < response.length; i++) {
       items.value.push({ title: response[i].firstname, icon: 'mdi-account', route: 'users', id: response[i].id });
@@ -46,7 +45,6 @@ function searchUsers() {
    isEditing.value = false;
   if (selected.value !== 0) {
     userService.getUserById(selected.value).then((response) => {
-      console.log(response);
       isUser.value = true;
       user.value.id = response.id;
       user.value.firstname = response.firstname;

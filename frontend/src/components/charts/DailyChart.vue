@@ -44,7 +44,6 @@ watch(
   (times) => {
     let connectedInSection = 0;
     for (let wt: IWorkingTime of times) {
-      console.log(wt);
       const end = DateTime.fromISO(wt.end);
       const start = DateTime.fromISO(wt.start);
       const diff = end.diff(start, "hours");
@@ -58,7 +57,6 @@ watch(
       connectedInSection > 7
         ? [connectedInSection, (7 - connectedInSection) * -1]
         : [connectedInSection, 7 - connectedInSection];
-    console.log(data);
 
     chartData.value = {
       labels,
