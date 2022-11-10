@@ -52,7 +52,7 @@ watch(
     }
     connectedInSection = parseFloat(connectedInSection.toFixed(1));
     const labels =
-      connectedInSection > 7 ? ["En ligne"] : ["En ligne", "Hors ligne"];
+      connectedInSection > 7 ? ["Heure supplémentaire", "En ligne"] : ["En ligne", "Hors ligne"];
 
     const data =
       connectedInSection > 7
@@ -61,10 +61,7 @@ watch(
     console.log(data);
 
     chartData.value = {
-      labels: [
-        connectedInSection > 7 ? "Heure supplémentaire" : "En ligne",
-        "En ligne",
-      ],
+      labels,
       datasets: [
         {
           data,

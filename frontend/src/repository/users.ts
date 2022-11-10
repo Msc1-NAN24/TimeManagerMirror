@@ -10,11 +10,11 @@ const getUserById = async (id: string) => {
   return data;
 };
 
-const getMe = (
+const getMe = async (
   accessToken: string,
   callback: (user?: IUser, error?: string) => void
 ) => {
-  Api.get<IUser>(`/users/me`, authorize(accessToken))
+  await Api.get<IUser>(`/users/me`, authorize(accessToken))
     .then((response) => {
       callback(response.data);
     })

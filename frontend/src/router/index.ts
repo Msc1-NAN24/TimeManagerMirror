@@ -101,28 +101,15 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach(async (to, from) => {
-  const { isLogged } = useAuthStore();
+router.beforeEach((to) => {
+  const { isLogged, user } = useAuthStore();
+
   if (
     to.name !== "register" &&
     to.name !== "login" &&
     isLogged !== IsLogged.Logged
   ) {
     return { name: "login" };
-  }
-});
-
-router.beforeEach((to) => {
-  const { user } = useAuthStore();
-  const toast = useToast();
-
-  if (
-    (to.name === "dashboard" || to.name === "profile") &&
-    user?.rank === userRank.employee
-  ) {
-    toast.info("Vous n'avez pas le droit d'accéder a cette page");
-    if (to.name === "profile") return { name: "myProfile" };
-    return { name: "home" };
   }
 });
 
