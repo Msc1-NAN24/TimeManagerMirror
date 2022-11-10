@@ -139,12 +139,11 @@ watch(() => props.times, (times: UserWorkingTime[]) => {
     data: [
       ...Array.from({ length: props.numberOfMonths }, (v, k) => k + 1).map(
         (day) =>
-          data
+        convertHoursStringToDate(convertToHoursString(data
             .map((user) => user.data[day - 1])
             .reduce((acc, currentValue) => {
-              acc + currentValue
-              console.log({acc, currentValue, date: DateTime.fromISO(currentValue).diff(DateTime.fromISO(DateTime.fromISO(currentValue).startOf('day')), 'hours').toObject().hours})
-            }) / times.length
+              return acc + (DateTime.fromJSDate(currentValue).diff(DateTime.fromJSDate(currentValue).startOf("day"), 'hours').toObject().hours ?? 0);
+            }, 0) / times.length))
       ),
     ],
   };
