@@ -69,18 +69,19 @@ const onClickWT = (wt: WorkingTime) => {
   if (userId.value === undefined) {
     router.push(`/workingtimes/${auth.user?.id}/${wt.id}`);
   } else {
-    router.push(`/workingtimes/${userId}/${wt.id}`);
+    router.push(`/workingtimes/${userId.value}/${wt.id}`);
   }
 }
 
 </script>
 
 <template>
+
   <div v-if="loading">
     <Loading/>
   </div>
   <div v-else>
-    <h1 style="margin-bottom: 20px">Temps de travail</h1>
+    <h1 style="margin-bottom: 20px">Temps de travail {{user !== undefined ? `de ${user.firstname} ${user.lastname.toUpperCase()}` : ""}}</h1>
     <div
         id="workingtimes__list"
         v-if="workingTimes !== null"

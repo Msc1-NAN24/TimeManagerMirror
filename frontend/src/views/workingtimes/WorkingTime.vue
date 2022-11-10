@@ -115,6 +115,12 @@ async function onDelete() {
 </script>
 
 <template>
+  <v-btn
+      class="mb-4"
+      icon="mdi-chevron-left"
+      color="white"
+      @click="() => router.back()"
+  ></v-btn>
   <div>
     <WorkingTime v-if="workingTime" :workingTime="workingTime" />
     <div id="edit" v-if="user?.rank === userRank.general_manager || user.rank === userRank.manager">
