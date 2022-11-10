@@ -28,7 +28,7 @@ services:
       FRONTEND_URL: ${FRONTEND_URL}
       API_PORT: ${API_PORT}
       PORT: ${API_PORT}
-      MIX_ENV: prod
+      MIX_ENV: dev
       SECRET_KEY_BASE: fuF/Xx/drIahQh4OI4M1pP88mE3ahrg7cGE6zqD/eqpgk1Q7oXxsVsT5R2QWluSW
 
     networks:

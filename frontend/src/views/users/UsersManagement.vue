@@ -5,8 +5,10 @@ import {ref} from 'vue';
 import {useAuthStore} from "@/store/AuthStore";
 import {IUser} from "@/dto/user";
 import {useToast} from "vue-toast-notification";
+import {useRouter} from "vue-router";
 
 const auth = useAuthStore();
+const router = useRouter();
 const toast = useToast();
 
 const items = ref([] as any);
@@ -79,6 +81,7 @@ function saveUser() {
       toast.success("Utilisateur mis à jour !");
       console.log(response);
       isEditing.value = false;
+      selected.value = '';
       refreshUsers();
     });
   } else {
@@ -113,6 +116,16 @@ function saveUser() {
             class="mr-4"
             prepend-icon="mdi-account-edit"
             @click="isEditing = true">Modifier</v-btn>
+        <v-btn
+            color="error"
+            class="mr-4"
+            prepend-icon="mdi-account-edit"
+            @click="() => deleteUser()">Supprimer</v-btn>
+        <v-btn
+            color="info"
+            class="mr-4"
+            prepend-icon="mdi-account-edit"
+            @click="() => router.push({path: `/user/${updateUser.id}/dashboard`})">Voir son tableau de bord</v-btn>
       </div>
   </div>
 </template>

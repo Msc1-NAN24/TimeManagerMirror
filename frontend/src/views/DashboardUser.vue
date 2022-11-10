@@ -39,45 +39,57 @@ auth.$subscribe(
   { deep: true }
 );
 
-const loadWorkingTimes = () => {
+const loadDaily = () => {
   const now = DateTime.now().setLocale("fr");
-  const monthStart = now.startOf("month");
-  const monthEnd = now.endOf("month");
-  const weekStart = now.startOf("week");
-  const weekEnd = now.endOf("week");
-
-  startingDay.value = weekStart.day;
-  selectedWindowDays.value = monthEnd.day;
-
-  if (auth.isLogged === IsLogged.Logged && auth.user !== undefined) {
-    workingTimeService
+  workingTimeService
       .getWorkingTimes(
-        id,
-        `${now.toFormat("yyyy-MM-dd")} 00:00:00`,
-        `${now.plus({ day: 1 }).toFormat("yyyy-MM-dd")} 00:00:00`
+          id,
+          `${now.toFormat("yyyy-MM-dd")} 00:00:00`,
+          `${now.plus({ day: 1 }).toFormat("yyyy-MM-dd")} 00:00:00`
       )
       .then((response) => {
         dailyWorkingTimes.value = response as IWorkingTime[];
       });
-    workingTimeService
+}
+
+const loadWeekly = () => {
+  const now = DateTime.now().setLocale("fr");
+  const weekStart = now.startOf("week");
+  const weekEnd = now.endOf("week");
+  startingDay.value = weekStart.day;
+
+  workingTimeService
       .getWorkingTimes(
-        id,
-        `${weekStart.toFormat("yyyy-MM-dd")} 00:00:00`,
-        `${weekEnd.toFormat("yyyy-MM-dd")} 00:00:00`
+          id,
+          `${weekStart.toFormat("yyyy-MM-dd")} 00:00:00`,
+          `${weekEnd.toFormat("yyyy-MM-dd")} 00:00:00`
       )
       .then((response) => {
         weeklyWorkingTimes.value = response as IWorkingTime[];
       });
-    workingTimeService
+}
+
+const loadMonthly = () => {
+  const now = DateTime.now().setLocale("fr");
+  const monthStart = now.startOf("month");
+  const monthEnd = now.endOf("month");
+  selectedWindowDays.value = monthEnd.day;
+
+  workingTimeService
       .getWorkingTimes(
-        id,
-        `${monthStart.toFormat("yyyy-MM-dd")} 00:00:00`,
-        `${monthEnd.toFormat("yyyy-MM-dd")} 00:00:00`
+          id,
+          `${monthStart.toFormat("yyyy-MM-dd")} 00:00:00`,
+          `${monthEnd.toFormat("yyyy-MM-dd")} 00:00:00`
       )
       .then((response) => {
         monthlyWorkingTimes.value = response as IWorkingTime[];
       });
-  }
+}
+
+const loadWorkingTimes = () => {
+  loadDaily();
+  loadWeekly();
+  loadMonthly();
 };
 
 onMounted(() => {
@@ -116,6 +128,22 @@ const onWeekChange = (event) => {
       weeklyWorkingTimes.value = response as IWorkingTime[];
     });
 };
+
+const onReloadMonthly = () => {
+  loadMonthly();
+  toast.success("Données mise à jour");
+}
+
+const onReloadDaily = () => {
+  loadDaily();
+  toast.success("Données mise à jour");
+}
+
+const onReloadWeekly = () => {
+  loadWeekly();
+  toast.success("Données mise à jour");
+}
+
 </script>
 
 <template>
@@ -128,16 +156,18 @@ const onWeekChange = (event) => {
         :times="weeklyWorkingTimes"
         :on-picker-change="onWeekChange"
         :starting-day="startingDay"
+        :reload="onReloadWeekly"
       />
     </v-col>
     <v-col lg="4" cols="4">
-      <DailyChart :times="dailyWorkingTimes" />
+      <DailyChart :times="dailyWorkingTimes" :reload="onReloadDaily"/>
     </v-col>
     <v-col lg="8" cols="8">
       <MonthlyChart
         :times="monthlyWorkingTimes"
         :on-picker-change="onMonthChange"
         :number-of-days="selectedWindowDays"
+        :reload="onReloadMonthly"
       />
     </v-col>
   </v-row>

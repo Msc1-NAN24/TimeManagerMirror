@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Line } from 'vue-chartjs'
+import { Line } from "vue-chartjs";
 
 import {
   Chart as ChartJS,
@@ -12,26 +12,49 @@ import {
   LineElement,
   PointElement,
   TimeScale,
-} from 'chart.js'
+} from "chart.js";
 import 'chartjs-adapter-luxon'
-import {ref, watch} from "vue";
-import User from "@/components/User.vue";
-import {IWorkingTime} from "@/dto/workingTime";
-import {DateTime} from "luxon";
+import { ref, watch } from "vue";
+import { IWorkingTime } from "@/dto/workingTime";
+import { DateTime } from "luxon";
 import { convertHoursStringToDate, convertToHoursString } from '@/utils/Chart';
 
 export type UserWorkingTime = {
-  user: User,
+  user: User;
   times: IWorkingTime[];
-}
+};
 
-const colors = ["#2ecc71", "#3498db", "#9b59b6", "#e74c3c", "#e67e22", "#f1c40f", "#34495e"]
+const colors = [
+  "#0aecf3",
+  "#3498db",
+  "#9b59b6",
+  "#e74c3c",
+  "#e67e22",
+  "#f1c40f",
+  "#34495e",
+];
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, LineElement, PointElement, TimeScale)
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  LineElement,
+  PointElement,
+  TimeScale
+);
 
-const props = defineProps(['times', 'numberOfMonths', 'onMonthChange']);
+const props = defineProps([
+  "times",
+  "numberOfMonths",
+  "onMonthChange",
+  "reload",
+  "average",
+]);
 const now = DateTime.now();
-const date = ref({month: now.month - 1 , year: now.year});
+const date = ref({ month: now.month - 1, year: now.year });
 
 const chartOptions = {
   responsive: true,
@@ -53,10 +76,12 @@ const chartOptions = {
       },
     }
   }
-}
+};
 
 const chartData = ref({
-  labels: [...Array.from({length: props.numberOfMonths},(v,k)=> `${k+1}`)],
+  labels: [
+    ...Array.from({ length: props.numberOfMonths }, (v, k) => `${k + 1}`),
+  ],
   tension: 0.3,
   datasets: [
     {
@@ -64,16 +89,16 @@ const chartData = ref({
       data: [...Array.from({ length: props.numberOfMonths }, (v, k) => k + 1).map((day) => convertHoursStringToDate("01:00"))],
       tension: 0.2,
       borderColor: "#c45850",
-      fill: false
+      fill: false,
     },
     {
       label: 'Hugo',
       data: [...Array.from({ length: props.numberOfMonths }, (v, k) => k + 1).map((day) => convertHoursStringToDate("02:00"))],
       tension: 0.2,
       borderColor: "#5079c4",
-      fill: false
-    }
-  ]
+      fill: false,
+    },
+  ],
 });
 
 watch(() => props.times, (times: UserWorkingTime[]) => {
@@ -92,22 +117,46 @@ watch(() => props.times, (times: UserWorkingTime[]) => {
       tension: 0.2,
       borderColor: colors[index % colors.length],
       fill: false,
-      data: [...Array.from({length: props.numberOfMonths},(v,k)=> k+1).map((day) => {
-        const section = Object.keys(connectedInSection).find((a) => a == day);
-        if (section == undefined)
-          return convertHoursStringToDate("00:00");
-        return connectedInSection[section];
-      })],
-    }
+      data: [
+        ...Array.from({ length: props.numberOfMonths }, (v, k) => k + 1).map(
+          (day) => {
+            const section = Object.keys(connectedInSection).find(
+              (a) => a == day
+            );
+            if (section == undefined) return convertHoursStringToDate("00:00");
+            return connectedInSection[section];
+          }
+        ),
+      ],
+    };
   });
+
+  let averageDatasets = {
+    label: "Moyenne",
+    tension: 0.2,
+    borderColor: "#00ff58",
+    borderWidth: 5,
+    data: [
+      ...Array.from({ length: props.numberOfMonths }, (v, k) => k + 1).map(
+        (day) =>
+          data
+            .map((user) => user.data[day - 1])
+            .reduce((acc, currentValue) => {
+              acc + currentValue
+              console.log({acc, currentValue, date: DateTime.fromISO(currentValue).diff(DateTime.fromISO(DateTime.fromISO(currentValue).startOf('day')), 'hours').toObject().hours})
+            }) / times.length
+      ),
+    ],
+  };
+  console.log(averageDatasets);
+
   chartData.value = {
-    labels: [...Array.from({length: props.numberOfMonths},(v,k)=> `${k+1}`)],
+    labels: [
+      ...Array.from({ length: props.numberOfMonths }, (v, k) => `${k + 1}`),
+    ],
     tension: 0.3,
-    datasets: [
-        ...data
-    ]
-  }
-  console.log(chartData.value.datasets);
+    datasets: props.average ? [...data, averageDatasets] : [...data],
+  };
 });
 
 </script>
@@ -115,13 +164,14 @@ watch(() => props.times, (times: UserWorkingTime[]) => {
 <template>
   <div class="root">
     <div class="title">
-      <h2>Rapport de connexion mensuel</h2>
-      <Datepicker class="picker" v-model="date" month-picker @update:modelValue="props.onMonthChange"/>
+      <div style="display: flex; flex-direction: row; gap: 10px; align-items: center">
+        <h2>Rapport de connexion mensuel</h2>
+        <v-btn size="x-small" class="ma-2" color="blue" @click="() => props.reload()" icon="mdi-refresh"></v-btn>
+      </div>
+      <Datepicker :clearable="false" class="picker" v-model="date" month-picker
+        @update:modelValue="props.onMonthChange" />
     </div>
-    <Line
-        :chart-options="chartOptions"
-        :chart-data="chartData"
-    />
+    <Line :chart-options="chartOptions" :chart-data="chartData" />
   </div>
 </template>
 <style scoped>
@@ -132,8 +182,9 @@ watch(() => props.times, (times: UserWorkingTime[]) => {
 }
 
 .picker {
-  width: 350px
+  width: 350px;
 }
+
 .root {
   margin-top: 20px;
   margin-bottom: 20px;
