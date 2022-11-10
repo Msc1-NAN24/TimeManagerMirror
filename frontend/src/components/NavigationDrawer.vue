@@ -46,7 +46,7 @@ watch(mobile, (value) => {
 
 <template>
   <v-app>
-    <v-app-bar color="deep-grey-lighten-5" dark v-if="mobile">
+    <v-app-bar app color="deep-grey-lighten-5" dark v-if="mobile">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <div class="d-flex align-center w-100">
         <v-toolbar-title style="text-align: center;">Time Manager</v-toolbar-title>
@@ -55,7 +55,7 @@ watch(mobile, (value) => {
         <v-icon>mdi-export</v-icon>
       </v-btn>
     </v-app-bar>
-    <v-navigation-drawer app v-model="drawer" touchless class="bg-grey-lighten-3">
+    <v-navigation-drawer fixed floating app v-model="drawer" touchless class="drawer bg-grey-lighten-3">
       <v-container class="container">
         <v-row class="top">
             <v-list class="w-100">
@@ -71,7 +71,7 @@ watch(mobile, (value) => {
             <v-list-item prepend-icon="mdi-monitor-dashboard" title="Dashboard" value="dashboard"
               @click="router.push({ name: 'home' })"></v-list-item>
             <v-list-item prepend-icon="mdi-calendar-blank-multiple" title="Workingtimes" value="workingtimes"
-              @click="onClickBtn"></v-list-item>
+              @click="router.push({path: `/workingtimes/${auth.user.id}`})"></v-list-item>
             <v-list-item v-if="user?.rank === 'manager' || user?.rank === 'general_manager'"
               prepend-icon="mdi-account-group" title="Teams" value="teams" @click="router.push({ name: 'teams' })">
             </v-list-item>
@@ -93,6 +93,7 @@ watch(mobile, (value) => {
 </template>
 
 <style scoped>
+
 .container {
   height: 100vh;
   min-height: fit-content;

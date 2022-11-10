@@ -1,12 +1,12 @@
 import { IUpdateUser, IUser } from "@/dto/user";
 import Api, { authorize } from "@/utils/Api";
 
-const getUserById = async (id: number) => {
+const getUserById = async (id: string) => {
   const { data } = await Api.get<IUser>(`/users/${id}`, {
     headers: {
       Authorization: `${localStorage.getItem("access_token")}`,
     },
-  });
+  } as any);
   return data;
 };
 

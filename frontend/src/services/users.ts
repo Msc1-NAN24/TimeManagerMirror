@@ -1,7 +1,7 @@
 import { IUser, IUpdateUser } from "@/dto/user";
 import userRepository from "@/repository/users";
 
-const getUserById = async (id: number) => {
+const getUserById = async (id: string) => {
   const user = await userRepository.getUserById(id);
   return user;
 };
