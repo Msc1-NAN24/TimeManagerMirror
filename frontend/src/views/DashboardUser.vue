@@ -122,27 +122,25 @@ const onWeekChange = (event) => {
   <h2 class="title" v-if="id">
     Profile de {{ `${user?.firstname} ${user?.lastname}` }}
   </h2>
-  <v-layout>
-    <v-row no-gutters>
-      <v-col lg="12" sm="12" md="12" cols="12">
-        <WeeklyChart
-          :times="weeklyWorkingTimes"
-          :on-picker-change="onWeekChange"
-          :starting-day="startingDay"
-        />
-      </v-col>
-      <v-col lg="4" cols="4">
-        <DailyChart :times="dailyWorkingTimes" />
-      </v-col>
-      <v-col lg="8" cols="8">
-        <MonthlyChart
-          :times="monthlyWorkingTimes"
-          :on-picker-change="onMonthChange"
-          :number-of-days="selectedWindowDays"
-        />
-      </v-col>
-    </v-row>
-  </v-layout>
+  <v-row no-gutters style="margin-top: 20px">
+    <v-col lg="12" sm="12" md="12" cols="12">
+      <WeeklyChart
+        :times="weeklyWorkingTimes"
+        :on-picker-change="onWeekChange"
+        :starting-day="startingDay"
+      />
+    </v-col>
+    <v-col lg="4" cols="4">
+      <DailyChart :times="dailyWorkingTimes" />
+    </v-col>
+    <v-col lg="8" cols="8">
+      <MonthlyChart
+        :times="monthlyWorkingTimes"
+        :on-picker-change="onMonthChange"
+        :number-of-days="selectedWindowDays"
+      />
+    </v-col>
+  </v-row>
 </template>
 
 <style scoped>

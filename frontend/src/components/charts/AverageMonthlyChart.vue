@@ -9,12 +9,16 @@ import {
   BarElement,
   CategoryScale,
   LinearScale,
-  LineElement, PointElement
+  LineElement,
+  PointElement,
+  TimeScale,
 } from 'chart.js'
+import 'chartjs-adapter-luxon'
 import {ref, watch} from "vue";
 import User from "@/components/User.vue";
 import {IWorkingTime} from "@/dto/workingTime";
 import {DateTime} from "luxon";
+import { convertHoursStringToDate, convertToHoursString } from '@/utils/Chart';
 
 export type UserWorkingTime = {
   user: User,
@@ -23,7 +27,7 @@ export type UserWorkingTime = {
 
 const colors = ["#2ecc71", "#3498db", "#9b59b6", "#e74c3c", "#e67e22", "#f1c40f", "#34495e"]
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, LineElement, PointElement)
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, LineElement, PointElement, TimeScale)
 
 const props = defineProps(['times', 'numberOfMonths', 'onMonthChange']);
 const now = DateTime.now();
@@ -32,6 +36,23 @@ const date = ref({month: now.month - 1 , year: now.year});
 const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
+  scales: {
+    y: {
+      adapters: {
+        date: {
+          locale: 'fr'
+        }
+      },
+      type: 'time',
+      distribution: 'series',
+      min: convertHoursStringToDate("00:00"),
+      max: convertHoursStringToDate("12:00"),
+      time: {
+        unit: 'hour',
+        tooltipFormat: 'HH:mm',
+      },
+    }
+  }
 }
 
 const chartData = ref({
@@ -40,14 +61,14 @@ const chartData = ref({
   datasets: [
     {
       label: 'Nicolas',
-      data: [40, 39, 10, 40, 39, 80, 40],
+      data: [...Array.from({ length: props.numberOfMonths }, (v, k) => k + 1).map((day) => convertHoursStringToDate("01:00"))],
       tension: 0.2,
       borderColor: "#c45850",
       fill: false
     },
     {
       label: 'Hugo',
-      data: [20, 10, 30, 35, 39, 50, 60],
+      data: [...Array.from({ length: props.numberOfMonths }, (v, k) => k + 1).map((day) => convertHoursStringToDate("02:00"))],
       tension: 0.2,
       borderColor: "#5079c4",
       fill: false
@@ -60,8 +81,11 @@ watch(() => props.times, (times: UserWorkingTime[]) => {
     let connectedInSection = {};
     if (t.times.length > 0) {
       for (let i = 0; i < props.numberOfMonths; i++) {
-        connectedInSection[i] = t.times.filter((wt) => DateTime.fromISO(wt.start).day === i).reduce((last, time) => last + DateTime.fromISO(time.end).diff(DateTime.fromISO(time.start), 'hours').toObject().hours, 0);
+        connectedInSection[i] = convertHoursStringToDate(convertToHoursString(t.times.filter((wt) => DateTime.fromISO(wt.start).day === i).reduce((last, time) => last + DateTime.fromISO(time.end).diff(DateTime.fromISO(time.start), 'hours').toObject().hours, 0)));
       }
+    } else {
+      const a = convertHoursStringToDate("00:00");
+      connectedInSection = { 0: a, 1: a, 2: a, 3: a, 4: a, 5: a, 6: a };
     }
     return {
       label: `${t.user.firstname} ${t.user.lastname.toUpperCase()}`,
@@ -71,7 +95,7 @@ watch(() => props.times, (times: UserWorkingTime[]) => {
       data: [...Array.from({length: props.numberOfMonths},(v,k)=> k+1).map((day) => {
         const section = Object.keys(connectedInSection).find((a) => a == day);
         if (section == undefined)
-          return 0;
+          return convertHoursStringToDate("00:00");
         return connectedInSection[section];
       })],
     }
@@ -83,6 +107,7 @@ watch(() => props.times, (times: UserWorkingTime[]) => {
         ...data
     ]
   }
+  console.log(chartData.value.datasets);
 });
 
 </script>
@@ -109,11 +134,8 @@ watch(() => props.times, (times: UserWorkingTime[]) => {
 .picker {
   width: 350px
 }
-</style>
-
-<style scoped>
-  .root {
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
+.root {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
 </style>

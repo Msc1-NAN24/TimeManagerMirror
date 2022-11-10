@@ -9,10 +9,9 @@ import TeamMembersList from "@/components/teams/TeamMembersList.vue";
 import EditTeamModal from "@/components/modals/teams/EditTeamModal.vue";
 import DeleteTeamModal from "@/components/modals/teams/DeleteTeamModal.vue";
 import {useToast} from "vue-toast-notification";
-import AverageDailyChart, {UserWorkingTime} from "@/components/charts/AverageDailyChart.vue";
+import AverageDailyChart, {UserWorkingTime} from "@/components/charts/AverageMonthlyChart.vue";
 import {DateTime} from "luxon";
 import workingTimeService from "@/services/workingTimes";
-import AverageWeeklyChart from "@/components/charts/AverageWeeklyChart.vue";
 import {IWorkingTime} from "@/dto/workingTime";
 const route = useRoute();
 const auth = useAuthStore();
@@ -129,7 +128,6 @@ const onMonthChange = (event) => {
           text>Supprimer la team</v-btn>
     </div>
     <AverageDailyChart :times="times" :number-of-months="selectedWindowDays" :on-month-change="onMonthChange"/>
-    <AverageWeeklyChart :times="times" :starting-day="startingDay"/>
     <TeamMembersList :team="team" :reload="() => loadTeam(team.id)"/>
   </div>
 </template>
