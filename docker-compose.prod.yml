@@ -51,6 +51,17 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - db:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    container_name: tm_adminer
+    restart: always
+    expose:
+      - 8080
+    environment:
+      VIRTUAL_HOST: ${VIRTUAL_HOST_ADMINER}
+      LETSENCRYPT_HOST: ${VIRTUAL_HOST_ADMINER}
+
 networks:
   default:
     external:
