@@ -61,7 +61,7 @@ const getWorkingTimeById = async (workingTimeId: number) => {
       headers: {
         Authorization: `${localStorage.getItem("token")}`,
       },
-    }
+    } as any
   );
   return data;
 };
@@ -77,7 +77,7 @@ const updateWorkingTime = async (
       headers: {
         Authorization: `${localStorage.getItem("token")}`,
       },
-    }
+    } as any
   );
   return data;
 };
@@ -89,7 +89,7 @@ const deleteWorkingTime = async (workingTimeId: number) => {
       headers: {
         Authorization: `${localStorage.getItem("token")}`,
       },
-    }
+    } as any
   );
   return data;
 };
@@ -127,6 +127,19 @@ const getTeamWorkingTimeByPeriod = async (
       return callback([]);
     });
 };
+
+const getUserWorkingTime = async (callback: (workingTimes: IWorkingTime[]) => void) => {
+  Api.get<IWorkingTime[]>(
+    `/workingtimes/me`,
+    authorize(localStorage.getItem("access_token") ?? "")
+  )
+    .then((value) => {
+      return callback(value.data);
+    })
+    .catch((err) => {
+      return callback([]);
+    });
+}
 
 const workingTimeRepository = {
   getAllWorkingTimesByUser,

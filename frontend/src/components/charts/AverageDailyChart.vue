@@ -47,6 +47,7 @@ const props = defineProps([
   "times",
   "numberOfMonths",
   "onMonthChange",
+  "reload",
   "average",
 ]);
 const now = DateTime.now();
@@ -142,14 +143,24 @@ watch(
     };
   }
 );
+
 </script>
 
 <template>
   <div class="root">
     <div class="title">
-      <h2>Rapport de connexion mensuel</h2>
+      <div style="display: flex; flex-direction: row; gap: 10px; align-items: center">
+        <h2>Rapport de connexion mensuel</h2>
+        <v-btn
+            size="x-small"
+            class="ma-2"
+            color="blue"
+            @click="() => props.reload()"
+            icon="mdi-refresh"
+        ></v-btn>
+      </div>
       <Datepicker
-        class="picker"
+        :clearable="false" class="picker"
         v-model="date"
         month-picker
         @update:modelValue="props.onMonthChange"

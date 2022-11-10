@@ -11,7 +11,7 @@ const auth = useAuthStore();
 const { user } = storeToRefs(auth);
 const router = useRouter();
 const { loading } = useLoading();
-const drawer = ref(true);
+const drawer = ref(window.innerWidth > 1284);
 const mobile = ref<boolean>(isMobile());
 
 console.log(user?.value);
@@ -93,7 +93,7 @@ watch(mobile, (value) => {
               prepend-icon="mdi-calendar-blank-multiple"
               title="Workingtimes"
               value="workingtimes"
-              @click="router.push({ path: `/workingtimes/${auth.user.id}` })"
+              @click="router.push({ path: `/workingtimes/` })"
             ></v-list-item>
             <v-list-item
               v-if="

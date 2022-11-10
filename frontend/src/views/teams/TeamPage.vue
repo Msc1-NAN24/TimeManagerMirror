@@ -116,6 +116,26 @@ const onMonthChange = (event) => {
     }
   );
 };
+const onMonthlyReload = () => {
+  const now = DateTime.now().setLocale('fr');
+  const monthStart = now.startOf("month");
+  const monthEnd = now.endOf("month");
+  selectedWindowDays.value = monthEnd.day;
+
+  workingTimeService.getTeamWorkingTimesByPeriod(team.value["id"], `${monthStart.toFormat('yyyy-MM-dd')} 00:00:00`, `${monthEnd.toFormat('yyyy-MM-dd')} 00:00:00`, (workingTimes) => {
+    const usersWorkingTimes: UserWorkingTime[] = [];
+    workingTimes.forEach((wt) => {
+      let uwt = usersWorkingTimes.find((a) => a.user["id"] === wt.user.id);
+      if (!uwt) {
+        usersWorkingTimes.push({times: [wt], user: wt.user});
+      } else {
+        uwt.times.push(wt);
+      }
+    });
+    times.value = usersWorkingTimes;
+  });
+}
+
 </script>
 
 <template>
@@ -156,6 +176,7 @@ const onMonthChange = (event) => {
       :times="times"
       :number-of-months="selectedWindowDays"
       :on-month-change="onMonthChange"
+      :reload="onMonthlyReload"
       average="true"
     />
     <TeamMembersList :team="team" :reload="() => loadTeam(team.id)" />
