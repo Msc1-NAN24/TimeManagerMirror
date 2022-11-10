@@ -6,7 +6,7 @@ import axios from "@/utils/Api";
 import * as luxon from "luxon";
 import { IsLogged, useAuthStore } from "@/store/AuthStore";
 
-import WorkingTime from "../components/WorkingTime.vue";
+import WorkingTime from "../../components/WorkingTime.vue";
 import { storeToRefs } from "pinia";
 import { userRank } from "@/dto/user";
 
@@ -20,15 +20,6 @@ const workingTime = ref<IWorkingTime>();
 const authStore = useAuthStore();
 const { isLogged, user } = storeToRefs(authStore);
 
-watch(
-  [isLogged, user],
-  (state) => {
-    console.log("state", state);
-    console.table({ isLogged, user });
-  },
-  { immediate: true }
-);
-
 async function getWorkingtime() {
   try {
     const { data } = await axios.get<IWorkingTime>(
@@ -37,7 +28,7 @@ async function getWorkingtime() {
         headers: {
           Authorization: localStorage.getItem("access_token"),
         },
-      }
+      } as any
     );
     if (data) {
       workingTime.value = data;
@@ -101,7 +92,7 @@ async function onSubmit() {
         headers: {
           Authorization: localStorage.getItem("access_token"),
         },
-      }
+      } as any
     );
     getWorkingtime();
   } catch (error) {
@@ -115,7 +106,7 @@ async function onDelete() {
       headers: {
         Authorization: localStorage.getItem("access_token"),
       },
-    });
+    } as any );
     router.push("/workingtimes/" + userId.value);
   } catch (error) {
     console.error(error);
@@ -124,9 +115,15 @@ async function onDelete() {
 </script>
 
 <template>
+  <v-btn
+      class="mb-4"
+      icon="mdi-chevron-left"
+      color="white"
+      @click="() => router.back()"
+  ></v-btn>
   <div>
     <WorkingTime v-if="workingTime" :workingTime="workingTime" />
-    <div id="edit" v-if="user?.rank !== userRank.employee">
+    <div id="edit" v-if="user?.rank === userRank.general_manager || user.rank === userRank.manager">
       <h2>Edit Working Time</h2>
       <form @submit.prevent>
         <div>

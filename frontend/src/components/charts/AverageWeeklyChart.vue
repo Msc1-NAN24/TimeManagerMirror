@@ -25,7 +25,7 @@ const colors = ["#2ecc71", "#3498db", "#9b59b6", "#e74c3c", "#e67e22", "#f1c40f"
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, LineElement, PointElement)
 
-const props = defineProps(['times', 'startingDay']);
+const props = defineProps(['times', 'startingDay', 'reload']);
 const now = DateTime.now();
 const date = ref([now.startOf("week").toJSDate(), now.endOf("week").toJSDate()]);
 
@@ -64,7 +64,7 @@ watch(() => props.times, (times: UserWorkingTime[]) => {
       }
     }
     return {
-      label: `${t.user.firstname} ${t.user.lastname.toUpperCase()}`,
+      label: `${t.user["firstname"]} ${t.user["lastname"].toUpperCase()}`,
       tension: 0.2,
       borderColor: colors[index % colors.length],
       fill: false,

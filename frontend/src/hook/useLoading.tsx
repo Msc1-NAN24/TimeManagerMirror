@@ -2,16 +2,22 @@ import {ref} from "vue";
 import {IsLogged, useAuthStore} from "@/store/AuthStore";
 import {storeToRefs} from "pinia";
 
-export function useLoading() {
+export function useLoading(defaultValue?: boolean) {
 
   const auth = useAuthStore();
-  const {user, isLogged} = storeToRefs(auth);
-  const loading = ref<boolean>(true);
+  const {user} = storeToRefs(auth);
+  const loading = ref<boolean>(defaultValue ?? true);
 
-  if (user?.value !== undefined) {
-    console.log('abc', user.value);
-    loading.value = false;
+  const init = () => {
+    if (defaultValue === undefined) {
+      if (user?.value !== undefined) {
+        console.log('abc', user.value);
+        loading.value = false;
+      }
+    }
   }
+
+  init();
 
   const setLoading = (value: boolean) => {
     loading.value = value;
@@ -22,9 +28,7 @@ export function useLoading() {
   }
 
   auth.$subscribe((mutation, state) => {
-    console.log('DEF');
-    if (state.user !== undefined && state.isLogged !== IsLogged.Loading) {
-      console.log('ABC');
+    if (defaultValue === undefined && state.user !== undefined && state.isLogged !== IsLogged.Loading) {
       loading.value = false;
     }
   });
