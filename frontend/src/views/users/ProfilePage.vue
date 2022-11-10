@@ -14,21 +14,27 @@
     <v-text-field v-model="email" label="Email" required></v-text-field>
   </v-form>
   <v-container>
-    <v-btn variant="flat" color="success" @click="onClickUpdate"
-    >Mettre à jour</v-btn>
+    <v-btn variant="flat" color="success" @click="onClickUpdate">
+      Mettre à jour
+    </v-btn>
     <v-btn
-        variant="flat"
-        color="warning"
-        @click="onClickChangePassword"
-        v-if="!id || currentUser?.rank === 'general_manager'"
-    >Changer mon mot de passe</v-btn>
+      variant="flat"
+      color="warning"
+      @click="onClickChangePassword"
+      v-if="!id || currentUser?.rank === 'general_manager'"
+    >
+      Changer mon mot de passe
+    </v-btn>
     <v-btn
-        variant="outlined"
-        color="info"
-        @click="onClickLogout"
-        v-if="!id || id === currentUser.id"
-    >Se déconnecter</v-btn>
-    <v-btn variant="tonal" color="error" @click="onClickDelete">Supprimer mon compte</v-btn>
+      variant="outlined"
+      color="info"
+      @click="onClickLogout"
+      v-if="!id || id === currentUser.id"
+      >Se déconnecter</v-btn
+    >
+    <v-btn variant="tonal" color="error" @click="onClickDelete"
+      >Supprimer mon compte</v-btn
+    >
   </v-container>
 </template>
 
@@ -40,7 +46,8 @@ import { useRoute, useRouter } from "vue-router";
 import userService from "@/services/users";
 import { useToast } from "vue-toast-notification";
 import { ref } from "vue";
-import { IUpdateUser } from "@/dto/user";
+import { IUpdateUser, userRank } from "@/dto/user";
+import { useAuthorize } from "@/hook/useAuthorize";
 
 export default {
   name: "ProfilePage",
@@ -51,9 +58,19 @@ export default {
     const auth = useAuthStore();
     const router = useRouter();
     const route = useRoute();
+    const toast = useToast();
     const { user: currentUser, isLogged, accessToken } = storeToRefs(auth);
     const id = Number(route.params.id);
     const user = ref(id ? null : storeToRefs(auth).user);
+    const { isAuthorize } = useAuthorize();
+
+    if (
+      !isAuthorize([userRank.manager, userRank.general_manager]) &&
+      auth.user?.id !== id
+    ) {
+      toast.info("Vous n'avez pas le droit d'accéder a cette page");
+      router.push({ path: "/" });
+    }
 
     return {
       auth,

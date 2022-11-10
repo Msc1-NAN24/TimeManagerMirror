@@ -6,11 +6,11 @@ import { loadFonts } from "./plugins/webfontloader";
 import { createPinia } from "pinia";
 import { useAuth } from "@/hook/useAuth";
 import ToastPlugin from "vue-toast-notification";
-import 'vue3-lottie/dist/style.css'
-import Vue3Lottie from 'vue3-lottie'
+import "vue3-lottie/dist/style.css";
+import Vue3Lottie from "vue3-lottie";
 import "vue-toast-notification/dist/theme-sugar.css";
-import Datepicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
+import Datepicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
 
 // Fix Property 'env' does not exist on type 'ImportMeta'.
 declare global {
@@ -27,13 +27,14 @@ const pinia = createPinia();
 
 createApp(App)
   .use(pinia)
-  .use(router)
-  .use(vuetify)
-  .use(Vue3Lottie)
-  .component('Datepicker', Datepicker)
-  .use(ToastPlugin, { position: "bottom-right" })
   .use((app, options) => {
     const auth = useAuth();
     auth.loginFromStorage();
+    console.log("app");
   })
+  .use(router)
+  .use(vuetify)
+  .use(Vue3Lottie)
+  .component("Datepicker", Datepicker)
+  .use(ToastPlugin, { position: "bottom-right" })
   .mount("#app");
