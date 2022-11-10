@@ -64,7 +64,7 @@ watch(() => props.times, (times: UserWorkingTime[]) => {
       }
     }
     return {
-      label: `${t.user.firstname} ${t.user.lastname.toUpperCase()}`,
+      label: `${t.user["firstname"]} ${t.user["lastname"].toUpperCase()}`,
       tension: 0.2,
       borderColor: colors[index % colors.length],
       fill: false,

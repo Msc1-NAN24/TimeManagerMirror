@@ -11,7 +11,7 @@ const auth = useAuthStore();
 const {user} = storeToRefs(auth);
 const router = useRouter();
 const {loading} = useLoading();
-const drawer = ref(true);
+const drawer = ref(window.innerWidth > 1284);
 const mobile = ref<boolean>(isMobile());
 
 console.log(user?.value);
@@ -72,7 +72,7 @@ watch(mobile, (value) => {
             <v-list-item prepend-icon="mdi-monitor-dashboard" title="Dashboard" value="dashboard"
               @click="router.push({ name: 'home' })"></v-list-item>
             <v-list-item prepend-icon="mdi-calendar-blank-multiple" title="Workingtimes" value="workingtimes"
-              @click="router.push({path: `/workingtimes/${auth.user.id}`})"></v-list-item>
+              @click="router.push({path: `/workingtimes/`})"></v-list-item>
             <v-list-item v-if="user?.rank === 'manager' || user?.rank === 'general_manager'"
               prepend-icon="mdi-account-group" title="Teams" value="teams" @click="router.push({ name: 'teams' })">
             </v-list-item>
