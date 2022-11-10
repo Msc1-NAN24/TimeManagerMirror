@@ -29,39 +29,42 @@ The goal is to create an application of time management in 7 steps :
 6. Mobile
 7. Security
 
-## Prerequisites
-
-To use this project, you'll need ...
-
-## Design Thinking
-
 ### Mockup on Figma
 
 [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/file/wYBTJmu62lzp90DoSrea4a/Untitled?node-id=0%3A1)
 
-## Deployement
+## Implemented routes
 
-For the deployement you just need ...
+[![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Time%20Manager%20API&uri=https://raw.githubusercontent.com/TimeManager-NAN3/TimeManagerMirror/develop/Insomnia_api.json)
+
+## Global Deployment
+
+For the deployment, a CI/CD pipeline is used. At each push on the main branch, the pipeline will be triggered. It will build the project and deploy it on the server. You can see the status of the pipeline on the top of this README. If the status is green, the project is deployed and you can access it on [time-manager.tech](https://time-manager.tech/).
+
+## Local Deployment
+### Prerequisites
+
+Before installation, you need to create a .env file at the root of the repository likes the `/.env.example`
+Moreover, you need Docker and Docker Compose installed on your machine.
+
+### Docker:
+
+A docker compose file is present to creates all needed services for the time manager.
+It is composed of several services:
+- Postgres DB
+- Adminer (DB Inspector)
+- Front (VueJS App)
+- Api (Elixir/Phoenix Api)
+- Nginx
+
+```shell
+$ docker compose up # with a version of docker compose below v1
+$ docker-compose up # with docker compose v2
+```
 
 ## Implemented routes
 
-- /api/register -> [POST] to register a user
-  - params: login, password, email, firstname, lastname
-- /api/login -> [POST] to login
-  - params: login, password, email, firstname, lastname
-- /api/users -> [PUT/GET] to update or get user informations
-  - headers: 'authorization' with the value of the token return by /api/register or /api/login
-
-## Technologies
-
-- Automatisation
-  - Docker
-- Front-end
-  - VueJS
-- API
-  - Phoenix
-- Database
-  - PostgreSQL
+OpenAPI documentation is available on ....
 
 ## Authors
 
