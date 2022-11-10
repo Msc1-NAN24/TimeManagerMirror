@@ -10,12 +10,16 @@ import {
   BarElement,
   CategoryScale,
   LinearScale,
-  LineElement, PointElement
+  LineElement,
+  PointElement,
+  TimeScale,
 } from 'chart.js'
-import {onUpdated, ref, watch} from "vue";
-import {DateTime} from "luxon";
+import 'chartjs-adapter-luxon'
+import { ref, watch } from "vue";
+import { DateTime } from "luxon";
+import { convertHoursStringToDate, convertToHoursString } from "@/utils/Chart";
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, LineElement, PointElement)
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, LineElement, PointElement, TimeScale)
 
 const props = defineProps(['times', 'onPickerChange', 'startingDay']);
 const now = DateTime.now();
@@ -28,7 +32,8 @@ const chartData = ref({
       label: 'En ligne',
       fill: true,
       backgroundColor: '#f87979',
-      data: [40, 39, 10, 40, 39, 80, 40]
+      data: [...Array.from({ length: 7 }, (v, k) => k + 1).map((day) => convertHoursStringToDate("00:00"))],
+      tension: 0.2
     }
   ]
 });
@@ -37,10 +42,12 @@ watch(() => props.times, (times) => {
   let connectedInSection = {};
   if (times.length > 0) {
     for (let i = 0; i < 7; i++) {
-      connectedInSection[i] = times.filter((wt) => DateTime.fromISO(wt.start).day % 7 === i).reduce((last, time) => last + DateTime.fromISO(time.end).diff(DateTime.fromISO(time.start), 'hours').toObject().hours, 0);
+      connectedInSection[i] = convertHoursStringToDate(convertToHoursString(times.filter((wt) => DateTime.fromISO(wt.start).day % 7 === i).reduce((last, time) => last + DateTime.fromISO(time.end).diff(DateTime.fromISO(time.start), 'hours').toObject().hours, 0)));
     }
+  } else {
+    const a = convertHoursStringToDate("00:00");
+    connectedInSection = { 0: a, 1: a, 2: a, 3: a, 4: a, 5: a, 6: a };
   }
-  console.log('a', connectedInSection);
   chartData.value = {
     labels: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
     datasets: [
@@ -48,12 +55,13 @@ watch(() => props.times, (times) => {
         label: 'En ligne',
         backgroundColor: '#ffd000',
         fill: true,
-        data: [...Array.from({length: 7},(v,k)=>k+1).map((day) => {
+        data: [...Array.from({ length: 7 }, (v, k) => k + 1).map((day) => {
           const section = Object.keys(connectedInSection).find((a) => a == day - 1);
           if (section == undefined)
-            return 0;
+            return convertHoursStringToDate("00:00");
           return connectedInSection[section];
         })],
+        tension: 0.2
       }
     ]
   }
@@ -62,6 +70,23 @@ watch(() => props.times, (times) => {
 const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
+  scales: {
+    y: {
+      adapters: {
+        date: {
+          locale: 'fr'
+        }
+      },
+      type: 'time',
+      distribution: 'series',
+      min: convertHoursStringToDate("00:00"),
+      max: convertHoursStringToDate("12:00"),
+      time: {
+        unit: 'hour',
+        tooltipFormat: 'HH:mm',
+      },
+    }
+  }
 }
 
 </script>
@@ -69,12 +94,9 @@ const chartOptions = {
 <template>
   <div class="title">
     <h2>Récap hebdomadaire</h2>
-    <Datepicker class="picker" v-model="date" week-picker @update:modelValue="(v) => props.onPickerChange(v)"/>
+    <Datepicker class="picker" v-model="date" week-picker @update:modelValue="(v) => props.onPickerChange(v)" />
   </div>
-  <Line
-      :chart-options="chartOptions"
-      :chart-data="chartData"
-  />
+  <Line :chart-options="chartOptions" :chart-data="chartData" />
 </template>
 
 <style scoped>
