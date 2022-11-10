@@ -26,6 +26,4 @@ jobs:
           username: ${{secrets.SSH_USERNAME}}
           script: |
             cd TimeManagerMirror
-            docker-compose down
-            docker image prune -f
             docker-compose -f docker-compose.prod.yml up --build -d
